@@ -131,6 +131,6 @@ O ambiente de desenvolvimento está no Heroku, e seguem os links abaixo:
 
 | Backend                                  | Swagger                                  | 
 |------------------------------------------|-------------------------------------------|
-| [Backend](https://me-conta-backend.herokuapp.com)| [Swagger](https://me-conta-backend.herokuapp.com/api)|  
+| [Backend](http://localhost:3000)| [Swagger](http://localhost:3000/api)|  
 
 ---
