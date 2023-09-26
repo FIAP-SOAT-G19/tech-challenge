@@ -127,7 +127,7 @@ Exemplos de commits válidos:
 
 ## 🔗	 Ambiente de desenvolvimento ###
 
-O ambiente de desenvolvimento está no Heroku, e seguem os links abaixo:
+Os ambientes de desenvolvimentos seguem os links abaixo:
 
 | Backend                                  | Swagger                                  | 
 |------------------------------------------|-------------------------------------------|
