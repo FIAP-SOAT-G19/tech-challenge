@@ -39,8 +39,8 @@ model Employee {
 
 model Order {
   id           String         @id
-  client       Client         @relation(fields: [clientId], references: [id])
-  clientId     String
+  client       Client?        @relation(fields: [clientId], references: [id])
+  clientId     String?
   status       OrderStatus    @default(waitingPayment)
   totalValue   Int
   paidAt       DateTime
@@ -81,11 +81,14 @@ enum ProductCategory {
 }
 
 model OrderProduct {
-  id        String  @id
-  product   Product @relation(fields: [productId], references: [id])
-  order     Order   @relation(fields: [orderId], references: [id])
-  productId String
-  orderId   String
+  id           String   @id
+  product      Product  @relation(fields: [productId], references: [id])
+  order        Order    @relation(fields: [orderId], references: [id])
+  productId    String
+  orderId      String
+  amount       Int
+  productPrice Int
+  createdAt    DateTime
 
   @@map("order_products")
 }
