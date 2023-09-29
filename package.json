@@ -4,9 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/main",
-    "hml": "node -r dotenv/config dist/main dotenv_config_path=.env.hml",
-    "dev": "ts-node-dev --respawn --transpile-only --clear --ignore-watch node_modules -r dotenv/config src/main dotenv_config_path=.env.dev",
+    "start": "",
+    "dev": "",
     "clean": "rimraf dist",
     "build": "npm run clean && tsc -p tsconfig.build.json",
     "check": "npx npm-check -s -u",
