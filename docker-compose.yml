@@ -1,17 +1,30 @@
 version: '3'
 
 services:
+  app:
+    container_name: 'app-node'
+    image: 'node:18-alpine'
+    restart: always
+    working_dir: /app
+    ports:
+      - 3000:3000
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/tech_challenge?schema=public
+      PORT: 3000
+    command: npm install --omit=dev --force && npx prisma migrate dev && npm run start
+    depends_on:
+      - database
+    volumes:
+      - ./:/app
+
   database:
     image: 'postgres:latest'
     ports:
       - 15432:5432
     env_file:
       - .env
-    networks:
-      - postgres-network
     volumes:
       - ./db-data/:/var/lib/postgresql/data/
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
   pgadmin:
     image: dpage/pgadmin4
@@ -21,8 +34,6 @@ services:
       - .env
     depends_on:
       - database
-    networks:
-      - postgres-network
     volumes:
       - ./pgadmin-data/:/var/lib/pgadmin/
 
