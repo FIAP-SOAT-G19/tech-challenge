@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/FIAP-SOAT-G19/tech-challenge/issues"
   },
-  "homepage": "https://github.com/FIAP-SOAT-G19/tech-challenge#readme"
+  "homepage": "https://github.com/FIAP-SOAT-G19/tech-challenge#readme",
+  "dependencies": {
+    "@prisma/client": "^5.3.1"
+  }
 }
