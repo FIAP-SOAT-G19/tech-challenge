@@ -1,31 +1,47 @@
-version: '3'
+version: '3.5'
 
 services:
-  database:
-    image: 'postgres:latest'
+  app:
+    container_name: 'app'
+    image: node:16
+    restart: always
+    working_dir: /app
     ports:
-      - 15432:5432
+      - 3000:3000
     env_file:
       - .env
-    networks:
-      - postgres-network
     volumes:
-      - ./db-data/:/var/lib/postgresql/data/
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./:/app
+      - ./dist:/app/dist/
+    command: bash -c "npm install && npx prisma migrate dev && npm run start"
+    user: "1000:1000"
+    depends_on:
+      - postgresql
+
+  postgresql:
+    image: postgres:14
+    container_name: postgresql
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
 
   pgadmin:
     image: dpage/pgadmin4
-    ports:
-      - 15433:80
+    container_name: pgadmin-container
     env_file:
       - .env
+    ports:
+      - "8080:80"
     depends_on:
-      - database
-    networks:
-      - postgres-network
-    volumes:
-      - ./pgadmin-data/:/var/lib/pgadmin/
+      - postgresql
+
+volumes:
+  postgres-data:
+
 
 networks:
-  postgres-network:
-    driver: bridge
+  default:
+    name: local
