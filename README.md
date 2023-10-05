@@ -16,7 +16,7 @@ O **Tech Challenge** é um projeto de um sistema de autoatendimento de fast food
 ## 💻 Configurando o Ambiente
 
 - Instale o [NVM](https://github.com/nvm-sh/nvm) (Gerenciador de versão do Node)
-  
+
 ---
 
 ## 💻 Clonando o repositório
@@ -62,7 +62,7 @@ Existe o arquivo `.env` com todas as variáveis utilizadas para rodar o sistema.
 ---
 
 ## 🧩 Swagger
-É possível acessar a documentação da API pelo [Swagger da API](http://localhost:3000/api) e simular os endpoints
+É possível acessar a documentação da API pelo [Swagger da API](http://localhost:3000/api-docs) e simular os endpoints
 
 ---
 
@@ -108,9 +108,9 @@ Exemplos de tipos:
   - feat: introduz uma nova funcionalidade à base de código;
   - fix: correção de um bug na base de código;
   - build: Introduz uma mudança que afeta o build do sistema ou alguma dependência externa (exemplos de escopos: gulp, broccoli, npm);
-  - chore: atualização de ferramentas, configurações e bibliotecas 
+  - chore: atualização de ferramentas, configurações e bibliotecas
   - ci: Introduz uma mudança aos arquivos e scripts de configuração do CI/CD (exemplos de escopos: Travis, Circle, BrowserStack, SauceLabs)
-  - docs: Alterações na documentação 
+  - docs: Alterações na documentação
   - style: Introduz uma mudança que não afeta o significado do código (remoção de espaços em branco, formatação, ponto e virgula faltando, etc)
   - refactor: Uma mudança no código que nem corrige um bug nem adiciona uma nova funcionalidade
   - perf: Um mundança no código que melhora a performance
@@ -129,9 +129,9 @@ Exemplos de commits válidos:
 
 Os ambientes de desenvolvimentos seguem os links abaixo:
 
-| Backend                                  | Swagger                                  | 
+| Backend                                  | Swagger                                  |
 |------------------------------------------|-------------------------------------------|
-| [Backend](http://localhost:3000)| [Swagger](http://localhost:3000/api)|  
+| [Backend](http://localhost:3000)| [Swagger](http://localhost:3000/api)|
 
 
 ---
