@@ -49,4 +49,20 @@ describe('CreateOrderUseCase', () => {
       paidAt: new Date()
     })
   })
+
+  test('should call OrderRepository.save once and with correct values and without clientId and paidAt', async () => {
+    input.clientId = null
+    input.paidAt = null
+
+    await sut.execute(input)
+
+    expect(orderRepository.save).toHaveBeenCalledTimes(1)
+    expect(orderRepository.save).toHaveBeenCalledWith({
+      id: 'anyUUID',
+      clientId: null,
+      totalValue: 5000,
+      createdAt: new Date(),
+      paidAt: null
+    })
+  })
 })
