@@ -1,15 +1,15 @@
+import { ControllerInterface } from '@/ports/controllers'
+import { HttpRequest, HttpResponse } from '@/shared/types/http.types'
 import { Request, Response } from 'express'
-import { ControllerInterface } from './ports/controller'
 
 export const expressRouteAdapter = (controller: ControllerInterface) => {
   return async (req: Request, res: Response) => {
-    const input: ControllerInterface.Input = {
+    const input: HttpRequest = {
       params: req?.params,
-      body: req?.body,
-      headers: req?.headers
+      body: req?.body
     }
 
-    const { statusCode, body }: ControllerInterface.Output = await controller.execute(input)
+    const { statusCode, body }: HttpResponse = await controller.execute(input)
 
     const output = (statusCode >= 200 && statusCode < 500) ? body : { error: body.message }
 
