@@ -6,5 +6,8 @@ export default {
     PREPARED: 'prepared',
     FINALIZED: 'finalized',
     CANCELED: 'canceled'
+  },
+  SCHEMAS: {
+    CLIENT: 'client'
   }
 }

@@ -6,18 +6,20 @@ import { IOrderRepository } from '@/ports/repositories/order.port'
 import { IClientRepository } from '@/ports/repositories/client.port'
 import MockDate from 'mockdate'
 import { mock } from 'jest-mock-extended'
-import { InvalidParamError, MissingParamError } from '@/shared/errors'
+import { InvalidParamError } from '@/shared/errors'
+import { ISchemaValidator } from '@/ports/validators/schema-validator.port'
 
 const uuidGenerator = mock<IUUIDGenerator>()
 const orderRepository = mock<IOrderRepository>()
 const clientRepository = mock<IClientRepository>()
+const schemaValidator = mock<ISchemaValidator<any>>()
 
 describe('CreateOrderUseCase', () => {
   let sut: ICreateOrderUseCase
   let input: any
 
   beforeEach(() => {
-    sut = new CreateOrderUseCase(uuidGenerator, clientRepository, orderRepository)
+    sut = new CreateOrderUseCase(schemaValidator, uuidGenerator, clientRepository, orderRepository)
     input = {
       clientId: 'anyClientId',
       totalValue: 5000
@@ -34,6 +36,7 @@ describe('CreateOrderUseCase', () => {
       updatedAt: null,
       deletedAt: null
     })
+    schemaValidator.validate.mockReturnValue({ success: true })
   })
 
   beforeAll(() => {
@@ -51,6 +54,13 @@ describe('CreateOrderUseCase', () => {
     expect(clientRepository.getById).toHaveBeenCalledWith('anyClientId')
   })
 
+  test('should call schemaValidator once and with correct values', async () => {
+    await sut.execute(input)
+
+    expect(schemaValidator.validate).toHaveBeenCalledTimes(1)
+    expect(schemaValidator.validate).toHaveBeenCalledWith({ schemaName: 'client', data: input })
+  })
+
   test('should throws if clientRepository.getById returns null', async () => {
     clientRepository.getById.mockResolvedValueOnce(null)
 
@@ -60,11 +70,12 @@ describe('CreateOrderUseCase', () => {
   })
 
   test('should throws if totalValue is falsy', async () => {
+    schemaValidator.validate.mockReturnValueOnce({ success: false, error: 'anyError' })
     input.totalValue = null
 
     const output = sut.execute(input)
 
-    await expect(output).rejects.toThrowError(new InvalidParamError('totalValue'))
+    await expect(output).rejects.toThrowError(new InvalidParamError('anyError'))
   })
 
   test('should call UUIDGenerator once', async () => {

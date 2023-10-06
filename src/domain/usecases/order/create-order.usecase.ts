@@ -4,9 +4,11 @@ import { ICreateOrderUseCase } from '@/ports/usecases/order/create-order.port'
 import { IUUIDGenerator } from '@/ports/usecases/uuid/uuid-generator.port'
 import { InvalidParamError } from '@/shared/errors'
 import constants from '@/shared/constants'
+import { ISchemaValidator } from '@/ports/validators/schema-validator.port'
 
 export class CreateOrderUseCase implements ICreateOrderUseCase {
   constructor(
+    private readonly schemaValidator: ISchemaValidator<ICreateOrderUseCase.Input>,
     private readonly uuidGenerator: IUUIDGenerator,
     private readonly clientRepository: IClientRepository,
     private readonly orderRepository: IOrderRepository
@@ -32,8 +34,13 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
       }
     }
 
-    if (!input.totalValue || input.totalValue <= 0) {
-      throw new InvalidParamError('totalValue')
+    const validation = this.schemaValidator.validate({
+      schemaName: constants.SCHEMAS.CLIENT,
+      data: input
+    })
+
+    if (validation.error) {
+      throw new InvalidParamError(validation.error)
     }
   }
 }

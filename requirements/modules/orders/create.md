@@ -9,7 +9,7 @@
 Como o cliente pode se identificar ou não, o campo clientId pode ser opcional
 
 > ## Exceções
-1. ⛔ Retorna 400 se o id do cliente for fornecido e for inválido
+1. ✅ Retorna 400 se o id do cliente for fornecido e for inválido
 1. ⛔ Retorna 400 se o valor total não for fornecido ou for inválido
 
 > ## Exceções
