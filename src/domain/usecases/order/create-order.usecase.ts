@@ -3,12 +3,11 @@ import { IOrderRepository } from '@/ports/repositories/order.port'
 import { ICreateOrderUseCase } from '@/ports/usecases/order/create-order.port'
 import { IUUIDGenerator } from '@/ports/usecases/uuid/uuid-generator.port'
 import { InvalidParamError } from '@/shared/errors'
-import constants from '@/shared/constants'
 import { ISchemaValidator } from '@/ports/validators/schema-validator.port'
-
+import constants from '@/shared/constants'
 export class CreateOrderUseCase implements ICreateOrderUseCase {
   constructor(
-    private readonly schemaValidator: ISchemaValidator<ICreateOrderUseCase.Input>,
+    private readonly schemaValidator: ISchemaValidator,
     private readonly uuidGenerator: IUUIDGenerator,
     private readonly clientRepository: IClientRepository,
     private readonly orderRepository: IOrderRepository
@@ -35,7 +34,7 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
     }
 
     const validation = this.schemaValidator.validate({
-      schemaName: constants.SCHEMAS.CLIENT,
+      schema: constants.SCHEMAS.ORDER,
       data: input
     })
 

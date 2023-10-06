@@ -12,7 +12,7 @@ import { ISchemaValidator } from '@/ports/validators/schema-validator.port'
 const uuidGenerator = mock<IUUIDGenerator>()
 const orderRepository = mock<IOrderRepository>()
 const clientRepository = mock<IClientRepository>()
-const schemaValidator = mock<ISchemaValidator<any>>()
+const schemaValidator = mock<ISchemaValidator>()
 
 describe('CreateOrderUseCase', () => {
   let sut: ICreateOrderUseCase
@@ -36,7 +36,7 @@ describe('CreateOrderUseCase', () => {
       updatedAt: null,
       deletedAt: null
     })
-    schemaValidator.validate.mockReturnValue({ success: true })
+    schemaValidator.validate.mockReturnValue({ value: input })
   })
 
   beforeAll(() => {
@@ -58,7 +58,7 @@ describe('CreateOrderUseCase', () => {
     await sut.execute(input)
 
     expect(schemaValidator.validate).toHaveBeenCalledTimes(1)
-    expect(schemaValidator.validate).toHaveBeenCalledWith({ schemaName: 'client', data: input })
+    expect(schemaValidator.validate).toHaveBeenCalledWith({ schema: 'orderSchema', data: input })
   })
 
   test('should throws if clientRepository.getById returns null', async () => {
@@ -70,8 +70,9 @@ describe('CreateOrderUseCase', () => {
   })
 
   test('should throws if totalValue is falsy', async () => {
-    schemaValidator.validate.mockReturnValueOnce({ success: false, error: 'anyError' })
     input.totalValue = null
+
+    schemaValidator.validate.mockReturnValueOnce({ value: input, error: 'anyError' })
 
     const output = sut.execute(input)
 

@@ -1,4 +1,4 @@
-import { ControllerInterface } from '@/infra/adapters/ports/controller'
+import { ControllerInterface } from '@/ports/controllers/index.port'
 import { HttpRequest, HttpResponse } from '@/shared/types/http.types'
 
 export class HealthCheckController implements ControllerInterface {

@@ -2,7 +2,7 @@ import { ControllerInterface } from '@/ports/controllers/index.port'
 import { HttpRequest, HttpResponse } from '@/shared/types/http.types'
 import { Request, Response } from 'express'
 
-export const expressRouteAdapter = (controller: ControllerInterface) => {
+export const expressAdapter = (controller: ControllerInterface) => {
   return async (req: Request, res: Response) => {
     const input: HttpRequest = {
       params: req?.params,

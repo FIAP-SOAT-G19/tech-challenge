@@ -1,9 +1,9 @@
 import { Router } from 'express'
-import { expressRouteAdapter } from './adapters/express-router.adapter'
+import { expressAdapter } from './adapters/http/express.adapter'
 import { makeHealthcheckController } from './factories/controllers/healthcheck-controller.factory'
 
 const router = Router()
 
-router.get('/healthcheck', expressRouteAdapter(makeHealthcheckController()))
+router.get('/healthcheck', expressAdapter(makeHealthcheckController()))
 
 export { router }

@@ -8,6 +8,6 @@ export default {
     CANCELED: 'canceled'
   },
   SCHEMAS: {
-    CLIENT: 'client'
+    ORDER: 'orderSchema'
   }
 }
