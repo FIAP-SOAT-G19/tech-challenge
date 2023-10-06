@@ -17,8 +17,7 @@ describe('CreateOrderUseCase', () => {
     sut = new CreateOrderUseCase(uuidGenerator, orderRepository)
     input = {
       clientId: 'anyClientId',
-      totalValue: 5000,
-      paidAt: new Date()
+      totalValue: 5000
     }
     uuidGenerator.generate.mockReturnValue('anyUUID')
     orderRepository.save.mockResolvedValue('anyOrderId')
@@ -45,15 +44,14 @@ describe('CreateOrderUseCase', () => {
     expect(orderRepository.save).toHaveBeenCalledWith({
       id: 'anyUUID',
       clientId: 'anyClientId',
+      status: 'waiting_payment',
       totalValue: 5000,
-      createdAt: new Date(),
-      paidAt: new Date()
+      createdAt: new Date()
     })
   })
 
-  test('should call OrderRepository.save once and with correct values and without clientId and paidAt', async () => {
+  test('should call OrderRepository.save once and with correct values and without clientId', async () => {
     input.clientId = null
-    input.paidAt = null
 
     await sut.execute(input)
 
@@ -61,9 +59,9 @@ describe('CreateOrderUseCase', () => {
     expect(orderRepository.save).toHaveBeenCalledWith({
       id: 'anyUUID',
       clientId: null,
+      status: 'waiting_payment',
       totalValue: 5000,
-      createdAt: new Date(),
-      paidAt: null
+      createdAt: new Date()
     })
   })
 

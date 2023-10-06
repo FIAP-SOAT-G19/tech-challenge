@@ -1,6 +1,7 @@
 import { IOrderRepository } from '@/ports/repositories/order.port'
 import { ICreateOrderUseCase } from '@/ports/usecases/order/create-order-usecase.port'
 import { IUUIDGenerator } from '@/ports/usecases/uuid/uuid-generator.port'
+import constants from '@/shared/constants'
 
 export class CreateOrderUseCase implements ICreateOrderUseCase {
   constructor(
@@ -12,8 +13,8 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
     return await this.orderRepository.save({
       id: this.uuidGenerator.generate(),
       clientId: input.clientId ?? null,
+      status: constants.ORDER_STATUS.WAITING_PAYMENT,
       totalValue: input.totalValue,
-      paidAt: input.paidAt ?? null,
       createdAt: new Date()
     })
   }

@@ -2,7 +2,7 @@
 
 > ## Caso de sucesso
 
-1. ⛔ Salva os dados do pedido
+1. ✅ Salva os dados do pedido
 2. ⛔ Retorna status 201 com id do pedido
 
 ## Sugestão
