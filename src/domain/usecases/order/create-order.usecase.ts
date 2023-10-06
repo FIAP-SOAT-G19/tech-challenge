@@ -9,14 +9,12 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
   ) {}
 
   async execute (input: ICreateOrderUseCase.Input): Promise<ICreateOrderUseCase.Output> {
-    await this.orderRepository.save({
+    return await this.orderRepository.save({
       id: this.uuidGenerator.generate(),
       clientId: input.clientId ?? null,
       totalValue: input.totalValue,
       paidAt: input.paidAt ?? null,
       createdAt: new Date()
     })
-
-    return ''
   }
 }

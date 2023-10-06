@@ -21,6 +21,7 @@ describe('CreateOrderUseCase', () => {
       paidAt: new Date()
     }
     uuidGenerator.generate.mockReturnValue('anyUUID')
+    orderRepository.save.mockResolvedValue('anyOrderId')
   })
 
   beforeAll(() => {
@@ -64,5 +65,11 @@ describe('CreateOrderUseCase', () => {
       createdAt: new Date(),
       paidAt: null
     })
+  })
+
+  test('should return a correct orderId', async () => {
+    const output = await sut.execute(input)
+
+    expect(output).toBe('anyOrderId')
   })
 })
