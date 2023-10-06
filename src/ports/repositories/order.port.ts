@@ -4,8 +4,8 @@ export interface IOrderRepository {
 
 export type SaveOrderInput = {
   id: string
-  clientId: string
+  clientId: string | null
   totalValue: number
   createdAt: Date
-  paidAt: Date
+  paidAt: Date | null
 }

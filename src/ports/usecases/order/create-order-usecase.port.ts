@@ -4,8 +4,9 @@ export interface ICreateOrderUseCase {
 
 export namespace ICreateOrderUseCase {
   export type Input = {
-    clientId?: string
+    clientId: string | null
     totalValue: number
+    paidAt: Date | null
   }
   export type Output = string
 }
