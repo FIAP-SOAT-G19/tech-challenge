@@ -41,7 +41,7 @@ model Order {
   id           String         @id
   client       Client?        @relation(fields: [clientId], references: [id])
   clientId     String?
-  status       OrderStatus    @default(waitingPayment)
+  status       OrderStatus
   totalValue   Int
   paidAt       DateTime
   OrderProduct OrderProduct[]
