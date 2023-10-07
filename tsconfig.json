@@ -4,7 +4,7 @@
     "incremental": true,
     "outDir": "dist",
     "rootDirs": [
-      "src/tests"
+      "src"
     ],
     "target": "es2021",
     "sourceMap": true,
@@ -27,6 +27,5 @@
   },
   "include": [
     "src",
-    "tests"
   ]
 }

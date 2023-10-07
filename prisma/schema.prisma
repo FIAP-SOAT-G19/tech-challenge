@@ -1,0 +1,111 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Client {
+  id        String   @id
+  name      String
+  email     String
+  cpf       String
+  password  String
+  createdAt DateTime
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime
+  Order     Order[]
+
+  @@map("clients")
+}
+
+model Employee {
+  id        String   @id
+  name      String
+  email     String
+  cpf       String
+  password  String
+  createdAt DateTime
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime
+
+  @@map("employees")
+}
+
+model Order {
+  id           String         @id
+  client       Client?        @relation(fields: [clientId], references: [id])
+  clientId     String?
+  status       OrderStatus
+  totalValue   Int
+  paidAt       DateTime
+  OrderProduct OrderProduct[]
+  Payment      Payment[]
+
+  @@map("orders")
+}
+
+enum OrderStatus {
+  waitingPayment
+  received
+  InPreparation
+  prepared
+  finalized
+  canceled
+}
+
+model Product {
+  id           String          @id
+  name         String
+  category     ProductCategory
+  price        Int
+  description  String
+  image        String
+  createdAt    DateTime
+  updatedAt    DateTime        @updatedAt
+  OrderProduct OrderProduct[]
+
+  @@map("products")
+}
+
+enum ProductCategory {
+  snack
+  accompaniment
+  drink
+  dessert
+}
+
+model OrderProduct {
+  id           String   @id
+  product      Product  @relation(fields: [productId], references: [id])
+  order        Order    @relation(fields: [orderId], references: [id])
+  productId    String
+  orderId      String
+  amount       Int
+  productPrice Int
+  createdAt    DateTime
+
+  @@map("order_products")
+}
+
+model Payment {
+  id        String        @id
+  order     Order         @relation(fields: [orderId], references: [id])
+  orderId   String
+  status    PaymentStatus @default(waiting)
+  createdAt DateTime
+  updatedAt DateTime      @updatedAt
+
+  @@map("payments")
+}
+
+enum PaymentStatus {
+  waiting
+  approved
+  refused
+}
