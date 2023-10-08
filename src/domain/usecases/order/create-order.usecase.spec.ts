@@ -1,5 +1,3 @@
-
-import { ICreateOrderUseCase } from '@/ports/usecases/order/create-order.port'
 import { CreateOrderUseCase } from './create-order.usecase'
 import { IUUIDGenerator } from '@/ports/usecases/uuid/uuid-generator.port'
 import { IOrderRepository } from '@/ports/repositories/order.port'
@@ -8,21 +6,33 @@ import MockDate from 'mockdate'
 import { mock } from 'jest-mock-extended'
 import { InvalidParamError } from '@/shared/errors'
 import { ISchemaValidator } from '@/ports/validators/schema-validator.port'
+import { IOrderProductRepository } from '@/ports/repositories/order-product.port'
+import { IPayment } from '@/ports/gateways/payment/process-payment.port'
 
 const uuidGenerator = mock<IUUIDGenerator>()
 const orderRepository = mock<IOrderRepository>()
 const clientRepository = mock<IClientRepository>()
 const schemaValidator = mock<ISchemaValidator>()
+const orderProductRepository = mock<IOrderProductRepository>()
+const paymentGateway = mock<IPayment>()
 
 describe('CreateOrderUseCase', () => {
-  let sut: ICreateOrderUseCase
+  let sut: CreateOrderUseCase
   let input: any
 
   beforeEach(() => {
-    sut = new CreateOrderUseCase(schemaValidator, uuidGenerator, clientRepository, orderRepository)
+    sut = new CreateOrderUseCase(schemaValidator, uuidGenerator, clientRepository, orderRepository, orderProductRepository, paymentGateway)
     input = {
       clientId: 'anyClientId',
-      totalValue: 5000
+      products: [{
+        id: 'anyProductId',
+        name: 'anyProductName',
+        category: 'anyCategory',
+        price: 2500,
+        description: 'AnyDescription',
+        image: 'anyimageUrl',
+        amount: 2
+      }]
     }
     uuidGenerator.generate.mockReturnValue('anyUUID')
     orderRepository.save.mockResolvedValue('anyOrderId')
@@ -37,6 +47,7 @@ describe('CreateOrderUseCase', () => {
       deletedAt: null
     })
     schemaValidator.validate.mockReturnValue({ value: input })
+    paymentGateway.process.mockResolvedValue({ status: 'received' })
   })
 
   beforeAll(() => {
@@ -79,10 +90,10 @@ describe('CreateOrderUseCase', () => {
     await expect(output).rejects.toThrowError(new InvalidParamError('anyError'))
   })
 
-  test('should call UUIDGenerator once', async () => {
+  test('should call UUIDGenerator', async () => {
     await sut.execute(input)
 
-    expect(uuidGenerator.generate).toHaveBeenCalledTimes(1)
+    expect(uuidGenerator.generate).toHaveBeenCalledTimes(2)
   })
 
   test('should call OrderRepository.save once and with correct values', async () => {
@@ -117,5 +128,61 @@ describe('CreateOrderUseCase', () => {
     const output = await sut.execute(input)
 
     expect(output).toBe('anyOrderId')
+  })
+
+  test('should call calculateTotalValue once and with correct values', async () => {
+    const spy = jest.spyOn(sut as any, 'calculateTotalValue')
+
+    await sut.execute(input)
+
+    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledWith(input.products)
+  })
+
+  test('should calculate total value correctly', async () => {
+    const total = sut.calculateTotalValue(input.products)
+
+    expect(total).toBe(5000)
+  })
+
+  test('should call OrderProductRepository.save once and with correct values', async () => {
+    await sut.execute(input)
+
+    expect(orderProductRepository.save).toHaveBeenCalledWith({
+      id: 'anyUUID',
+      productId: 'anyProductId',
+      orderId: 'anyOrderId',
+      amount: 2,
+      productPrice: 2500,
+      createdAt: new Date()
+    })
+  })
+
+  test('should call PaymentGateway once and with correct values', async () => {
+    await sut.execute(input)
+
+    expect(paymentGateway.process).toHaveBeenCalledTimes(1)
+    expect(paymentGateway.process).toHaveBeenCalledWith({
+      external_reference: 'anyOrderId',
+      title: 'Tech-Challenge Payment',
+      total_amount: 5000,
+      items: [
+        {
+          category: input.products[0].category,
+          title: input.products[0].name,
+          description: input.products[0].description,
+          unit_price: input.products[0].price,
+          amount: input.products[0].amount,
+          total_amount: 5000
+        }
+      ]
+    })
+  })
+
+  test('should call OrderRepository.updateStatus once and with correct status', async () => {
+    await sut.execute(input)
+
+    expect(orderRepository.updateStatus).toHaveBeenCalledTimes(1)
+    expect(orderRepository.updateStatus).toHaveBeenCalledWith('received')
   })
 })

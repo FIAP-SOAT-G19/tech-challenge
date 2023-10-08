@@ -9,5 +9,8 @@ export default {
   },
   SCHEMAS: {
     ORDER: 'orderSchema'
+  },
+  PAYMENT: {
+    DEFAULT_TITLE: 'Tech-Challenge Payment'
   }
 }
