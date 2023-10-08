@@ -11,6 +11,8 @@
 2. ⛔ Retorna 400 se o email do cliente não for fornecido
 3. ⛔ Retorna 400 se o cpf do cliente não for fornecido
 4. ⛔ Retorna 400 se a senha do cliente não for fornecida
+5. ⛔ Retorna 400 se o email do cliente já existir
+6. ⛔ Retorna 400 se o cpf do cliente já existir
 5. ⛔ Retorna 500 se houver alguma falha na hora de salvar os dados
 
 
