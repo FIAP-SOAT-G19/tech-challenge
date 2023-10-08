@@ -43,7 +43,7 @@ model Order {
   clientId     String?
   status       OrderStatus
   totalValue   Int
-  paidAt       DateTime
+  paidAt       DateTime?
   OrderProduct OrderProduct[]
   Payment      Payment[]
 

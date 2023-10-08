@@ -28,7 +28,7 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
 
     const processedPayment = await this.paymentGateway.process(this.makePaymentInput(orderId, input))
 
-    await this.orderRepository.updateStatus(processedPayment.status)
+    await this.orderRepository.updateStatus(processedPayment.status, orderId)
 
     return orderId
   }

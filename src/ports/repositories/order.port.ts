@@ -1,6 +1,6 @@
 export interface IOrderRepository {
   save: (input: SaveOrderInput) => Promise<string>
-  updateStatus: (status: string) => Promise<void>
+  updateStatus: (status: string, id: string) => Promise<void>
 }
 
 export type SaveOrderInput = {

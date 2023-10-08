@@ -183,6 +183,6 @@ describe('CreateOrderUseCase', () => {
     await sut.execute(input)
 
     expect(orderRepository.updateStatus).toHaveBeenCalledTimes(1)
-    expect(orderRepository.updateStatus).toHaveBeenCalledWith('received')
+    expect(orderRepository.updateStatus).toHaveBeenCalledWith('received', 'anyOrderId')
   })
 })
