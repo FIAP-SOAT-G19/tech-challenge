@@ -7,21 +7,21 @@ import { mock } from 'jest-mock-extended'
 import { InvalidParamError } from '@/shared/errors'
 import { ISchemaValidator } from '@/ports/validators/schema-validator.port'
 import { IOrderProductRepository } from '@/ports/repositories/order-product.port'
-import { IPayment } from '@/ports/gateways/payment/process-payment.port'
+import { IPayment } from '@/ports/services/payment/process-payment.port'
 
 const uuidGenerator = mock<IUUIDGenerator>()
 const orderRepository = mock<IOrderRepository>()
 const clientRepository = mock<IClientRepository>()
 const schemaValidator = mock<ISchemaValidator>()
 const orderProductRepository = mock<IOrderProductRepository>()
-const paymentGateway = mock<IPayment>()
+const paymentService = mock<IPayment>()
 
 describe('CreateOrderUseCase', () => {
   let sut: CreateOrderUseCase
   let input: any
 
   beforeEach(() => {
-    sut = new CreateOrderUseCase(schemaValidator, uuidGenerator, clientRepository, orderRepository, orderProductRepository, paymentGateway)
+    sut = new CreateOrderUseCase(schemaValidator, uuidGenerator, clientRepository, orderRepository, orderProductRepository, paymentService)
     input = {
       clientId: 'anyClientId',
       products: [{
@@ -47,7 +47,7 @@ describe('CreateOrderUseCase', () => {
       deletedAt: null
     })
     schemaValidator.validate.mockReturnValue({ value: input })
-    paymentGateway.process.mockResolvedValue({ status: 'received' })
+    paymentService.process.mockResolvedValue({ status: 'received' })
   })
 
   beforeAll(() => {
@@ -158,11 +158,11 @@ describe('CreateOrderUseCase', () => {
     })
   })
 
-  test('should call PaymentGateway once and with correct values', async () => {
+  test('should call PaymentService once and with correct values', async () => {
     await sut.execute(input)
 
-    expect(paymentGateway.process).toHaveBeenCalledTimes(1)
-    expect(paymentGateway.process).toHaveBeenCalledWith({
+    expect(paymentService.process).toHaveBeenCalledTimes(1)
+    expect(paymentService.process).toHaveBeenCalledWith({
       external_reference: 'anyOrderId',
       title: 'Tech-Challenge Payment',
       total_amount: 5000,

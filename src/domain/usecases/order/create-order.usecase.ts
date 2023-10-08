@@ -14,7 +14,7 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
     private readonly clientRepository: IClientRepository,
     private readonly orderRepository: IOrderRepository,
     private readonly orderProductRepository: IOrderProductRepository,
-    private readonly paymentGateway: IPayment
+    private readonly paymentService: IPayment
   ) {}
 
   async execute (input: ICreateOrderUseCase.Input): Promise<ICreateOrderUseCase.Output> {
@@ -26,7 +26,7 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
 
     await this.saveOrderProducts(orderId, input.products)
 
-    const processedPayment = await this.paymentGateway.process(this.makePaymentInput(orderId, input))
+    const processedPayment = await this.paymentService.process(this.makePaymentInput(orderId, input))
 
     await this.orderRepository.updateStatus(processedPayment.status, orderId)
 
