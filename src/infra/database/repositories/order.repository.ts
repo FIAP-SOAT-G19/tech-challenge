@@ -8,6 +8,7 @@ export class OrderRepository implements IOrderRepository {
       data: {
         id: input.id,
         clientId: input.clientId,
+        clientDocument: input.clientDocument,
         status: input.status as OrderStatus,
         totalValue: input.totalValue
       }
@@ -19,7 +20,8 @@ export class OrderRepository implements IOrderRepository {
   async updateStatus(status: string, id: string): Promise<void> {
     await prismaClient.order.update({
       data: {
-        status: status as OrderStatus
+        status: status as OrderStatus,
+        paidAt: new Date()
       },
       where: {
         id

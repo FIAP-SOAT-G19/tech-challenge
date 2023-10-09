@@ -6,6 +6,7 @@ export interface IOrderRepository {
 export type SaveOrderInput = {
   id: string
   clientId: string | null
+  clientDocument: string | null
   status: string
   totalValue: number
   createdAt: Date

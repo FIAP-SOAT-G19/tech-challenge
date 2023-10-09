@@ -11,41 +11,42 @@ datasource db {
 }
 
 model Client {
-  id        String   @id
+  id        String    @id
   name      String
   email     String
   cpf       String
   password  String
   createdAt DateTime
-  updatedAt DateTime @updatedAt
-  deletedAt DateTime
+  updatedAt DateTime? @updatedAt
+  deletedAt DateTime?
   Order     Order[]
 
   @@map("clients")
 }
 
 model Employee {
-  id        String   @id
+  id        String    @id
   name      String
   email     String
   cpf       String
   password  String
   createdAt DateTime
-  updatedAt DateTime @updatedAt
-  deletedAt DateTime
+  updatedAt DateTime? @updatedAt
+  deletedAt DateTime?
 
   @@map("employees")
 }
 
 model Order {
-  id           String         @id
-  client       Client?        @relation(fields: [clientId], references: [id])
-  clientId     String?
-  status       OrderStatus
-  totalValue   Int
-  paidAt       DateTime?
-  OrderProduct OrderProduct[]
-  Payment      Payment[]
+  id             String         @id
+  client         Client?        @relation(fields: [clientId], references: [id])
+  clientId       String?
+  clientDocument String?
+  status         OrderStatus
+  totalValue     Int
+  paidAt         DateTime?
+  OrderProduct   OrderProduct[]
+  Payment        Payment[]
 
   @@map("orders")
 }
@@ -66,8 +67,8 @@ model Product {
   price        Int
   description  String
   image        String
-  createdAt    DateTime
-  updatedAt    DateTime        @updatedAt
+  createdAt    DateTime?
+  updatedAt    DateTime?       @updatedAt
   OrderProduct OrderProduct[]
 
   @@map("products")
@@ -99,7 +100,7 @@ model Payment {
   orderId   String
   status    PaymentStatus @default(waiting)
   createdAt DateTime
-  updatedAt DateTime      @updatedAt
+  updatedAt DateTime?     @updatedAt
 
   @@map("payments")
 }

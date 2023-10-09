@@ -1,5 +1,5 @@
 import { IPayment } from '@/ports'
-import constants from '@/shared/constants'
+import constants from '../../../shared/constants'
 
 export class PaymentService implements IPayment {
   async process(input: IPayment.Input): Promise<IPayment.Output> {

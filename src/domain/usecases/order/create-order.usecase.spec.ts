@@ -4,7 +4,7 @@ import { IOrderRepository } from '@/ports/repositories/order.port'
 import { IClientRepository } from '@/ports/repositories/client.port'
 import MockDate from 'mockdate'
 import { mock } from 'jest-mock-extended'
-import { InvalidParamError } from '@/shared/errors'
+import { InvalidParamError, MissingParamError } from '@/shared/errors'
 import { ISchemaValidator } from '@/ports/validators/schema-validator.port'
 import { IOrderProductRepository } from '@/ports/repositories/order-product.port'
 import { IPayment } from '@/ports/services/payment/process-payment.port'
@@ -24,6 +24,7 @@ describe('CreateOrderUseCase', () => {
     sut = new CreateOrderUseCase(schemaValidator, uuidGenerator, clientRepository, orderRepository, orderProductRepository, paymentService)
     input = {
       clientId: 'anyClientId',
+      clientDocument: null,
       products: [{
         id: 'anyProductId',
         name: 'anyProductName',
@@ -37,17 +38,19 @@ describe('CreateOrderUseCase', () => {
     uuidGenerator.generate.mockReturnValue('anyUUID')
     orderRepository.save.mockResolvedValue('anyOrderId')
     clientRepository.getById.mockResolvedValue({
-      id: '',
-      name: '',
-      email: '',
-      password: '',
-      cpf: '',
+      id: 'anyClientId',
+      name: 'anyClientName',
+      email: 'anyClientEmail',
+      password: 'anyClientPassword',
+      cpf: 'anyClientCpf',
       createdAt: new Date('2023-01-01 13:45:18'),
       updatedAt: null,
       deletedAt: null
     })
     schemaValidator.validate.mockReturnValue({ value: input })
     paymentService.process.mockResolvedValue({ status: 'received' })
+
+    jest.clearAllMocks()
   })
 
   beforeAll(() => {
@@ -80,14 +83,13 @@ describe('CreateOrderUseCase', () => {
     await expect(output).rejects.toThrowError(new InvalidParamError('clientId'))
   })
 
-  test('should throws if totalValue is falsy', async () => {
-    input.totalValue = null
-
-    schemaValidator.validate.mockReturnValueOnce({ value: input, error: 'anyError' })
+  test('should throws error if clientId and clientDocument are null', async () => {
+    input.clientDocument = null
+    input.clientId = null
 
     const output = sut.execute(input)
 
-    await expect(output).rejects.toThrowError(new InvalidParamError('anyError'))
+    await expect(output).rejects.toThrowError(new MissingParamError('clientId or clientDocument'))
   })
 
   test('should call UUIDGenerator', async () => {
@@ -103,7 +105,8 @@ describe('CreateOrderUseCase', () => {
     expect(orderRepository.save).toHaveBeenCalledWith({
       id: 'anyUUID',
       clientId: 'anyClientId',
-      status: 'waiting_payment',
+      clientDocument: null,
+      status: 'waitingPayment',
       totalValue: 5000,
       createdAt: new Date()
     })
@@ -111,6 +114,7 @@ describe('CreateOrderUseCase', () => {
 
   test('should call OrderRepository.save once and with correct values and without clientId', async () => {
     input.clientId = null
+    input.clientDocument = 'anyClientDocument'
 
     await sut.execute(input)
 
@@ -118,7 +122,8 @@ describe('CreateOrderUseCase', () => {
     expect(orderRepository.save).toHaveBeenCalledWith({
       id: 'anyUUID',
       clientId: null,
-      status: 'waiting_payment',
+      clientDocument: 'anyClientDocument',
+      status: 'waitingPayment',
       totalValue: 5000,
       createdAt: new Date()
     })
