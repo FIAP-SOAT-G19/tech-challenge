@@ -2,8 +2,8 @@ import {
   IClientRepository, ICreateOrderUseCase, IOrderProductRepository, IOrderRepository,
   IPayment, ISchemaValidator, IUUIDGenerator, PaymentItems
 } from '@/ports/'
-import { InvalidParamError } from '@/shared/errors'
-import constants from '@/shared/constants'
+import { InvalidParamError, MissingParamError } from '../../../shared/errors'
+import constants from '../../../shared/constants'
 import { Product } from '@/domain/types/products.types'
 export class CreateOrderUseCase implements ICreateOrderUseCase {
   private orderTotalValue: number = 0
@@ -14,7 +14,7 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
     private readonly clientRepository: IClientRepository,
     private readonly orderRepository: IOrderRepository,
     private readonly orderProductRepository: IOrderProductRepository,
-    private readonly paymentGateway: IPayment
+    private readonly paymentService: IPayment
   ) {}
 
   async execute (input: ICreateOrderUseCase.Input): Promise<ICreateOrderUseCase.Output> {
@@ -26,14 +26,18 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
 
     await this.saveOrderProducts(orderId, input.products)
 
-    const processedPayment = await this.paymentGateway.process(this.makePaymentInput(orderId, input))
+    const processedPayment = await this.paymentService.process(this.makePaymentInput(orderId, input))
 
-    await this.orderRepository.updateStatus(processedPayment.status)
+    await this.orderRepository.updateStatus(processedPayment.status, orderId)
 
     return orderId
   }
 
   private async validate (input: ICreateOrderUseCase.Input): Promise<void> {
+    if (!input.clientId && !input.clientDocument) {
+      throw new MissingParamError('clientId or clientDocument')
+    }
+
     if (input.clientId) {
       const client = await this.clientRepository.getById(input.clientId)
       if (!client) {
@@ -59,6 +63,7 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
     return await this.orderRepository.save({
       id: this.uuidGenerator.generate(),
       clientId: input.clientId ?? null,
+      clientDocument: input.clientDocument ?? null,
       status: constants.ORDER_STATUS.WAITING_PAYMENT,
       totalValue: this.orderTotalValue,
       createdAt: new Date()
