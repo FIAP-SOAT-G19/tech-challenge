@@ -1,4 +1,4 @@
-import { IOrderRepository, SaveOrderInput } from '@/ports'
+import { IOrderRepository, SaveOrderInput, UpdateOrderStatusInput } from '@/ports'
 import { prismaClient } from '../prisma-client'
 import { OrderStatus } from '@prisma/client'
 
@@ -7,6 +7,7 @@ export class OrderRepository implements IOrderRepository {
     const order = await prismaClient.order.create({
       data: {
         id: input.id,
+        orderNumber: input.orderNumber,
         clientId: input.clientId,
         clientDocument: input.clientDocument,
         status: input.status as OrderStatus,
@@ -17,14 +18,14 @@ export class OrderRepository implements IOrderRepository {
     return order.id
   }
 
-  async updateStatus(status: string, id: string): Promise<void> {
+  async updateStatus(input: UpdateOrderStatusInput): Promise<void> {
     await prismaClient.order.update({
       data: {
         status: status as OrderStatus,
-        paidAt: new Date()
+        paidAt: input.paidAt
       },
       where: {
-        id
+        id: input.id
       }
     })
   }

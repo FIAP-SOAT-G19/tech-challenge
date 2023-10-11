@@ -39,6 +39,7 @@ model Employee {
 
 model Order {
   id             String         @id
+  orderNumber    String         @default("")
   client         Client?        @relation(fields: [clientId], references: [id])
   clientId       String?
   clientDocument String?

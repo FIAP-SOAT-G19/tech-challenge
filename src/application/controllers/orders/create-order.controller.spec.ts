@@ -2,7 +2,7 @@ import { HttpRequest } from '@/shared/types/http.types'
 import { CreateOrderController } from './create-order.controller'
 import { mock } from 'jest-mock-extended'
 import { ICreateOrderUseCase } from '@/ports'
-import { serverError } from '@/shared/helpers/http.helper'
+import { serverError, success } from '@/shared/helpers/http.helper'
 
 const createOrderUseCase = mock<ICreateOrderUseCase>()
 
@@ -34,7 +34,7 @@ describe('CreateOrderController', () => {
         }]
       }
     }
-    createOrderUseCase.execute.mockResolvedValue('anyOrderId')
+    createOrderUseCase.execute.mockResolvedValue({ orderNumber: 'anyOrderNumber' })
   })
 
   test('should call CreateOrderUseCase once and with correct values', async () => {
@@ -47,7 +47,7 @@ describe('CreateOrderController', () => {
   test('should return a orderId on success', async () => {
     const output = await sut.execute(input)
 
-    expect(output).toEqual({ statusCode: 201, body: { orderId: 'anyOrderId' } })
+    expect(output).toEqual(success(201, { orderNumber: 'anyOrderNumber' }))
   })
 
   test('should return an error if CreateOrderUseCase throws', async () => {

@@ -6,6 +6,8 @@ import { makeCreateOrderController } from './factories/controllers/create-order-
 const router = Router()
 
 router.get('/healthcheck', expressAdapter(makeHealthcheckController()))
+
+// Orders
 router.post('/orders', expressAdapter(makeCreateOrderController()))
 
 export { router }

@@ -10,5 +10,7 @@ export namespace ICreateOrderUseCase {
     clientDocument: string | null
     products: Product []
   }
-  export type Output = string
+  export type Output = {
+    orderNumber: string
+  }
 }

@@ -1,5 +1,4 @@
 export * from './controllers/index.port'
-export * from './services/payment/process-payment.port'
 export * from './repositories/client.port'
 export * from './repositories/order-product.port'
 export * from './repositories/order.port'
