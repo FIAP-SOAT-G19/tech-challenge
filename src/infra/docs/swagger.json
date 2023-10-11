@@ -13,6 +13,9 @@
   "tags": [
     {
       "name": "Healthcheck"
+    },
+    {
+      "name": "Orders"
     }
   ],
   "paths": {
@@ -34,6 +37,97 @@
                     "status": {
                       "type": "string",
                       "example": "OK"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders": {
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "description": "Rota de manutenção de pedidos",
+        "summary": "Cadastra um pedido",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "clientId": {
+                    "type": "string",
+                    "example": "3654df37-85a6-4b52-bce8-346b6edb6587",
+                    "description": "Este é o identificador do cliente (OPCIONAL SE FOR FORNECIDO O CPF DO CLIENTE QUE NÃO SE IDENTIFICOU)"
+                  },
+                  "clientDocument": {
+                    "type": "string",
+                    "example": "12365478996",
+                    "description": "Este é o CPF do cliente (OPCIONAL SE FOR FORNECIDO O IDENTIFICADOR DO CLIENTE QUE SE IDENTIFICOU)"
+                  },
+                  "products": {
+                    "type": "array",
+                    "items": {
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "example": "beaa6021-2303-4ea8-9368-ec25c5485ca0",
+                              "description": "Este é o identificador do produto"
+                            },
+                            "price": {
+                              "type": "number",
+                              "example": "5000",
+                              "description": "Indica o valor do produto muttiplicado por 100. No exemplo acima o valor do produto é R$50,00"
+                            },
+                            "amount": {
+                              "type": "number",
+                              "example": "2",
+                              "description": "Indica a quantidade de produtos selecionados para o pedido"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "orderNumber": {
+                      "type": "string",
+                      "example": "68GIKX-1697060786831"
                     }
                   }
                 }

@@ -2,7 +2,7 @@ import { IClientRepository, ICreateOrderUseCase, IOrderProductRepository, IOrder
 import { InvalidParamError, MissingParamError, SchemaValidationError } from '../../../shared/errors'
 import constants from '../../../shared/constants'
 import { Product } from '@/domain/types/products.types'
-import { ramdonStringGenerator } from '@/shared/helpers/string.helper'
+import { ramdonStringGenerator } from '../../../shared/helpers/string.helper'
 export class CreateOrderUseCase implements ICreateOrderUseCase {
   constructor(
     private readonly schemaValidator: ISchemaValidator,
