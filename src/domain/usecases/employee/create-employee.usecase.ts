@@ -1,15 +1,16 @@
 import { EmployeeRepository } from '@/infra/database/repositories/employee.repository'
 import { ICreateEmployee } from '@/ports/usecases/employee/create-employee.port'
-import { v4 as uuidv4 } from 'uuid'
+import { IUUIDGenerator } from '@/ports/usecases/uuid/uuid-generator.port'
 
 export class CreateEmployeeUseCase implements ICreateEmployee {
   constructor(
-    private readonly employeeRepository: EmployeeRepository
+    private readonly employeeRepository: EmployeeRepository,
+    private readonly uuidGenerator: IUUIDGenerator
   ) {}
 
   async execute (input: ICreateEmployee.Input): Promise<ICreateEmployee.Output> {
     return await this.employeeRepository.create({
-      id: uuidv4(),
+      id: this.uuidGenerator.generate(),
       name: input.name,
       email: input.email,
       cpf: input.cpf,

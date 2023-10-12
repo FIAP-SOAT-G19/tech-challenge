@@ -3,43 +3,31 @@ import { CreateEmployeeController } from '../../../../application/controllers/em
 import { UpdateEmployeeController } from '../../../../application/controllers/employee/update-employee.controller'
 import { ReadAllEmployeesController } from '../../../../application/controllers/employee/read-all-employees.controller'
 import { DeleteEmployeeController } from '../../../../application/controllers/employee/delete-employee.controller'
-import { CreateEmployeeUseCase } from '../../../../domain/usecases/employee/create-employee.usecase'
-import { UpdateEmployeeUseCase } from '../../../../domain/usecases/employee/update-employee.usecase'
-import { DeleteEmployeeUseCase } from '../../../../domain/usecases/employee/delete-employee.usecase'
-import { ReadEmployeeUseCase } from '../../../../domain/usecases/employee/read-employee.usecase'
-import { EmployeeRepository } from '../../../database/repositories/employee.repository'
+
+import {
+  makeCreateEmployeeUseCase,
+  makeDeleteEmployeeUseCase,
+  makeReadAllEmployeeUseCase,
+  makeReadEmployeeUseCase,
+  makeUpdateEmployeeUseCase
+} from '../../usecases/employee/employee-usecase.factory'
 
 export const makeCreateEmployeeController = (): CreateEmployeeController => {
-  const employeeRepository = new EmployeeRepository()
-  const createEmployeeUseCase = new CreateEmployeeUseCase(employeeRepository)
-
-  return new CreateEmployeeController(createEmployeeUseCase)
+  return new CreateEmployeeController(makeCreateEmployeeUseCase())
 }
 
 export const makeReadEmployeeController = (): ReadEmployeeController => {
-  const employeeRepository = new EmployeeRepository()
-  const readEmployeeUseCase = new ReadEmployeeUseCase(employeeRepository)
-
-  return new ReadEmployeeController(readEmployeeUseCase)
+  return new ReadEmployeeController(makeReadEmployeeUseCase())
 }
 
 export const makeReadAllEmployeesController = (): ReadAllEmployeesController => {
-  const employeeRepository = new EmployeeRepository()
-  const readEmployeeUseCase = new ReadEmployeeUseCase(employeeRepository)
-
-  return new ReadAllEmployeesController(readEmployeeUseCase)
+  return new ReadAllEmployeesController(makeReadAllEmployeeUseCase())
 }
 
 export const makeUpdateEmployeeController = (): UpdateEmployeeController => {
-  const employeeRepository = new EmployeeRepository()
-  const updateEmployeeUseCase = new UpdateEmployeeUseCase(employeeRepository)
-
-  return new UpdateEmployeeController(updateEmployeeUseCase)
+  return new UpdateEmployeeController(makeUpdateEmployeeUseCase())
 }
 
 export const makeDeleteEmployeeController = (): DeleteEmployeeController => {
-  const employeeRepository = new EmployeeRepository()
-  const deleteEmployeeUseCase = new DeleteEmployeeUseCase(employeeRepository)
-
-  return new DeleteEmployeeController(deleteEmployeeUseCase)
+  return new DeleteEmployeeController(makeDeleteEmployeeUseCase())
 }
