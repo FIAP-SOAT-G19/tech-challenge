@@ -1,5 +1,5 @@
 export interface ICreateClientUseCase {
-  execute: (input: ICreateClientUseCase.Input) => Promise<void>
+  execute: (input: ICreateClientUseCase.Input) => Promise<ICreateClientUseCase.Output>
 }
 
 export namespace ICreateClientUseCase {
@@ -8,6 +8,7 @@ export namespace ICreateClientUseCase {
     email: string
     cpf: string
     password: string
+    repeatPassword: string
   }
   export type Output = string
 }
