@@ -25,7 +25,7 @@ export class OrderRepository implements IOrderRepository {
         paidAt: input.paidAt
       },
       where: {
-        id: input.id
+        orderNumber: input.orderNumber
       }
     })
   }
