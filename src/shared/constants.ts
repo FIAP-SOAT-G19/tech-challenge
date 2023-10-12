@@ -12,5 +12,9 @@ export default {
   },
   PAYMENT: {
     DEFAULT_TITLE: 'Tech-Challenge Payment'
+  },
+  PAID_MARKET: {
+    STATUS_APPROVED: 'approved',
+    STATUS_REFUSED: 'refused'
   }
 }

@@ -14,7 +14,7 @@ export type SaveOrderInput = {
 }
 
 export type UpdateOrderStatusInput = {
-  id: string
+  orderNumber: string
   status: string
   paidAt: Date | null
 }
