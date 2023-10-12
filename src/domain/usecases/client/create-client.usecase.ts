@@ -1,5 +1,6 @@
 import { IClientRepository } from '@/ports/repositories/client.port'
 import { ICreateClientUseCase } from '@/ports/usecases/client/create-client.port'
+import { IEncrypt } from '@/ports/usecases/encrypt/encrypt.port'
 import { IUUIDGenerator } from '@/ports/usecases/uuid/uuid-generator.port'
 import { ISchemaValidator } from '@/ports/validators/schema-validator.port'
 import constants from '@/shared/constants'
@@ -9,11 +10,13 @@ export class CreateClientUseCase implements ICreateClientUseCase {
   constructor(
     private readonly schemaValidator: ISchemaValidator,
     private readonly uuidGenerator: IUUIDGenerator,
-    private readonly clientRepository: IClientRepository
+    private readonly clientRepository: IClientRepository,
+    private readonly encrypt: IEncrypt
   ) { }
 
   async execute(input: ICreateClientUseCase.Input): Promise<ICreateClientUseCase.Output> {
     await this.validate(input)
+    this.encrypt.encrypt(input.password)
     return ''
   }
 

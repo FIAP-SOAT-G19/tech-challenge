@@ -5,10 +5,12 @@ import { mock } from 'jest-mock-extended'
 import { IUUIDGenerator } from '@/ports/usecases/uuid/uuid-generator.port'
 import { Client, IClientRepository } from '@/ports/repositories/client.port'
 import { InvalidParamError } from '@/shared/errors'
+import { IEncrypt } from '@/ports/usecases/encrypt/encrypt.port'
 
 const schemaValidator = mock<ISchemaValidator>()
 const uuidGenerator = mock<IUUIDGenerator>()
 const clientRepository = mock<IClientRepository>()
+const encrypt = mock<IEncrypt>()
 
 describe('CreateClientUseCase', () => {
   let sut: ICreateClientUseCase
@@ -16,7 +18,7 @@ describe('CreateClientUseCase', () => {
   let clientRepositoryOutput: Client
 
   beforeEach(() => {
-    sut = new CreateClientUseCase(schemaValidator, uuidGenerator, clientRepository)
+    sut = new CreateClientUseCase(schemaValidator, uuidGenerator, clientRepository, encrypt)
     input = {
       name: 'anyClientName',
       email: 'anyClientEmail',
@@ -98,5 +100,11 @@ describe('CreateClientUseCase', () => {
     clientRepository.getByDocument.mockResolvedValueOnce(clientRepositoryOutput)
     const output = sut.execute(input)
     await expect(output).rejects.toThrow(new InvalidParamError('document'))
+  })
+
+  test('should call encrypt onde with correct values', async () => {
+    await sut.execute(input)
+    expect(encrypt.encrypt).toHaveBeenCalledWith(input.password)
+    expect(encrypt.encrypt).toHaveBeenCalledTimes(1)
   })
 })
