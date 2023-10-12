@@ -6,6 +6,7 @@ import { IUUIDGenerator } from '@/ports/usecases/uuid/uuid-generator.port'
 import { Client, IClientRepository } from '@/ports/repositories/client.port'
 import { InvalidParamError } from '@/shared/errors'
 import { IEncrypt } from '@/ports/usecases/encrypt/encrypt.port'
+import MockDate from 'mockdate'
 
 const schemaValidator = mock<ISchemaValidator>()
 const uuidGenerator = mock<IUUIDGenerator>()
@@ -40,7 +41,11 @@ describe('CreateClientUseCase', () => {
   })
 
   beforeAll(() => {
+    MockDate.set(new Date())
+  })
 
+  afterAll(() => {
+    MockDate.reset()
   })
 
   test('should call schemaValidator once with correct values', async () => {
@@ -112,5 +117,18 @@ describe('CreateClientUseCase', () => {
     await sut.execute(input)
     expect(uuidGenerator.generate).toHaveBeenCalledWith()
     expect(uuidGenerator.generate).toHaveBeenCalledTimes(1)
+  })
+
+  test('should call clientRepository.save with correct values', async () => {
+    uuidGenerator.generate.mockReturnValueOnce('anyUuid')
+    encrypt.encrypt.mockReturnValueOnce('anyEncrypt')
+    await sut.execute(input)
+    expect(clientRepository.save).toHaveBeenCalledWith({
+      ...input,
+      id: 'anyUuid',
+      password: 'anyEncrypt',
+      createdAt: new Date()
+    })
+    expect(clientRepository.save).toHaveBeenCalledTimes(1)
   })
 })

@@ -2,9 +2,9 @@
 
 > ## Caso de sucesso
 
-1. ⛔ Criptografa a senha do cliente
-2. ⛔ Salva os dados do cliente
-3. ⛔ Retorna status 201 com id do cliente
+1. ✅ Criptografa a senha do cliente
+2. ✅ Salva os dados do cliente
+3. ✅ Retorna status 201 com id do cliente
 
 > ## Exceções
 1. ✅ Retorna 400 se o nome do cliente não for fornecido
