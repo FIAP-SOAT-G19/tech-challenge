@@ -1,5 +1,9 @@
 export interface IEmployeeRepository {
   create: (input: SaveEmployeeInput) => Promise<string>
+  findAll: () => Promise<FindEmployeeOutput[]>
+  findById: (id: string) => Promise<FindEmployeeOutput | null>
+  update: (input: SaveEmployeeInput) => Promise<string>
+  delete: (id: string) => Promise<string>
 }
 
 export type SaveEmployeeInput = {
@@ -12,3 +16,5 @@ export type SaveEmployeeInput = {
   updatedAt: Date
   deletedAt: Date
 }
+
+export type FindEmployeeOutput = SaveEmployeeInput

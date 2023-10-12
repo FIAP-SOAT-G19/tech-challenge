@@ -15,7 +15,6 @@ export class CreateEmployeeController {
       })
       return { statusCode: 201, body: idEmployee }
     } catch (error) {
-      console.log(error)
       return { statusCode: 500, body: { error: 'Unexpected error' } }
     }
   }
