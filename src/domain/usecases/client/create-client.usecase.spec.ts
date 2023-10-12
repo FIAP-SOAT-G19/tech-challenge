@@ -3,7 +3,7 @@ import { CreateClientUseCase } from '@/domain/usecases/client/create-client.usec
 import { ISchemaValidator } from '@/ports/validators/schema-validator.port'
 import { mock } from 'jest-mock-extended'
 import { IUUIDGenerator } from '@/ports/usecases/uuid/uuid-generator.port'
-import { IClientRepository } from '@/ports/repositories/client.port'
+import { Client, IClientRepository } from '@/ports/repositories/client.port'
 import { InvalidParamError } from '@/shared/errors'
 
 const schemaValidator = mock<ISchemaValidator>()
@@ -13,6 +13,7 @@ const clientRepository = mock<IClientRepository>()
 describe('CreateClientUseCase', () => {
   let sut: ICreateClientUseCase
   let input: ICreateClientUseCase.Input
+  let clientRepositoryOutput: Client
 
   beforeEach(() => {
     sut = new CreateClientUseCase(schemaValidator, uuidGenerator, clientRepository)
@@ -22,6 +23,17 @@ describe('CreateClientUseCase', () => {
       cpf: 'anyClientCpf',
       password: 'anyClientPassword',
       repeatPassword: 'anyClientRepeatPassword'
+    }
+
+    clientRepositoryOutput = {
+      id: 'anyClientId',
+      name: 'anyClientName',
+      email: 'anyClientEmail',
+      password: 'anyClientPassword',
+      cpf: 'anyClientCpf',
+      createdAt: new Date(),
+      updatedAt: null,
+      deletedAt: null
     }
   })
 
@@ -74,5 +86,17 @@ describe('CreateClientUseCase', () => {
     schemaValidator.validate.mockReturnValueOnce({ value: input, error: 'anyError' })
     const output = sut.execute(input)
     await expect(output).rejects.toThrow(new InvalidParamError('anyError'))
+  })
+
+  test('should throws if email already exists', async () => {
+    clientRepository.getByEmail.mockResolvedValueOnce(clientRepositoryOutput)
+    const output = sut.execute(input)
+    await expect(output).rejects.toThrow(new InvalidParamError('email'))
+  })
+
+  test('should throws if document already exists', async () => {
+    clientRepository.getByDocument.mockResolvedValueOnce(clientRepositoryOutput)
+    const output = sut.execute(input)
+    await expect(output).rejects.toThrow(new InvalidParamError('document'))
   })
 })

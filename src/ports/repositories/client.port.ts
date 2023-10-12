@@ -11,4 +11,6 @@ export type Client = {
 
 export interface IClientRepository {
   getById: (clientId: string) => Promise<Client | null>
+  getByEmail: (email: string) => Promise<Client | null>
+  getByDocument: (document: string) => Promise<Client | null>
 }

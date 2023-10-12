@@ -18,11 +18,13 @@ export class CreateClientUseCase implements ICreateClientUseCase {
   }
 
   private async validate(input: ICreateClientUseCase.Input): Promise<void> {
-    const validation = this.schemaValidator.validate({
-      schema: constants.SCHEMAS.CLIENT,
-      data: input
-    })
+    const clientEmail = await this.clientRepository.getByEmail(input.email)
+    if (clientEmail) throw new InvalidParamError('email')
 
+    const clientDocument = await this.clientRepository.getByDocument(input.cpf)
+    if (clientDocument) throw new InvalidParamError('document')
+
+    const validation = this.schemaValidator.validate({ schema: constants.SCHEMAS.CLIENT, data: input })
     if (validation?.error) {
       throw new InvalidParamError(validation.error)
     }
