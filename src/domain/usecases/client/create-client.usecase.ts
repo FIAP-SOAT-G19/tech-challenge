@@ -17,6 +17,7 @@ export class CreateClientUseCase implements ICreateClientUseCase {
   async execute(input: ICreateClientUseCase.Input): Promise<ICreateClientUseCase.Output> {
     await this.validate(input)
     this.encrypt.encrypt(input.password)
+    this.uuidGenerator.generate()
     return ''
   }
 

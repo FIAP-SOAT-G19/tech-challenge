@@ -102,9 +102,15 @@ describe('CreateClientUseCase', () => {
     await expect(output).rejects.toThrow(new InvalidParamError('document'))
   })
 
-  test('should call encrypt onde with correct values', async () => {
+  test('should call encrypt once with correct values', async () => {
     await sut.execute(input)
     expect(encrypt.encrypt).toHaveBeenCalledWith(input.password)
     expect(encrypt.encrypt).toHaveBeenCalledTimes(1)
+  })
+
+  test('should call uuidGenerator once with correct values', async () => {
+    await sut.execute(input)
+    expect(uuidGenerator.generate).toHaveBeenCalledWith()
+    expect(uuidGenerator.generate).toHaveBeenCalledTimes(1)
   })
 })
