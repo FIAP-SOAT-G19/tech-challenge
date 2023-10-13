@@ -16,6 +16,9 @@
     },
     {
       "name": "Orders"
+    },
+    {
+      "name": "Webhooks"
     }
   ],
   "paths": {
@@ -130,6 +133,65 @@
                       "example": "68GIKX-1697060786831"
                     }
                   }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/webhooks/paid_market/qrcodepayment": {
+      "post": {
+        "tags": [
+          "Webhooks"
+        ],
+        "description": "Rota de processamento de webhooks do mercado pago",
+        "summary": "Atualiza status de um pedido",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "orderNumber": {
+                    "type": "string",
+                    "example": "68GIKX-1697060786831",
+                    "description": "Este é o identificador do pedido"
+                  },
+                  "status": {
+                    "type": "string",
+                    "example": "approved",
+                    "description": "Este é o status do processamento da cobrança"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
                 }
               }
             }

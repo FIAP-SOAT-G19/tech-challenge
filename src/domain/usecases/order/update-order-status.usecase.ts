@@ -7,6 +7,7 @@ export class UpdateOrderStatusUseCase implements IUpdateOrderStatus {
   constructor(private readonly orderRepository: IOrderRepository) {}
   async execute (input: IUpdateOrderStatus.Input): Promise<void> {
     this.validate(input)
+
     await this.orderRepository.updateStatus({
       orderNumber: input.orderNumber,
       status: input.status,
