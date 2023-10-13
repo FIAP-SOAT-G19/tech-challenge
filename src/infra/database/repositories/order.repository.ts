@@ -21,7 +21,7 @@ export class OrderRepository implements IOrderRepository {
   async updateStatus(input: UpdateOrderStatusInput): Promise<void> {
     await prismaClient.order.update({
       data: {
-        status: status as OrderStatus,
+        status: input.status as OrderStatus,
         paidAt: input.paidAt
       },
       where: {

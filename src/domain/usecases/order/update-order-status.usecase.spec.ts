@@ -1,20 +1,20 @@
-import { MissingParamError } from '@/shared/errors'
-import { HandleProcessedPayment } from './handle-processed-payment'
+import { InvalidParamError, MissingParamError } from '@/shared/errors'
+import { UpdateOrderStatusUseCase } from './update-order-status.usecase'
 import { IOrderRepository } from '@/ports'
 import { mock } from 'jest-mock-extended'
 import MockDate from 'mockdate'
 
 const orderRepository = mock<IOrderRepository>()
 
-describe('HandleProcessedPayment', () => {
-  let sut: HandleProcessedPayment
+describe('UpdateOrderStatusUseCase', () => {
+  let sut: UpdateOrderStatusUseCase
   let input: any
 
   beforeEach(() => {
-    sut = new HandleProcessedPayment(orderRepository)
+    sut = new UpdateOrderStatusUseCase(orderRepository)
     input = {
       orderNumber: 'anyOrderNumber',
-      paymentStatus: 'anyStatus'
+      status: 'received'
     }
   })
 
@@ -26,7 +26,7 @@ describe('HandleProcessedPayment', () => {
     MockDate.reset()
   })
 
-  test('should throws if orderNumber is not provided', async () => {
+  test('should throws if orderNumber is not provided', async() => {
     input.orderNumber = undefined
 
     const output = sut.execute(input)
@@ -34,17 +34,23 @@ describe('HandleProcessedPayment', () => {
     await expect(output).rejects.toThrowError(new MissingParamError('orderNumber'))
   })
 
-  test('should throws if paymentStatus is not provided', async () => {
-    input.paymentStatus = undefined
+  test('should throws if status is not provided', async() => {
+    input.status = undefined
 
     const output = sut.execute(input)
 
-    await expect(output).rejects.toThrowError(new MissingParamError('paymentStatus'))
+    await expect(output).rejects.toThrowError(new MissingParamError('status'))
+  })
+
+  test('should throws if status is invalid', async() => {
+    input.status = 'invalid-status'
+
+    const output = sut.execute(input)
+
+    await expect(output).rejects.toThrowError(new InvalidParamError('status'))
   })
 
   test('should call OrderRepository.updateStatus once and with correct values', async () => {
-    input.paymentStatus = 'approved'
-
     await sut.execute(input)
 
     expect(orderRepository.updateStatus).toHaveBeenCalledTimes(1)
@@ -55,16 +61,15 @@ describe('HandleProcessedPayment', () => {
     })
   })
 
-  test('should call OrderRepository.updateStatus once and with correct values', async () => {
-    input.paymentStatus = 'refused'
-
+  test('should call OrderRepository.updateStatus once and with correct values without paidAt', async () => {
+    input.status = 'canceled'
     await sut.execute(input)
 
     expect(orderRepository.updateStatus).toHaveBeenCalledTimes(1)
     expect(orderRepository.updateStatus).toHaveBeenCalledWith({
       orderNumber: 'anyOrderNumber',
       status: 'canceled',
-      paidAt: new Date()
+      paidAt: null
     })
   })
 })
