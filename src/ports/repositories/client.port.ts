@@ -1,6 +1,15 @@
-import { Client } from '@/domain/types/clients.types'
+export type Client = {
+  id: string
+  name: string
+  email: string
+  password: string
+  cpf: string
+  createdAt: Date
+  updatedAt: Date
+  deletedAt: Date
+}
 
 export interface IClientRepository {
-  getByCpf: (cpf: string) => Promise<Client | null>
   getById: (clientId: string) => Promise<Client | null>
+  getByCpf: (cpf: string) => Promise<Client | null>
 }

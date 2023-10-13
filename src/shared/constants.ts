@@ -8,7 +8,8 @@ export default {
     CANCELED: 'canceled'
   },
   SCHEMAS: {
-    ORDER: 'orderSchema'
+    ORDER: 'orderSchema',
+    CLIENT: 'clientSchema'
   },
   PAYMENT: {
     DEFAULT_TITLE: 'Tech-Challenge Payment'

@@ -4,6 +4,7 @@ import * as schemas from './schemas'
 export class JoiValidatorSchemaAdapter implements ISchemaValidator {
   validate (input: ISchemaValidator.Input): ISchemaValidator.Output {
     const schema = (schemas as Record<string, any>)[input.schema]
+    console.log(schemas)
     return schema.validate(input.data)
   }
 }
