@@ -1,8 +1,8 @@
-export interface IUpdateOrderStatus {
-  execute: (input: IUpdateOrderStatus.Input) => Promise<void>
+export interface IUpdateOrderStatusUseCase {
+  execute: (input: IUpdateOrderStatusUseCase.Input) => Promise<void>
 }
 
-export namespace IUpdateOrderStatus {
+export namespace IUpdateOrderStatusUseCase {
   export type Input = {
     orderNumber: string
     status: string

@@ -2,9 +2,9 @@ import { HttpRequest } from '@/shared/types/http.types'
 import { QrCodePaymentController } from './qr-code-payment.controller'
 import { mock } from 'jest-mock-extended'
 import { serverError, success } from '@/shared/helpers/http.helper'
-import { IUpdateOrderStatus } from '@/ports/usecases/order/update-oder-status.port'
+import { IUpdateOrderStatusUseCase } from '@/ports/usecases/order/update-oder-status.port'
 
-const updateOrderStatusUseCase = mock<IUpdateOrderStatus>()
+const updateOrderStatusUseCase = mock<IUpdateOrderStatusUseCase>()
 
 describe('QrCodePaymentController', () => {
   let sut: QrCodePaymentController

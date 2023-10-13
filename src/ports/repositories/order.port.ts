@@ -1,6 +1,9 @@
+import { OrderOutput } from '@/domain/types/orders.types'
+
 export interface IOrderRepository {
   save: (input: SaveOrderInput) => Promise<string>
   updateStatus: (input: UpdateOrderStatusInput) => Promise<void>
+  getByOrderNumber: (orderNumber: string) => Promise<OrderOutput>
 }
 
 export type SaveOrderInput = {

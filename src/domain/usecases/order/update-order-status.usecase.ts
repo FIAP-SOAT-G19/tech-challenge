@@ -1,11 +1,11 @@
-import { IUpdateOrderStatus } from '@/ports/usecases/order/update-oder-status.port'
+import { IUpdateOrderStatusUseCase } from '@/ports/usecases/order/update-oder-status.port'
 import constants from '../../../shared/constants'
 import { InvalidParamError, MissingParamError } from '../../../shared/errors'
 import { IOrderRepository } from '@/ports'
 
-export class UpdateOrderStatusUseCase implements IUpdateOrderStatus {
+export class UpdateOrderStatusUseCase implements IUpdateOrderStatusUseCase {
   constructor(private readonly orderRepository: IOrderRepository) {}
-  async execute (input: IUpdateOrderStatus.Input): Promise<void> {
+  async execute (input: IUpdateOrderStatusUseCase.Input): Promise<void> {
     this.validate(input)
 
     await this.orderRepository.updateStatus({
@@ -15,7 +15,7 @@ export class UpdateOrderStatusUseCase implements IUpdateOrderStatus {
     })
   }
 
-  private validate (input: IUpdateOrderStatus.Input): void {
+  private validate (input: IUpdateOrderStatusUseCase.Input): void {
     if (!input.orderNumber) {
       throw new MissingParamError('orderNumber')
     }
