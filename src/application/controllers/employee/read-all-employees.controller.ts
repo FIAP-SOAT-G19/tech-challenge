@@ -9,7 +9,7 @@ export class ReadAllEmployeesController implements IController {
   async execute (): Promise<HttpResponse> {
     try {
       const employees = await this.readEmployeeUseCase.findAll()
-      return success(201, { employees })
+      return success(200, { employees })
     } catch (error: any) {
       return serverError(error)
     }

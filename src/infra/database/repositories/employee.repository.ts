@@ -12,7 +12,11 @@ export class EmployeeRepository implements IEmployeeRepository {
   }
 
   async findAll (): Promise<FindEmployeeOutput[]> {
-    const employees = await prisma.employee.findMany()
+    const employees = await prisma.employee.findMany({
+      where: {
+        deletedAt: '9999-12-31T23:59:59.999Z'
+      }
+    })
     return employees.map(employee => ({
       id: employee.id,
       name: employee.name,
@@ -27,7 +31,10 @@ export class EmployeeRepository implements IEmployeeRepository {
 
   async findById (id: string): Promise<FindEmployeeOutput | null> {
     const employee = await prisma.employee.findUnique({
-      where: { id }
+      where: {
+        id,
+        deletedAt: '9999-12-31T23:59:59.999Z'
+      }
     })
     if (!employee) return null
     return {

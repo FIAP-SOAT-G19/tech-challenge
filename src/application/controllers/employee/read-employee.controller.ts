@@ -10,7 +10,7 @@ export class ReadEmployeeController implements IController {
     try {
       const { id } = input.params
       const employee = await this.readEmployeeUseCase.findOne({ id })
-      return success(201, { employee })
+      return success(200, { employee })
     } catch (error: any) {
       return serverError(error)
     }
