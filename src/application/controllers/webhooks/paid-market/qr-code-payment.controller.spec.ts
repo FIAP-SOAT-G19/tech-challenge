@@ -1,17 +1,17 @@
 import { HttpRequest } from '@/shared/types/http.types'
 import { QrCodePaymentController } from './qr-code-payment.controller'
 import { mock } from 'jest-mock-extended'
-import { IHandleProcessedPayment } from '@/ports/usecases/payment/handle-processed-payment.port'
 import { serverError, success } from '@/shared/helpers/http.helper'
+import { IUpdateOrderStatus } from '@/ports/usecases/order/update-oder-status.port'
 
-const handleProcessedPaymentUseCase = mock<IHandleProcessedPayment>()
+const updateOrderStatusUseCase = mock<IUpdateOrderStatus>()
 
 describe('QrCodePaymentController', () => {
   let sut: QrCodePaymentController
   let input: HttpRequest
 
   beforeEach(() => {
-    sut = new QrCodePaymentController(handleProcessedPaymentUseCase)
+    sut = new QrCodePaymentController(updateOrderStatusUseCase)
     input = {
       body: {
         orderNumber: 'anyOrderNumber',
@@ -20,13 +20,24 @@ describe('QrCodePaymentController', () => {
     }
   })
 
-  test('should call HandleProcessedPaymentUseCase once and with correct values', async () => {
+  test('should call updateOrderStatusUseCase once and with correct values', async () => {
     await sut.execute(input)
 
-    expect(handleProcessedPaymentUseCase.execute).toHaveBeenCalledTimes(1)
-    expect(handleProcessedPaymentUseCase.execute).toHaveBeenCalledWith({
+    expect(updateOrderStatusUseCase.execute).toHaveBeenCalledTimes(1)
+    expect(updateOrderStatusUseCase.execute).toHaveBeenCalledWith({
       orderNumber: 'anyOrderNumber',
-      status: 'approved'
+      status: 'received'
+    })
+  })
+
+  test('should call updateOrderStatusUseCase once and with correct values', async () => {
+    input.body.status = 'refused'
+    await sut.execute(input)
+
+    expect(updateOrderStatusUseCase.execute).toHaveBeenCalledTimes(1)
+    expect(updateOrderStatusUseCase.execute).toHaveBeenCalledWith({
+      orderNumber: 'anyOrderNumber',
+      status: 'canceled'
     })
   })
 
@@ -36,9 +47,9 @@ describe('QrCodePaymentController', () => {
     expect(output).toEqual(success(200, {}))
   })
 
-  test('should return 500 if HandleProcessedPaymentUseCase throws an exception', async () => {
+  test('should return 500 if updateOrderStatusUseCase throws an exception', async () => {
     const error = new Error('Internal server error')
-    handleProcessedPaymentUseCase.execute.mockImplementationOnce(() => {
+    updateOrderStatusUseCase.execute.mockImplementationOnce(() => {
       throw error
     })
     const output = await sut.execute(input)

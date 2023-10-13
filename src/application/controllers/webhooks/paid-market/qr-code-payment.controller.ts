@@ -1,13 +1,15 @@
 import { IController } from '@/ports'
-import { IHandleProcessedPayment } from '@/ports/usecases/payment/handle-processed-payment.port'
-import { serverError, success } from '@/shared/helpers/http.helper'
-import { HttpRequest, HttpResponse } from '@/shared/types/http.types'
+import { serverError, success } from '../../../../shared/helpers/http.helper'
+import { HttpRequest, HttpResponse } from '../../../../shared/types/http.types'
+import { IUpdateOrderStatus } from '@/ports/usecases/order/update-oder-status.port'
+import constants from '../../../../shared/constants'
 
 export class QrCodePaymentController implements IController {
-  constructor(private readonly handleProcessedPaymentUseCase: IHandleProcessedPayment) {}
+  constructor(private readonly updateOrderStatusUseCase: IUpdateOrderStatus) {}
   async execute (input: HttpRequest): Promise<HttpResponse> {
     try {
-      await this.handleProcessedPaymentUseCase.execute(input.body)
+      const status = input.body.status === constants.PAID_MARKET.STATUS_APPROVED ? 'received' : 'canceled'
+      await this.updateOrderStatusUseCase.execute({ orderNumber: input.body.orderNumber, status })
       return success(200, {})
     } catch (error: any) {
       return serverError(error)
