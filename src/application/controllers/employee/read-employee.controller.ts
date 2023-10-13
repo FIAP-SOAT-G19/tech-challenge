@@ -12,8 +12,8 @@ export class ReadEmployeeController implements IController {
       const employee = await this.readEmployeeUseCase.findOne({ id })
       return success(200, { employee })
     } catch (error: any) {
-      if (error.name === 'SchemaValidationError') {
-        return badRequest(error)
+      if (error.name === 'InvalidParamError') {
+        return badRequest(error.message)
       }
       return serverError(error)
     }

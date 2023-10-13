@@ -58,6 +58,314 @@
           }
         }
       }
+    },
+    "/employee" : {
+      "post": {
+        "tags": [
+          "Employees"
+        ],
+        "description": "Rota de criação de funcionário",
+        "summary": "Cria um funcionário",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "name": "John Doe",
+                  "email": "john.doe@email.com",
+                  "cpf": "12345678900",
+                  "password": "123456"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "id": "3a51ed19-316a-4b05-8f0e-5b691abad994"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação da solicitação",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "SchemaValidationError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Erro de conflito",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Invalid param: EmailInUseError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employees": {
+      "get": {
+        "tags": [
+          "Employees"
+        ],
+        "description": "Rota de listagem de funcionários",
+        "summary": "Retorna lista de funcionários",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "example": [
+                    {
+                      "id": "3a51ed19-316a-4b05-8f0e-5b691abad994",
+                      "name": "John Doe",
+                      "email": "john.doe@email.com",
+                      "cpf": "12345678900",
+                      "createdAt": "2023-10-12T21:44:36.423Z",
+                      "updatedAt": "2023-10-12T21:44:36.423Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação da solicitação",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Invalid param: InvalidParamError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employee/{id}": {
+      "get": {
+        "tags": [
+          "Employees"
+        ],
+        "description": "Rota de busca de funcionário",
+        "summary": "Retorna um funcionário",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Id do funcionário",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "id": "3a51ed19-316a-4b05-8f0e-5b691abad994",
+                    "name": "John Doe",
+                    "email": "john.doe@email.com",
+                    "cpf": "12345678900",
+                    "createdAt": "2023-10-12T21:44:36.423Z",
+                    "updatedAt": "2023-10-12T21:44:36.423Z"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação da solicitação",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Invalid param: InvalidParamError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employee/{id_}": {
+      "patch": {
+        "tags": [
+          "Employees"
+        ],
+        "description": "Rota de atualização de funcionário, todos os campos são opcionais",
+        "summary": "Atualiza um funcionário",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "name": "John Doe II",
+                  "email": "john.doeII@email.com",
+                  "cpf": "12345678900",
+                  "password": "123456"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id_",
+            "description": "Id do funcionário",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "id": "3a51ed19-316a-4b05-8f0e-5b691abad994",
+                    "name": "John Doe",
+                    "email": "john.doe@email.com",
+                    "cpf": "12345678900",
+                    "createdAt": "2023-10-12T21:44:36.423Z",
+                    "updatedAt": "2023-10-12T21:44:36.423Z"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação da solicitação",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Invalid param: InvalidParamError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employee/{_id}": {
+      "delete": {
+        "tags": [
+          "Employees"
+        ],
+        "description": "Rota de remoção de funcionário",
+        "summary": "Remove um funcionário",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "_id",
+            "description": "Id do funcionário",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {}
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação da solicitação",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Invalid param: InvalidParamError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
