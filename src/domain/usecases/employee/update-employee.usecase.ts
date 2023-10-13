@@ -3,7 +3,7 @@ import { IUpdateEmployee } from '@/ports/usecases/employee/update-employee.port'
 import { ISchemaValidator } from '@/ports/validators/schema-validator.port'
 
 import { cryptoPassword } from '../../../shared/utils/encryptoPassword.util'
-import { InvalidParamError } from '../../../shared/errors'
+import { InvalidParamError, SchemaValidationError } from '../../../shared/errors'
 import constants from '../../../shared/constants'
 
 export class UpdateEmployeeUseCase {
@@ -15,7 +15,7 @@ export class UpdateEmployeeUseCase {
 
   async execute(input: IUpdateEmployee.Input): Promise<IUpdateEmployee.Output> {
     const employee = await this.employeeRepository.findById(input.id)
-    if (!employee) { throw new Error('Employee not found') }
+    if (!employee) { throw new InvalidParamError('Employee not found') }
 
     await this.validateInput(input)
 
@@ -55,6 +55,6 @@ export class UpdateEmployeeUseCase {
       }
     })
 
-    if (validation.error) throw new InvalidParamError(validation.error)
+    if (validation.error) throw new SchemaValidationError(validation.error)
   }
 }

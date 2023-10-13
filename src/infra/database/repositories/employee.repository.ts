@@ -73,13 +73,12 @@ export class EmployeeRepository implements IEmployeeRepository {
     return employee.id
   }
 
-  async delete (employee: SaveEmployeeInput): Promise<string> {
+  async delete (employee: SaveEmployeeInput): Promise<void> {
     await prisma.employee.update({
       where: { id: employee.id },
       data: {
         deletedAt: new Date()
       }
     })
-    return employee.id
   }
 }

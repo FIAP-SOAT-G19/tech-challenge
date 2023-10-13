@@ -1,5 +1,5 @@
 import { HttpRequest, HttpResponse } from '@/shared/types/http.types'
-import { serverError, success } from '../../../shared/helpers/http.helper'
+import { serverError, success, badRequest, conflict } from '../../../shared/helpers/http.helper'
 
 import { CreateEmployeeUseCase } from './../../../domain/usecases/employee/create-employee.usecase'
 import { IController } from '../../../ports/controllers/index.port'
@@ -18,6 +18,12 @@ export class CreateEmployeeController implements IController {
       })
       return success(201, { idEmployee })
     } catch (error: any) {
+      if (error.name === 'InvalidParamError') {
+        return conflict(error.message)
+      }
+      if (error.name === 'SchemaValidationError') {
+        return badRequest(error)
+      }
       return serverError(error)
     }
   }

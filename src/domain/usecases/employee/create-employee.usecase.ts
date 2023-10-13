@@ -4,7 +4,7 @@ import { ICreateEmployee } from '@/ports/usecases/employee/create-employee.port'
 import { IUUIDGenerator } from '@/ports/usecases/uuid/uuid-generator.port'
 import { ISchemaValidator } from '@/ports/validators/schema-validator.port'
 
-import { InvalidParamError } from '../../../shared/errors'
+import { InvalidParamError, SchemaValidationError } from '../../../shared/errors'
 import constants from '../../../shared/constants'
 import { cryptoPassword } from '../../../shared/utils/encryptoPassword.util'
 
@@ -47,7 +47,7 @@ export class CreateEmployeeUseCase implements ICreateEmployee {
       data: input
     })
 
-    if (validation.error) throw new InvalidParamError(validation.error)
+    if (validation.error) throw new SchemaValidationError(validation.error)
   }
 
   private validateRequired(input: ICreateEmployee.Input): string | null {

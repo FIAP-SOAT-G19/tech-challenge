@@ -8,10 +8,10 @@ export class DeleteEmployeeController {
   async execute (input: HttpRequest): Promise<HttpResponse> {
     try {
       const { id } = input.params
-      const idEmployee = await this.deleteEmployeeUseCase.execute({
+      await this.deleteEmployeeUseCase.execute({
         id
       })
-      return success(200, { idEmployee })
+      return success(204, {})
     } catch (error: any) {
       return serverError(error)
     }
