@@ -10,7 +10,6 @@ export class IdentifyClientByCpfUseCase implements IIdentifyClientByCpfUseCase {
   ) {}
 
   async execute (input: IIdentifyClientByCpfUseCase.Input): Promise<IIdentifyClientByCpfUseCase.Output> {
-    console.log(input)
     await this.validate(input)
 
     const client = await this.getClientByCpf(input.cpf)
@@ -22,7 +21,7 @@ export class IdentifyClientByCpfUseCase implements IIdentifyClientByCpfUseCase {
 
   private async validate (input: IIdentifyClientByCpfUseCase.Input): Promise<void> {
     const validation = this.schemaValidator.validate({
-      schema: constants.SCHEMAS.CLIENT,
+      schema: constants.SCHEMAS.GET_CLIENT_BY_CPF,
       data: input
     })
 

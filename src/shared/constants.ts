@@ -9,7 +9,7 @@ export default {
   },
   SCHEMAS: {
     ORDER: 'orderSchema',
-    CLIENT: 'clientSchema'
+    GET_CLIENT_BY_CPF: 'getClientByCpfSchema'
   },
   PAYMENT: {
     DEFAULT_TITLE: 'Tech-Challenge Payment'
