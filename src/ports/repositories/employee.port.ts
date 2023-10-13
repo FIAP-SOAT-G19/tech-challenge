@@ -3,7 +3,7 @@ export interface IEmployeeRepository {
   findAll: () => Promise<FindEmployeeOutput[]>
   findById: (id: string) => Promise<FindEmployeeOutput | null>
   update: (input: SaveEmployeeInput) => Promise<string>
-  delete: (id: string) => Promise<string>
+  delete: (employee: SaveEmployeeInput) => Promise<string>
 }
 
 export type SaveEmployeeInput = {

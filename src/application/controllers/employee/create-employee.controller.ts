@@ -1,7 +1,10 @@
-import { CreateEmployeeUseCase } from './../../../domain/usecases/employee/create-employee.usecase'
 import { HttpRequest, HttpResponse } from '@/shared/types/http.types'
+import { serverError, success } from '../../../shared/helpers/http.helper'
 
-export class CreateEmployeeController {
+import { CreateEmployeeUseCase } from './../../../domain/usecases/employee/create-employee.usecase'
+import { IController } from '../../../ports/controllers/index.port'
+
+export class CreateEmployeeController implements IController {
   constructor(private readonly createEmployeeUseCase: CreateEmployeeUseCase) {}
 
   async execute (input: HttpRequest): Promise<HttpResponse> {
@@ -13,9 +16,9 @@ export class CreateEmployeeController {
         cpf,
         password
       })
-      return { statusCode: 201, body: idEmployee }
-    } catch (error) {
-      return { statusCode: 500, body: { error: 'Unexpected error' } }
+      return success(201, { idEmployee })
+    } catch (error: any) {
+      return serverError(error)
     }
   }
 }

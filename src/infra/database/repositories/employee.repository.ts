@@ -42,6 +42,22 @@ export class EmployeeRepository implements IEmployeeRepository {
     }
   }
 
+  async findByEmail (email: string): Promise<FindEmployeeOutput | null> {
+    const employee = await prisma.employee.findFirst({
+      where: { email }
+    })
+    if (!employee) return null
+    return employee
+  }
+
+  async findByCpf (cpf: string): Promise<FindEmployeeOutput | null> {
+    const employee = await prisma.employee.findFirst({
+      where: { cpf }
+    })
+    if (!employee) return null
+    return employee
+  }
+
   async update (input: SaveEmployeeInput): Promise<string> {
     const employee = await prisma.employee.update({
       where: { id: input.id },
@@ -50,10 +66,13 @@ export class EmployeeRepository implements IEmployeeRepository {
     return employee.id
   }
 
-  async delete (id: string): Promise<string> {
-    await prisma.employee.delete({
-      where: { id }
+  async delete (employee: SaveEmployeeInput): Promise<string> {
+    await prisma.employee.update({
+      where: { id: employee.id },
+      data: {
+        deletedAt: new Date()
+      }
     })
-    return id
+    return employee.id
   }
 }

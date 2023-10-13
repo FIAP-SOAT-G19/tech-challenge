@@ -9,6 +9,6 @@ export class DeleteEmployeeUseCase {
     if (!employee) {
       throw new Error('Employee not found')
     }
-    return await this.employeeRepository.delete(input.id)
+    return await this.employeeRepository.delete(employee)
   }
 }

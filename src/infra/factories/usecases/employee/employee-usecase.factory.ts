@@ -6,13 +6,16 @@ import { DeleteEmployeeUseCase } from '../../../../domain/usecases/employee/dele
 import { EmployeeRepository } from '../../../database/repositories/employee.repository'
 
 import { UUIDGeneratorAdapter } from '../../../../infra/adapters/uuid/uuid-generator'
+import { JoiValidatorSchemaAdapter } from '../../../../infra/adapters/validation/joi-validator.adapter'
 
 const uuidGenerator = new UUIDGeneratorAdapter()
 const employeeRepository = new EmployeeRepository()
+const schemaValidator = new JoiValidatorSchemaAdapter()
 
 export const makeCreateEmployeeUseCase = (): CreateEmployeeUseCase => {
   return new CreateEmployeeUseCase(
     employeeRepository,
+    schemaValidator,
     uuidGenerator
   )
 }
@@ -26,7 +29,10 @@ export const makeReadAllEmployeeUseCase = (): ReadEmployeeUseCase => {
 }
 
 export const makeUpdateEmployeeUseCase = (): UpdateEmployeeUseCase => {
-  return new UpdateEmployeeUseCase(employeeRepository)
+  return new UpdateEmployeeUseCase(
+    employeeRepository,
+    schemaValidator
+  )
 }
 
 export const makeDeleteEmployeeUseCase = (): DeleteEmployeeUseCase => {

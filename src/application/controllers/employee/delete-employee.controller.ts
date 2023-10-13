@@ -1,5 +1,6 @@
 import { HttpRequest, HttpResponse } from '@/shared/types/http.types'
 import { DeleteEmployeeUseCase } from './../../../domain/usecases/employee/delete-employee.usecase'
+import { serverError, success } from '../../../shared/helpers/http.helper'
 
 export class DeleteEmployeeController {
   constructor(private readonly deleteEmployeeUseCase: DeleteEmployeeUseCase) {}
@@ -10,9 +11,9 @@ export class DeleteEmployeeController {
       const idEmployee = await this.deleteEmployeeUseCase.execute({
         id
       })
-      return { statusCode: 200, body: idEmployee }
-    } catch (error) {
-      return { statusCode: 500, body: { error: 'Unexpected error' } }
+      return success(200, { idEmployee })
+    } catch (error: any) {
+      return serverError(error)
     }
   }
 }

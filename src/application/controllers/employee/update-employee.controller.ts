@@ -1,7 +1,9 @@
 import { UpdateEmployeeUseCase } from './../../../domain/usecases/employee/update-employee.usecase'
 import { HttpRequest, HttpResponse } from '@/shared/types/http.types'
+import { IController } from '../../../ports/controllers/index.port'
+import { serverError, success } from '../../../shared/helpers/http.helper'
 
-export class UpdateEmployeeController {
+export class UpdateEmployeeController implements IController {
   constructor(private readonly updateEmployeeUseCase: UpdateEmployeeUseCase) {}
 
   async execute (input: HttpRequest): Promise<HttpResponse> {
@@ -15,9 +17,9 @@ export class UpdateEmployeeController {
         cpf,
         password
       })
-      return { statusCode: 200, body: idEmployee }
-    } catch (error) {
-      return { statusCode: 500, body: { error: 'Unexpected error' } }
+      return success(201, { idEmployee })
+    } catch (error: any) {
+      return serverError(error)
     }
   }
 }
