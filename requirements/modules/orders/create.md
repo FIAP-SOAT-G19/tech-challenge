@@ -26,8 +26,36 @@ Como o cliente pode se identificar ou não, o campo clientId pode ser opcional
 }
 
 ## Input Order {
+    products: [{
+      id: string
+      name: string
+      category: string
+      price: number
+      description: string
+      image: string
+      amount: number
+    }],
     clientId?: string
-    totalValue: number
+  }
+
+## Input ProcessPayment
+  "external_reference": 12345,
+  "title": "Product order",
+  "total_amount": 100,
+  "items": [
+    {
+      "sku_number": "A123K9191938",
+      "category": "marketplace",
+      "title": "Point Mini",
+      "description": "This is the Point Mini",
+      "unit_price": 100,
+      "amount": 1,
+      "unit_measure": "unit",
+      "total_amount": 100
+    }
+  ],
+  "sponsor": {
+    "id": 446566691
   }
 
 ✅

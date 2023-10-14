@@ -1,8 +1,8 @@
-import { ControllerInterface } from '@/ports/controllers/index.port'
+import { IController } from '@/ports/controllers/index.port'
 import { HttpRequest, HttpResponse } from '@/shared/types/http.types'
 import { Request, Response } from 'express'
 
-export const expressAdapter = (controller: ControllerInterface) => {
+export const expressAdapter = (controller: IController) => {
   return async (req: Request, res: Response) => {
     const input: HttpRequest = {
       params: req?.params,
