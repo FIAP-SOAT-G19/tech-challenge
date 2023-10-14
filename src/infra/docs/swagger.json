@@ -58,6 +58,151 @@
           }
         }
       }
+    },
+    "/products": {
+      "post": {
+        "tags": [
+          "Products"
+        ],
+        "description": "Rota de Products da API",
+        "summary": "Endpoint de Products da API",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Nome do produto"
+          },
+          {
+            "in": "query",
+            "name": "category",
+            "schema": {
+              "type": "string",
+              "enum": ["snack", "accompaniment", "drink", "dessert"]
+            },
+            "required": true,
+            "description": "Categoria do produto"
+          },
+          {
+            "in": "path",
+            "name": "price",
+            "schema": {
+              "type": "number"
+            },
+            "required": true,
+            "description": "Preço do produto"
+          },
+          {
+            "in": "path",
+            "name": "description",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Descrição do produto"
+          },
+          {
+            "in": "path",
+            "name": "image",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Imagem do produto"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Coca Cola"
+                  },
+                  "category": {
+                    "type": "string",
+                    "example": "drink"
+                  },
+                  "price": {
+                    "type": "number",
+                    "example": "4"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Beverage description"
+                  },
+                  "image": {
+                    "type": "string",
+                    "example": "http://host.com/image"
+                  }
+                },
+                "required": [
+                  "name",
+                  "category",
+                  "price",
+                  "description",
+                  "image"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Produto adicionado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "productId": {
+                      "type": "string",
+                      "example": "5ebcea6f-2391-46aa-a5bc-ab5d98527f13"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Missing param: product name"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
