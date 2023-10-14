@@ -4,7 +4,6 @@ import { ISchemaValidator } from '../../../ports/validators/schema-validator.por
 import constants from '../../../shared/constants'
 import { InvalidParamError, ServerError } from '../../../shared/errors'
 import { IProductRepository } from '../../../ports/repositories/product.port'
-import { ProductCategory } from '../../../shared/enum/product.enum'
 
 export class CreateProductUseCase implements ICreateProductUseCase {
   constructor(
@@ -13,7 +12,9 @@ export class CreateProductUseCase implements ICreateProductUseCase {
     private readonly productRepository: IProductRepository
   ) {}
 
-  async execute(input: ICreateProductUseCase.Input): Promise<ICreateProductUseCase.Output> {
+  async execute(
+    input: ICreateProductUseCase.Input
+  ): Promise<ICreateProductUseCase.Output> {
     await this.validateSchema(input)
     await this.validateCategory(input.category)
     await this.validatePrice(input.price)
@@ -28,7 +29,9 @@ export class CreateProductUseCase implements ICreateProductUseCase {
     return productId
   }
 
-  private async validateSchema(input: ICreateProductUseCase.Input): Promise<void> {
+  private async validateSchema(
+    input: ICreateProductUseCase.Input
+  ): Promise<void> {
     const validation = this.schemaValidator.validate({
       schema: constants.SCHEMAS.PRODUCT,
       data: input
@@ -38,9 +41,9 @@ export class CreateProductUseCase implements ICreateProductUseCase {
     }
   }
 
-  private async validateCategory(category: ProductCategory): Promise<void> {
-    const isProductCategoryValid = Object.values(ProductCategory).includes(category)
-    if (!isProductCategoryValid) {
+  private async validateCategory(category: string): Promise<void> {
+    const productCategories = Object.values(constants.PRODUCT_CATEGORY)
+    if (!productCategories.includes(category)) {
       throw new InvalidParamError('invalid product category')
     }
   }

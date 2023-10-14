@@ -13,5 +13,11 @@ export default {
   },
   PAYMENT: {
     DEFAULT_TITLE: 'Tech-Challenge Payment'
+  },
+  PRODUCT_CATEGORY: {
+    SNACK: 'snack',
+    ACCOMPANIMENT: 'accompaniment',
+    DRINK: 'drink',
+    DESSERT: 'dessert'
   }
 }
