@@ -7,6 +7,7 @@ export interface ICreateOrderUseCase {
 export namespace ICreateOrderUseCase {
   export type Input = {
     clientId: string | null
+    clientDocument: string | null
     products: Product []
   }
   export type Output = string

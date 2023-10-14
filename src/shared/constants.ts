@@ -1,8 +1,8 @@
 export default {
   ORDER_STATUS: {
-    WAITING_PAYMENT: 'waiting_payment',
+    WAITING_PAYMENT: 'waitingPayment',
     RECEIVED: 'received',
-    IN_PREPARATION: 'in_preparation',
+    IN_PREPARATION: 'InPreparation',
     PREPARED: 'prepared',
     FINALIZED: 'finalized',
     CANCELED: 'canceled'
