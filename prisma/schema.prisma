@@ -45,6 +45,7 @@ model Order {
   clientDocument String?
   status         OrderStatus
   totalValue     Int
+  createdAt      DateTime
   paidAt         DateTime?
   OrderProduct   OrderProduct[]
   Payment        Payment[]

@@ -9,7 +9,7 @@ export type OrderOutput = {
   totalValue: number
   paidAt: Date | null
   createdAt: Date
-  client: Client
+  client: Client | null
   products: Product []
 } | null
 
