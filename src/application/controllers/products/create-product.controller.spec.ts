@@ -44,7 +44,7 @@ describe('CreateProductController', () => {
     })
 
     test('should return a properly missing name error', async () => {
-      input.body.name = ''
+      input.body.name = null
       const output = await createProductController.execute(input)
 
       expect(output).toEqual({
@@ -57,7 +57,7 @@ describe('CreateProductController', () => {
     })
 
     test('should return a properly missing category error', async () => {
-      input.body.category = ''
+      input.body.category = null
       const output = await createProductController.execute(input)
 
       expect(output).toEqual({
@@ -96,7 +96,7 @@ describe('CreateProductController', () => {
     })
 
     test('should return a properly missing image error', async () => {
-      input.body.image = ''
+      input.body.image = null
       const output = await createProductController.execute(input)
 
       expect(output).toEqual({
