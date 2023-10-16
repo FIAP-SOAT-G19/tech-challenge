@@ -111,4 +111,8 @@ export class OrderRepository implements IOrderRepository {
     }
     return output
   }
+
+  async delete(orderNumber: string): Promise<void> {
+    await prismaClient.order.delete({ where: { orderNumber } })
+  }
 }
