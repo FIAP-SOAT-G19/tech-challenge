@@ -2,7 +2,7 @@ import { IOrderRepository, SaveOrderInput, UpdateOrderStatusInput } from '@/port
 import { prismaClient } from '../prisma-client'
 import { OrderStatus } from '@prisma/client'
 import { OrderOutput } from '@/domain/types/orders.types'
-import { Product } from '@/domain/types/products.types'
+import { OrderProduct } from '@/domain/types/order-products.types'
 
 export class OrderRepository implements IOrderRepository {
   async save(input: SaveOrderInput): Promise<string> {
@@ -78,7 +78,7 @@ export class OrderRepository implements IOrderRepository {
     })
 
     if (order) {
-      const products: Product [] = []
+      const products: OrderProduct [] = []
       order.OrderProduct.map((product) => {
         products.push({
           id: product.product.id,

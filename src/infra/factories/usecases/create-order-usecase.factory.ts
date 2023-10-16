@@ -1,3 +1,4 @@
+import { ProductRepository } from '../../../infra/database/repositories/product.repository'
 import { CreateOrderUseCase } from '../../../domain/usecases/order/create-order.usecase'
 import { UUIDGeneratorAdapter } from '../../../infra/adapters/uuid/uuid-generator'
 import { JoiValidatorSchemaAdapter } from '../../../infra/adapters/validation/joi-validator.adapter'
@@ -11,12 +12,14 @@ export const makeCreateOrderUseCase = (): CreateOrderUseCase => {
   const clientRepository = new ClientRepository()
   const orderRepository = new OrderRepository()
   const orderProductRepository = new OrderProductRepository()
+  const productOrder = new ProductRepository()
 
   return new CreateOrderUseCase(
     schemaValidator,
     uuidGenerator,
     clientRepository,
     orderRepository,
-    orderProductRepository
+    orderProductRepository,
+    productOrder
   )
 }

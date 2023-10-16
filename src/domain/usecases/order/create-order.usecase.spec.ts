@@ -7,12 +7,14 @@ import { mock } from 'jest-mock-extended'
 import { InvalidParamError, MissingParamError } from '@/shared/errors'
 import { ISchemaValidator } from '@/ports/validators/schema-validator.port'
 import { IOrderProductRepository } from '@/ports/repositories/order-product.port'
+import { IProductRepository } from '@/ports/repositories/product.port'
 
 const uuidGenerator = mock<IUUIDGenerator>()
 const orderRepository = mock<IOrderRepository>()
 const clientRepository = mock<IClientRepository>()
 const schemaValidator = mock<ISchemaValidator>()
 const orderProductRepository = mock<IOrderProductRepository>()
+const productRepository = mock<IProductRepository>()
 
 jest.mock('../../../shared/helpers/string.helper', () => {
   const originalMethod = jest.requireActual('../../../shared/helpers/string.helper')
@@ -27,7 +29,7 @@ describe('CreateOrderUseCase', () => {
   let input: any
 
   beforeEach(() => {
-    sut = new CreateOrderUseCase(schemaValidator, uuidGenerator, clientRepository, orderRepository, orderProductRepository)
+    sut = new CreateOrderUseCase(schemaValidator, uuidGenerator, clientRepository, orderRepository, orderProductRepository, productRepository)
     input = {
       clientId: 'anyClientId',
       clientDocument: null,
@@ -54,6 +56,15 @@ describe('CreateOrderUseCase', () => {
       deletedAt: null
     })
     schemaValidator.validate.mockReturnValue({ value: input })
+    productRepository.getById.mockResolvedValue({
+      id: 'anyProductId',
+      name: 'anyProductName',
+      category: 'anyCategory',
+      price: 2500,
+      description: 'AnyDescription',
+      image: 'anyimageUrl',
+      amount: 2
+    })
 
     jest.clearAllMocks()
   })
@@ -95,6 +106,14 @@ describe('CreateOrderUseCase', () => {
     const output = sut.execute(input)
 
     await expect(output).rejects.toThrowError(new InvalidParamError('clientId'))
+  })
+
+  test('should throws if ProductRepository.getById returns null', async () => {
+    productRepository.getById.mockResolvedValueOnce(null)
+
+    const output = sut.execute(input)
+
+    await expect(output).rejects.toThrowError(new InvalidParamError('productId'))
   })
 
   test('should throws error if clientId and clientDocument are null', async () => {

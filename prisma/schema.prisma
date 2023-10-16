@@ -69,7 +69,7 @@ model Product {
   price        Int
   description  String
   image        String
-  createdAt    DateTime?
+  createdAt    DateTime
   updatedAt    DateTime?       @updatedAt
   OrderProduct OrderProduct[]
 

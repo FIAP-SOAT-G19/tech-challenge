@@ -1,15 +1,17 @@
 import { IClientRepository, ICreateOrderUseCase, IOrderProductRepository, IOrderRepository, ISchemaValidator, IUUIDGenerator } from '@/ports/'
 import { InvalidParamError, MissingParamError, SchemaValidationError } from '../../../shared/errors'
 import constants from '../../../shared/constants'
-import { Product } from '@/domain/types/products.types'
 import { ramdonStringGenerator } from '../../../shared/helpers/string.helper'
+import { IProductRepository } from '@/ports/repositories/product.port'
+import { OrderProduct } from '@/domain/types'
 export class CreateOrderUseCase implements ICreateOrderUseCase {
   constructor(
     private readonly schemaValidator: ISchemaValidator,
     private readonly uuidGenerator: IUUIDGenerator,
     private readonly clientRepository: IClientRepository,
     private readonly orderRepository: IOrderRepository,
-    private readonly orderProductRepository: IOrderProductRepository
+    private readonly orderProductRepository: IOrderProductRepository,
+    private readonly productRepository: IProductRepository
   ) {}
 
   async execute (input: ICreateOrderUseCase.Input): Promise<ICreateOrderUseCase.Output> {
@@ -25,6 +27,13 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
   }
 
   private async validate (input: ICreateOrderUseCase.Input): Promise<void> {
+    for (const product of input.products) {
+      const productExists = await this.productRepository.getById(product.id)
+      if (!productExists) {
+        throw new InvalidParamError('productId')
+      }
+    }
+
     if (!input.clientId && !input.clientDocument) {
       throw new MissingParamError('clientId or clientDocument')
     }
@@ -63,7 +72,7 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
     return { orderId, orderNumber }
   }
 
-  private async saveOrderProducts (orderId: string, products: Product []): Promise<void> {
+  private async saveOrderProducts (orderId: string, products: OrderProduct []): Promise<void> {
     for (const product of products) {
       await this.orderProductRepository.save({
         id: this.uuidGenerator.generate(),
@@ -76,7 +85,7 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
     }
   }
 
-  public calculateTotalValue (products: Product []): number {
+  public calculateTotalValue (products: OrderProduct []): number {
     return products.reduce((accumulator, element) => accumulator + (element.price * element.amount), 0)
   }
 }

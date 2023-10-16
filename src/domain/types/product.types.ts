@@ -5,5 +5,6 @@ export type Product = {
   price: number
   description: string
   image: string
-  amount: number
+  createdAt: Date
+  updatedAt: Date | null
 }

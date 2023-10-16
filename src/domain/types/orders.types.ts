@@ -1,4 +1,4 @@
-import { Product } from './products.types'
+import { OrderProduct } from './order-products.types'
 
 export type OrderOutput = {
   id: string
@@ -10,7 +10,7 @@ export type OrderOutput = {
   paidAt: Date | null
   createdAt: Date
   client: Client | null
-  products: Product []
+  products: OrderProduct []
 } | null
 
 export type Client = {
