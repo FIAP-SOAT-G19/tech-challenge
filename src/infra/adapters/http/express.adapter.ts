@@ -6,7 +6,8 @@ export const expressAdapter = (controller: IController) => {
   return async (req: Request, res: Response) => {
     const input: HttpRequest = {
       params: req?.params,
-      body: req?.body
+      body: req?.body,
+      query: req?.query
     }
 
     const { statusCode, body }: HttpResponse = await controller.execute(input)
