@@ -41,10 +41,10 @@ describe('QrCodePaymentController', () => {
     })
   })
 
-  test('should return 200 on success', async () => {
+  test('should return 204 on success', async () => {
     const output = await sut.execute(input)
 
-    expect(output).toEqual(success(200, {}))
+    expect(output).toEqual(success(204, null))
   })
 
   test('should return 500 if updateOrderStatusUseCase throws an exception', async () => {
