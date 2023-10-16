@@ -5,6 +5,7 @@ export interface IOrderRepository {
   updateStatus: (input: UpdateOrderStatusInput) => Promise<void>
   getByOrderNumber: (orderNumber: string) => Promise<OrderOutput>
   delete: (orderNumber: string) => Promise<void>
+  getAll: (input: GetAllOrdersInput) => Promise<GetAllOrdersOutput>
 }
 
 export type SaveOrderInput = {
@@ -22,3 +23,14 @@ export type UpdateOrderStatusInput = {
   status: string
   paidAt: Date | null
 }
+
+export type GetAllOrdersInput = {
+  clientId?: string
+  status?: string
+  paidAtInitialDate?: Date
+  paidAtEndDate?: Date
+  createdAtInitialDate?: Date
+  createdAtEndDate?: Date
+}
+
+export type GetAllOrdersOutput = OrderOutput [] | null
