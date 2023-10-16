@@ -80,7 +80,7 @@ describe('DeleteOrderUseCase', () => {
 
     const output = sut.execute('anyOrderNumber')
 
-    await expect(output).rejects.toThrowError(new InvalidParamError('status'))
+    await expect(output).rejects.toThrowError(new InvalidParamError('only orders with canceled status can be deleted'))
   })
 
   test('should call OrderRepository.delete once and with correct orderNumber', async () => {

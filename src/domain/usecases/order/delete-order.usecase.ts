@@ -1,7 +1,7 @@
 import { IOrderRepository } from '@/ports'
 import { IDeleteOrderUseCase } from '@/ports/usecases/order/delete-order.port'
-import constants from '@/shared/constants'
-import { InvalidParamError, MissingParamError } from '@/shared/errors'
+import constants from '../../../shared/constants'
+import { InvalidParamError, MissingParamError } from '../../../shared/errors'
 
 export class DeleteOrderUseCase implements IDeleteOrderUseCase {
   constructor(private readonly orderRepository: IOrderRepository) {}
@@ -21,7 +21,7 @@ export class DeleteOrderUseCase implements IDeleteOrderUseCase {
     }
 
     if (order.status !== constants.ORDER_STATUS.CANCELED) {
-      throw new InvalidParamError('status')
+      throw new InvalidParamError('only orders with canceled status can be deleted')
     }
   }
 }
