@@ -6,7 +6,7 @@ import { IOrderRepository } from '@/ports'
 export class UpdateOrderStatusUseCase implements IUpdateOrderStatusUseCase {
   constructor(private readonly orderRepository: IOrderRepository) {}
   async execute (input: IUpdateOrderStatusUseCase.Input): Promise<void> {
-    this.validate(input)
+    await this.validate(input)
 
     await this.orderRepository.updateStatus({
       orderNumber: input.orderNumber,
@@ -15,13 +15,18 @@ export class UpdateOrderStatusUseCase implements IUpdateOrderStatusUseCase {
     })
   }
 
-  private validate (input: IUpdateOrderStatusUseCase.Input): void {
+  private async validate (input: IUpdateOrderStatusUseCase.Input): Promise<void> {
     if (!input.orderNumber) {
       throw new MissingParamError('orderNumber')
     }
 
     if (!input.status) {
       throw new MissingParamError('status')
+    }
+
+    const order = await this.orderRepository.getByOrderNumber(input.orderNumber)
+    if (!order) {
+      throw new InvalidParamError('orderNumber')
     }
 
     const orderStatusValues = Object.values(constants.ORDER_STATUS)

@@ -355,8 +355,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "Sucesso",
+          "204": {
+            "description": "Sem conteúdo",
             "content": {
               "application/json": {
                 "schema": {
