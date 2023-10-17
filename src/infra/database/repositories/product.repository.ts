@@ -1,6 +1,6 @@
 import { ProductCategory } from '@prisma/client'
 import { prismaClient } from '../prisma-client'
-import { IProductRepository, SaveProductInput } from '@/ports/repositories/product.port'
+import { GetProductByIdOutput, IProductRepository, SaveProductInput } from '@/ports/repositories/product.port'
 
 export class ProductRepository implements IProductRepository {
   async save(input: SaveProductInput): Promise<string> {
@@ -16,5 +16,13 @@ export class ProductRepository implements IProductRepository {
       }
     })
     return product.id
+  }
+
+  async getById(input: string): Promise<GetProductByIdOutput | null> {
+    return await prismaClient.product.findUnique({
+      where: {
+        id: input
+      }
+    })
   }
 }
