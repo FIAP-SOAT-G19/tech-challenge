@@ -108,7 +108,7 @@ describe('CreateProductController', () => {
       })
     })
 
-    test('should return an error if CreateOrderUseCase throws error', async () => {
+    test('should return an error if CreateProductUseCase throws error', async () => {
       const error = new Error('Internal server error')
       createProductUseCase.execute.mockImplementationOnce(() => {
         throw error
