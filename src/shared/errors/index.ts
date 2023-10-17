@@ -27,3 +27,11 @@ export class ServerError extends Error {
     this.stack = error?.stack
   }
 }
+
+export class ProductNotFoundError extends Error {
+  statusCode = 404
+  constructor () {
+    super('Product not found error')
+    this.name = 'NotFoundError'
+  }
+}

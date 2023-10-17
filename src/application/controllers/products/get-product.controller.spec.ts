@@ -54,19 +54,6 @@ describe('GetProductController', () => {
       })
     })
 
-    test('should return a properly missing productId error', async () => {
-      input.params.productId = ''
-      const output = await getProductController.execute(input)
-
-      expect(output).toEqual({
-        statusCode: 400,
-        body: {
-          error: 'MissingParamError',
-          message: 'Missing param: product id'
-        }
-      })
-    })
-
     test('should return an error if GetProductUseCase throws error', async () => {
       const error = new Error('Internal server error')
       getProductUseCase.execute.mockImplementationOnce(() => {

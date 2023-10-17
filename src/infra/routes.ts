@@ -10,6 +10,6 @@ const router = Router()
 router.get('/healthcheck', expressAdapter(makeHealthcheckController()))
 router.post('/orders', expressAdapter(makeCreateOrderController()))
 router.post('/products', expressAdapter(makeCreateProductController()))
-router.post('/products/:productId', expressAdapter(makeGetProductController()))
+router.get('/products/:productId', expressAdapter(makeGetProductController()))
 
 export { router }

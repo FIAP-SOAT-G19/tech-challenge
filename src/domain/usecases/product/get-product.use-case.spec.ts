@@ -1,7 +1,7 @@
 import { ProductRepository } from '../../../infra/database/repositories/product.repository'
 import { ISchemaValidator } from '../../../ports'
 import { mock } from 'jest-mock-extended'
-import { InvalidParamError, ServerError } from '../../../shared/errors'
+import { InvalidParamError, ProductNotFoundError } from '../../../shared/errors'
 import { GetProductUseCase } from './get-product.use-case'
 
 describe('GetProductUseCase', () => {
@@ -78,7 +78,7 @@ describe('GetProductUseCase', () => {
 
       const output = getProductUseCase.execute(productIdMock)
 
-      await expect(output).rejects.toThrowError(new ServerError())
+      await expect(output).rejects.toThrowError(new ProductNotFoundError())
     })
 
     test('should get product when input is valid', async () => {

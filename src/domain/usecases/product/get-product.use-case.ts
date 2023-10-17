@@ -1,6 +1,6 @@
 import { ISchemaValidator } from '../../../ports/validators/schema-validator.port'
 import constants from '../../../shared/constants'
-import { InvalidParamError, ServerError } from '../../../shared/errors'
+import { InvalidParamError, ProductNotFoundError } from '../../../shared/errors'
 import { IProductRepository } from '../../../ports/repositories/product.port'
 import { IGetProductUseCase } from '../../../ports/usecases/product/get-product.port'
 
@@ -16,7 +16,7 @@ export class GetProductUseCase implements IGetProductUseCase {
     await this.validateSchema(input)
     const product = await this.productRepository.getById(input)
     if (!product) {
-      throw new ServerError()
+      throw new ProductNotFoundError()
     }
     return product
   }

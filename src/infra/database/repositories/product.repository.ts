@@ -1,6 +1,10 @@
 import { ProductCategory } from '@prisma/client'
 import { prismaClient } from '../prisma-client'
-import { GetProductByIdOutput, IProductRepository, SaveProductInput } from '@/ports/repositories/product.port'
+import {
+  GetProductByIdOutput,
+  IProductRepository,
+  SaveProductInput
+} from '@/ports/repositories/product.port'
 
 export class ProductRepository implements IProductRepository {
   async save(input: SaveProductInput): Promise<string> {
@@ -19,10 +23,20 @@ export class ProductRepository implements IProductRepository {
   }
 
   async getById(input: string): Promise<GetProductByIdOutput | null> {
-    return await prismaClient.product.findUnique({
+    const product = await prismaClient.product.findUnique({
       where: {
         id: input
       }
     })
+    if (!product) return null
+
+    return {
+      id: product.id,
+      name: product.name,
+      category: product.category,
+      price: product.price,
+      description: product.description,
+      image: product.image
+    }
   }
 }
