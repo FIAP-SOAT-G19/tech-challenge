@@ -8,4 +8,6 @@ const productSchema = Joi.object({
   image: Joi.string().required()
 })
 
-export { productSchema }
+const getProductSchema = { productId: Joi.string().required() }
+
+export { productSchema, getProductSchema }
