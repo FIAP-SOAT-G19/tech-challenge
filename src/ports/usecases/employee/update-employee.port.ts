@@ -1,8 +1,8 @@
-export interface IUpdateEmployee {
-  execute: (input: IUpdateEmployee.Input) => Promise<IUpdateEmployee.Output>
+export interface IUpdateEmployeeUseCase {
+  execute: (input: IUpdateEmployeeUseCase.Input) => Promise<IUpdateEmployeeUseCase.Output>
 }
 
-export namespace IUpdateEmployee {
+export namespace IUpdateEmployeeUseCase {
   export type Input = {
     id: string
     name?: string

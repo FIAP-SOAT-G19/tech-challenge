@@ -1,6 +1,6 @@
 import { EmployeeRepository } from '@/infra/database/repositories/employee.repository'
 
-import { ICreateEmployee } from '@/ports/usecases/employee/create-employee.port'
+import { ICreateEmployeeUseCase } from '@/ports/usecases/employee/create-employee.port'
 import { IUUIDGenerator } from '@/ports/usecases/uuid/uuid-generator.port'
 import { ISchemaValidator } from '@/ports/validators/schema-validator.port'
 
@@ -8,14 +8,14 @@ import { InvalidParamError, SchemaValidationError } from '../../../shared/errors
 import constants from '../../../shared/constants'
 import { cryptoPassword } from '../../../shared/utils/encryptoPassword.util'
 
-export class CreateEmployeeUseCase implements ICreateEmployee {
+export class CreateEmployeeUseCase implements ICreateEmployeeUseCase {
   constructor(
     private readonly employeeRepository: EmployeeRepository,
     private readonly schemaValidator: ISchemaValidator,
     private readonly uuidGenerator: IUUIDGenerator
   ) {}
 
-  async execute (input: ICreateEmployee.Input): Promise<ICreateEmployee.Output> {
+  async execute (input: ICreateEmployeeUseCase.Input): Promise<ICreateEmployeeUseCase.Output> {
     await this.validateInput(input)
 
     const password = cryptoPassword(input.password)
@@ -32,7 +32,7 @@ export class CreateEmployeeUseCase implements ICreateEmployee {
     })
   }
 
-  private async validateInput (input: ICreateEmployee.Input): Promise<void> {
+  private async validateInput (input: ICreateEmployeeUseCase.Input): Promise<void> {
     const requiredError = this.validateRequired(input)
     if (requiredError) throw new InvalidParamError(requiredError)
 
@@ -50,8 +50,8 @@ export class CreateEmployeeUseCase implements ICreateEmployee {
     if (validation.error) throw new SchemaValidationError(validation.error)
   }
 
-  private validateRequired(input: ICreateEmployee.Input): string | null {
-    const requiredFields: Array<keyof ICreateEmployee.Input> = ['name', 'email', 'cpf', 'password']
+  private validateRequired(input: ICreateEmployeeUseCase.Input): string | null {
+    const requiredFields: Array<keyof ICreateEmployeeUseCase.Input> = ['name', 'email', 'cpf', 'password']
 
     for (const field of requiredFields) {
       if (!input[field]) {

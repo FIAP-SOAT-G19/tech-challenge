@@ -1,19 +1,19 @@
 import { EmployeeRepository } from '@/infra/database/repositories/employee.repository'
-import { IUpdateEmployee } from '@/ports/usecases/employee/update-employee.port'
+import { IUpdateEmployeeUseCase } from '@/ports/usecases/employee/update-employee.port'
 import { ISchemaValidator } from '@/ports/validators/schema-validator.port'
 
 import { cryptoPassword } from '../../../shared/utils/encryptoPassword.util'
 import { InvalidParamError, SchemaValidationError } from '../../../shared/errors'
 import constants from '../../../shared/constants'
 
-export class UpdateEmployeeUseCase {
+export class UpdateEmployeeUseCase implements IUpdateEmployeeUseCase {
   constructor(
     private readonly employeeRepository: EmployeeRepository,
     private readonly schemaValidator: ISchemaValidator
   ) {
   }
 
-  async execute(input: IUpdateEmployee.Input): Promise<IUpdateEmployee.Output> {
+  async execute(input: IUpdateEmployeeUseCase.Input): Promise<IUpdateEmployeeUseCase.Output> {
     const employee = await this.employeeRepository.findById(input.id)
     if (!employee) { throw new InvalidParamError('Employee not found') }
 
@@ -34,7 +34,7 @@ export class UpdateEmployeeUseCase {
     return await this.employeeRepository.update(updatedEmployee)
   }
 
-  private async validateInput (input: IUpdateEmployee.Input): Promise<void> {
+  private async validateInput (input: IUpdateEmployeeUseCase.Input): Promise<void> {
     if (input.email) {
       const emailAlreadyInUse = await this.employeeRepository.findByEmail(input.email)
       if (emailAlreadyInUse) throw new InvalidParamError('Email already in use')

@@ -1,8 +1,8 @@
-export interface IDeleteEmployee {
-  execute: (input: IDeleteEmployee.Input) => Promise<void>
+export interface IDeleteEmployeeUseCase {
+  execute: (input: IDeleteEmployeeUseCase.Input) => Promise<void>
 }
 
-export namespace IDeleteEmployee {
+export namespace IDeleteEmployeeUseCase {
   export type Input = {
     id: string
   }

@@ -1,11 +1,11 @@
 import { EmployeeRepository } from '@/infra/database/repositories/employee.repository'
-import { IDeleteEmployee } from '@/ports/usecases/employee/delete-employee.port'
+import { IDeleteEmployeeUseCase } from '@/ports/usecases/employee/delete-employee.port'
 import { InvalidParamError } from '../../../shared/errors'
 
-export class DeleteEmployeeUseCase {
+export class DeleteEmployeeUseCase implements IDeleteEmployeeUseCase {
   constructor(private readonly employeeRepository: EmployeeRepository) {}
 
-  async execute(input: IDeleteEmployee.Input): Promise<void> {
+  async execute(input: IDeleteEmployeeUseCase.Input): Promise<void> {
     const employee = await this.employeeRepository.findById(input.id)
     if (!employee) {
       throw new InvalidParamError('Employee not found')

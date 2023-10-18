@@ -11,7 +11,7 @@ export class DeleteEmployeeController {
       await this.deleteEmployeeUseCase.execute({
         id
       })
-      return success(204, {})
+      return success(200, {})
     } catch (error: any) {
       if (error.name === 'InvalidParamError') {
         return badRequest(error.message)

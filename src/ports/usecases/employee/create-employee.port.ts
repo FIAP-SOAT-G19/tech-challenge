@@ -1,8 +1,8 @@
-export interface ICreateEmployee {
-  execute: (input: ICreateEmployee.Input) => Promise<ICreateEmployee.Output>
+export interface ICreateEmployeeUseCase {
+  execute: (input: ICreateEmployeeUseCase.Input) => Promise<ICreateEmployeeUseCase.Output>
 }
 
-export namespace ICreateEmployee {
+export namespace ICreateEmployeeUseCase {
   export type Input = {
     name: string
     email: string

@@ -1,8 +1,9 @@
-export interface IReadEmployee {
-  execute: (input: IReadEmployee.Input) => Promise<IReadEmployee.Output>
+export interface IReadEmployeeUseCase {
+  findOne: (input: IReadEmployeeUseCase.Input) => Promise<IReadEmployeeUseCase.Output>
+  findAll: () => Promise<IReadEmployeeUseCase.Output[]>
 }
 
-export namespace IReadEmployee {
+export namespace IReadEmployeeUseCase {
   export type Input = {
     id: string
   }
