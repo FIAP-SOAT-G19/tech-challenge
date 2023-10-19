@@ -1,4 +1,4 @@
-import { Client, IClientRepository, SaveClientInput } from '@/ports'
+import { Client, IClientRepository, SaveClientInput, UpdateClientInput } from '@/ports'
 import { prismaClient } from '../prisma-client'
 
 export class ClientRepository implements IClientRepository {
@@ -18,7 +18,7 @@ export class ClientRepository implements IClientRepository {
   }
 
   async save(input: SaveClientInput): Promise<string> {
-    const order = await prismaClient.client.create({
+    const client = await prismaClient.client.create({
       data: {
         id: input.id,
         cpf: input.cpf,
@@ -28,6 +28,22 @@ export class ClientRepository implements IClientRepository {
         createdAt: input.createdAt
       }
     })
-    return order.id
+    return client.id
+  }
+
+  async update(input: UpdateClientInput): Promise<string> {
+    const client = await prismaClient.client.update({
+      data: {
+        cpf: input.cpf,
+        name: input.name,
+        email: input.email,
+        password: input.password,
+        updatedAt: input.updatedAt
+      },
+      where: {
+        id: input.id
+      }
+    })
+    return client.id
   }
 }
