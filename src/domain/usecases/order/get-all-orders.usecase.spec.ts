@@ -95,7 +95,7 @@ describe('GetAllOrdersUseCase', () => {
   test('should call OrderRepository.getAll once and with correct values', async () => {
     input.clientId = 'anyClientId'
     input.status = 'waitingPayment'
-    input.paidAtInitialDate = new Date('2023-01-01 00:00:00')
+    input.paidAtInitialDate = '2023-01-01 00:00:00'
 
     await sut.execute(input)
 
@@ -103,15 +103,15 @@ describe('GetAllOrdersUseCase', () => {
     expect(orderRepository.getAll).toHaveBeenCalledWith({
       clientId: 'anyClientId',
       status: 'waitingPayment',
-      paidAtInitialDate: new Date('2023-01-01 00:00:00')
+      paidAtInitialDate: '2023-01-01 00:00:00'
     })
   })
 
   test('should call OrderRepository.getAll once and with correct values', async () => {
     input.clientId = 'anyClientId'
     input.status = 'waitingPayment'
-    input.paidAtInitialDate = new Date('2023-01-01 00:00:00')
-    input.paidAtEndDate = new Date('2023-05-01 00:00:00')
+    input.paidAtInitialDate = '2023-01-01 00:00:00'
+    input.paidAtEndDate = '2023-05-01 00:00:00'
 
     await sut.execute(input)
 
@@ -119,17 +119,17 @@ describe('GetAllOrdersUseCase', () => {
     expect(orderRepository.getAll).toHaveBeenCalledWith({
       clientId: 'anyClientId',
       status: 'waitingPayment',
-      paidAtInitialDate: new Date('2023-01-01 00:00:00'),
-      paidAtEndDate: new Date('2023-05-01 00:00:00')
+      paidAtInitialDate: '2023-01-01 00:00:00',
+      paidAtEndDate: '2023-05-01 00:00:00'
     })
   })
 
   test('should call OrderRepository.getAll once and with correct values', async () => {
     input.clientId = 'anyClientId'
     input.status = 'waitingPayment'
-    input.paidAtInitialDate = new Date('2023-01-01 00:00:00')
-    input.paidAtEndDate = new Date('2023-05-01 00:00:00')
-    input.createdAtInitialDate = new Date('2023-05-01 00:00:00')
+    input.paidAtInitialDate = '2023-01-01 00:00:00'
+    input.paidAtEndDate = '2023-05-01 00:00:00'
+    input.createdAtInitialDate = '2023-05-01 00:00:00'
 
     await sut.execute(input)
 
@@ -137,19 +137,19 @@ describe('GetAllOrdersUseCase', () => {
     expect(orderRepository.getAll).toHaveBeenCalledWith({
       clientId: 'anyClientId',
       status: 'waitingPayment',
-      paidAtInitialDate: new Date('2023-01-01 00:00:00'),
-      paidAtEndDate: new Date('2023-05-01 00:00:00'),
-      createdAtInitialDate: new Date('2023-05-01 00:00:00')
+      paidAtInitialDate: '2023-01-01 00:00:00',
+      paidAtEndDate: '2023-05-01 00:00:00',
+      createdAtInitialDate: '2023-05-01 00:00:00'
     })
   })
 
   test('should call OrderRepository.getAll once and with correct values', async () => {
     input.clientId = 'anyClientId'
     input.status = 'waitingPayment'
-    input.paidAtInitialDate = new Date('2023-01-01 00:00:00')
-    input.paidAtEndDate = new Date('2023-05-01 00:00:00')
-    input.createdAtInitialDate = new Date('2023-05-01 00:00:00')
-    input.createdAtEndDate = new Date('2023-08-01 00:00:00')
+    input.paidAtInitialDate = '2023-01-01 00:00:00'
+    input.paidAtEndDate = '2023-05-01 00:00:00'
+    input.createdAtInitialDate = '2023-05-01 00:00:00'
+    input.createdAtEndDate = '2023-08-01 00:00:00'
 
     await sut.execute(input)
 
@@ -157,10 +157,33 @@ describe('GetAllOrdersUseCase', () => {
     expect(orderRepository.getAll).toHaveBeenCalledWith({
       clientId: 'anyClientId',
       status: 'waitingPayment',
-      paidAtInitialDate: new Date('2023-01-01 00:00:00'),
-      paidAtEndDate: new Date('2023-05-01 00:00:00'),
-      createdAtInitialDate: new Date('2023-05-01 00:00:00'),
-      createdAtEndDate: new Date('2023-08-01 00:00:00')
+      paidAtInitialDate: '2023-01-01 00:00:00',
+      paidAtEndDate: '2023-05-01 00:00:00',
+      createdAtInitialDate: '2023-05-01 00:00:00',
+      createdAtEndDate: '2023-08-01 00:00:00'
+    })
+  })
+
+  test('should call OrderRepository.getAll once and with correct values', async () => {
+    input.clientId = 'anyClientId'
+    input.clientDocument = 'anyClientDocuyment'
+    input.status = 'waitingPayment'
+    input.paidAtInitialDate = '2023-01-01 00:00:00'
+    input.paidAtEndDate = '2023-05-01 00:00:00'
+    input.createdAtInitialDate = '2023-05-01 00:00:00'
+    input.createdAtEndDate = '2023-08-01 00:00:00'
+
+    await sut.execute(input)
+
+    expect(orderRepository.getAll).toHaveBeenCalledTimes(1)
+    expect(orderRepository.getAll).toHaveBeenCalledWith({
+      clientId: 'anyClientId',
+      clientDocument: 'anyClientDocuyment',
+      status: 'waitingPayment',
+      paidAtInitialDate: '2023-01-01 00:00:00',
+      paidAtEndDate: '2023-05-01 00:00:00',
+      createdAtInitialDate: '2023-05-01 00:00:00',
+      createdAtEndDate: '2023-08-01 00:00:00'
     })
   })
 

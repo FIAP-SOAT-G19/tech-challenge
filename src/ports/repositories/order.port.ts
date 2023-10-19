@@ -26,11 +26,12 @@ export type UpdateOrderStatusInput = {
 
 export type GetAllOrdersInput = {
   clientId?: string
+  clientDocument?: string
   status?: string
-  paidAtInitialDate?: Date
-  paidAtEndDate?: Date
-  createdAtInitialDate?: Date
-  createdAtEndDate?: Date
+  paidAtInitialDate?: string
+  paidAtEndDate?: string
+  createdAtInitialDate?: string
+  createdAtEndDate?: string
 }
 
 export type GetAllOrdersOutput = OrderOutput [] | null

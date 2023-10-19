@@ -9,7 +9,6 @@ export class GetOrderByNumberUseCase implements IGetOrderByNumberUseCase {
     if (!orderNumber) {
       throw new MissingParamError('orderNumber')
     }
-    const order = await this.orderRepository.getByOrderNumber(orderNumber)
-    return order
+    return this.orderRepository.getByOrderNumber(orderNumber)
   }
 }

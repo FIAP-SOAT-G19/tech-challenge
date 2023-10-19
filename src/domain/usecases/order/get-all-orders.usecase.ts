@@ -7,8 +7,7 @@ export class GetAllOrdersUseCase implements IGetAllOrdersUseCase {
   constructor(private readonly orderRepository: IOrderRepository) {}
   async execute (input: IGetAllOrdersUseCase.Input): Promise<IGetAllOrdersUseCase.Output> {
     const queryOptions = this.makeQueryOptions(input)
-    const orders = await this.orderRepository.getAll(queryOptions)
-    return orders
+    return this.orderRepository.getAll(queryOptions)
   }
 
   private makeQueryOptions (input: IGetAllOrdersUseCase.Input): IGetAllOrdersUseCase.Input {
@@ -16,6 +15,10 @@ export class GetAllOrdersUseCase implements IGetAllOrdersUseCase {
 
     if (input.clientId) {
       options.clientId = input.clientId
+    }
+
+    if (input.clientDocument) {
+      options.clientDocument = input.clientDocument
     }
 
     if (input.status) {
@@ -28,19 +31,19 @@ export class GetAllOrdersUseCase implements IGetAllOrdersUseCase {
     }
 
     if (input.paidAtInitialDate) {
-      options.paidAtInitialDate = new Date(input.paidAtInitialDate)
+      options.paidAtInitialDate = input.paidAtInitialDate
     }
 
     if (input.paidAtEndDate) {
-      options.paidAtEndDate = new Date(input.paidAtEndDate)
+      options.paidAtEndDate = input.paidAtEndDate
     }
 
     if (input.createdAtInitialDate) {
-      options.createdAtInitialDate = new Date(input.createdAtInitialDate)
+      options.createdAtInitialDate = input.createdAtInitialDate
     }
 
     if (input.createdAtEndDate) {
-      options.createdAtEndDate = new Date(input.createdAtEndDate)
+      options.createdAtEndDate = input.createdAtEndDate
     }
 
     return options
