@@ -2,16 +2,18 @@ import { UpdateEmployeeUseCase } from './update-employee.usecase'
 import { ISchemaValidator } from '@/ports/validators/schema-validator.port'
 import { mock } from 'jest-mock-extended'
 import { IEmployeeRepository } from '@/ports/repositories/employee.port'
+import { IEncryptoPasswordGenerator } from '@/ports/usecases/encrypto-password/encrypto-password.port'
 
 const employeeRepository = mock<IEmployeeRepository>()
 const schemaValidator = mock<ISchemaValidator>()
+const encryptoPassword = mock<IEncryptoPasswordGenerator>()
 
 describe('UpdateEmployeeUseCase', () => {
   let sut: UpdateEmployeeUseCase
   let input: any
 
   beforeEach(() => {
-    sut = new UpdateEmployeeUseCase(employeeRepository, schemaValidator)
+    sut = new UpdateEmployeeUseCase(employeeRepository, schemaValidator, encryptoPassword)
     input = {
       name: 'John Doe',
       email: 'john@email.com',

@@ -3,7 +3,7 @@
 > ## Caso de sucesso
 
 1. ✅ Atualiza o campo deletedAt do cadastro de um funcionário
-2. ✅ Retorna status 200
+2. ✅ Retorna status 204
 
 > ## Exceções
 1. ✅ Retorna 404 se o id do funcionário não for fornecido

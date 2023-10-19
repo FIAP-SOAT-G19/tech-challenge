@@ -5,17 +5,19 @@ import { IUUIDGenerator } from '@/ports/usecases/uuid/uuid-generator.port'
 import { InvalidParamError } from '../../../shared/errors'
 import { mock } from 'jest-mock-extended'
 import { IEmployeeRepository } from '@/ports/repositories/employee.port'
+import { IEncryptoPasswordGenerator } from '@/ports/usecases/encrypto-password/encrypto-password.port'
 
 const employeeRepository = mock<IEmployeeRepository>()
 const schemaValidator = mock<ISchemaValidator>()
 const uuidGenerator = mock<IUUIDGenerator>()
+const encryptoPassword = mock<IEncryptoPasswordGenerator>()
 
 describe('CreateEmployeeUseCase', () => {
   let sut: CreateEmployeeUseCase
   let input: any
 
   beforeEach(() => {
-    sut = new CreateEmployeeUseCase(employeeRepository, schemaValidator, uuidGenerator)
+    sut = new CreateEmployeeUseCase(employeeRepository, schemaValidator, uuidGenerator, encryptoPassword)
     input = {
       name: 'John Doe',
       email: 'john@email.com',

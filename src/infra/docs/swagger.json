@@ -209,8 +209,19 @@
               }
             }
           },
+          "400": {
+            "description": "Erro de validação da solicitação",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "InvalidParamError",
+                  "message": "Invalid param: Employee not found"
+                }
+              }
+            }
+          },
           "500": {
-            "description": "Erro interno do servidor",
+            "description": "Employee not found",
             "content": {
               "application/json": {
                 "example": {
@@ -312,7 +323,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "204": {
             "description": "Success",
             "content": {
               "application/json": {

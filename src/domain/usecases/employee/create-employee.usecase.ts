@@ -2,30 +2,29 @@ import { EmployeeRepository } from '@/infra/database/repositories/employee.repos
 
 import { ICreateEmployeeUseCase } from '@/ports/usecases/employee/create-employee.port'
 import { IUUIDGenerator } from '@/ports/usecases/uuid/uuid-generator.port'
+import { IEncryptoPasswordGenerator } from '@/ports/usecases/encrypto-password/encrypto-password.port'
 import { ISchemaValidator } from '@/ports/validators/schema-validator.port'
 
 import { InvalidParamError, SchemaValidationError } from '../../../shared/errors'
 import constants from '../../../shared/constants'
-import { cryptoPassword } from '../../../shared/utils/encryptoPassword.util'
 
 export class CreateEmployeeUseCase implements ICreateEmployeeUseCase {
   constructor(
     private readonly employeeRepository: EmployeeRepository,
     private readonly schemaValidator: ISchemaValidator,
-    private readonly uuidGenerator: IUUIDGenerator
+    private readonly uuidGenerator: IUUIDGenerator,
+    private readonly encryptoPassword: IEncryptoPasswordGenerator
   ) {}
 
   async execute (input: ICreateEmployeeUseCase.Input): Promise<ICreateEmployeeUseCase.Output> {
     await this.validateInput(input)
-
-    const password = cryptoPassword(input.password)
 
     return await this.employeeRepository.create({
       id: this.uuidGenerator.generate(),
       name: input.name,
       email: input.email,
       cpf: input.cpf,
-      password,
+      password: this.encryptoPassword.generate(input.password),
       createdAt: new Date(),
       updatedAt: new Date(),
       deletedAt: new Date('9999-12-31T23:59:59.999Z')

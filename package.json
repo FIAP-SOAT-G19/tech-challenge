@@ -74,7 +74,6 @@
     "mockdate": "^3.0.5",
     "module-alias": "^2.2.2",
     "reflect-metadata": "^0.1.13",
-    "swagger-ui-express": "^4.6.0",
-    "uuid": "^9.0.1"
+    "swagger-ui-express": "^4.6.0"
   }
 }

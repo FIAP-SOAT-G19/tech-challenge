@@ -7,16 +7,19 @@ import { EmployeeRepository } from '../../../database/repositories/employee.repo
 
 import { UUIDGeneratorAdapter } from '../../../../infra/adapters/uuid/uuid-generator'
 import { JoiValidatorSchemaAdapter } from '../../../../infra/adapters/validation/joi-validator.adapter'
+import { EncryptoPasswordGenerator } from '../../../../infra/adapters/encrypt-password/encrypt-password-generator'
 
 const uuidGenerator = new UUIDGeneratorAdapter()
 const employeeRepository = new EmployeeRepository()
 const schemaValidator = new JoiValidatorSchemaAdapter()
+const encryptoPassword = new EncryptoPasswordGenerator()
 
 export const makeCreateEmployeeUseCase = (): CreateEmployeeUseCase => {
   return new CreateEmployeeUseCase(
     employeeRepository,
     schemaValidator,
-    uuidGenerator
+    uuidGenerator,
+    encryptoPassword
   )
 }
 
@@ -31,7 +34,8 @@ export const makeReadAllEmployeeUseCase = (): ReadEmployeeUseCase => {
 export const makeUpdateEmployeeUseCase = (): UpdateEmployeeUseCase => {
   return new UpdateEmployeeUseCase(
     employeeRepository,
-    schemaValidator
+    schemaValidator,
+    encryptoPassword
   )
 }
 

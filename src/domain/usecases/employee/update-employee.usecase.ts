@@ -1,15 +1,16 @@
 import { EmployeeRepository } from '@/infra/database/repositories/employee.repository'
 import { IUpdateEmployeeUseCase } from '@/ports/usecases/employee/update-employee.port'
 import { ISchemaValidator } from '@/ports/validators/schema-validator.port'
+import { IEncryptoPasswordGenerator } from '@/ports/usecases/encrypto-password/encrypto-password.port'
 
-import { cryptoPassword } from '../../../shared/utils/encryptoPassword.util'
 import { InvalidParamError, SchemaValidationError } from '../../../shared/errors'
 import constants from '../../../shared/constants'
 
 export class UpdateEmployeeUseCase implements IUpdateEmployeeUseCase {
   constructor(
     private readonly employeeRepository: EmployeeRepository,
-    private readonly schemaValidator: ISchemaValidator
+    private readonly schemaValidator: ISchemaValidator,
+    private readonly encryptoPassword: IEncryptoPasswordGenerator
   ) {
   }
 
@@ -19,7 +20,9 @@ export class UpdateEmployeeUseCase implements IUpdateEmployeeUseCase {
 
     await this.validateInput(input)
 
-    const password = input.password ? cryptoPassword(input.password) : employee.password
+    const password = input.password
+      ? this.encryptoPassword.generate(input.password)
+      : employee.password
 
     const updatedEmployee = {
       id: input.id,
