@@ -34,10 +34,6 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
       }
     }
 
-    if (!input.clientId && !input.clientDocument) {
-      throw new MissingParamError('clientId or clientDocument')
-    }
-
     if (input.clientId) {
       const client = await this.clientRepository.getById(input.clientId)
       if (!client) {

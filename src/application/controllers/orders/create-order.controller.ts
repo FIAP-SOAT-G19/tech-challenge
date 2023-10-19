@@ -1,7 +1,7 @@
 import { ICreateOrderUseCase, IController } from '@/ports/'
 import { badRequest, serverError, success } from '../../../shared/helpers/http.helper'
 import { HttpRequest, HttpResponse } from '../../../shared/types/http.types'
-import { InvalidParamError, MissingParamError, SchemaValidationError } from '@/shared/errors'
+import { InvalidParamError, MissingParamError, SchemaValidationError } from '../../../shared/errors'
 
 export class CreateOrderController implements IController {
   constructor(private readonly createOrderUseCase: ICreateOrderUseCase) {}

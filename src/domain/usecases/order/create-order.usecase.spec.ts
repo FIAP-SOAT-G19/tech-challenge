@@ -117,15 +117,6 @@ describe('CreateOrderUseCase', () => {
     await expect(output).rejects.toThrowError(new InvalidParamError('productId'))
   })
 
-  test('should throws error if clientId and clientDocument are null', async () => {
-    input.clientDocument = null
-    input.clientId = null
-
-    const output = sut.execute(input)
-
-    await expect(output).rejects.toThrowError(new MissingParamError('clientId or clientDocument'))
-  })
-
   test('should call UUIDGenerator', async () => {
     await sut.execute(input)
 

@@ -83,6 +83,14 @@ describe('DeleteOrderUseCase', () => {
     await expect(output).rejects.toThrowError(new InvalidParamError('only orders with canceled status can be deleted'))
   })
 
+  test('should throws an exception if order status is invalid', async () => {
+    orderRepository.getByOrderNumber.mockResolvedValueOnce(null)
+
+    const output = sut.execute('anyOrderNumber')
+
+    await expect(output).rejects.toThrowError(new InvalidParamError('orderNumber'))
+  })
+
   test('should call OrderRepository.delete once and with correct orderNumber', async () => {
     await sut.execute('anyOrderNumber')
 
