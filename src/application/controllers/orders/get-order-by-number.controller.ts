@@ -1,8 +1,8 @@
 import { IController } from '@/ports'
 import { IGetOrderByNumberUseCase } from '@/ports/usecases/order/get-order-by-number.port'
-import { badRequest, serverError, success } from '../../../shared/helpers/http.helper'
+import { success } from '../../../shared/helpers/http.helper'
 import { HttpRequest, HttpResponse } from '../../../shared/types/http.types'
-import { InvalidParamError, MissingParamError, SchemaValidationError } from '../../../shared/errors'
+import { handleError } from '../../../shared/errors/handle-error'
 
 export class GetOrderByNumberController implements IController {
   constructor(private readonly getOrderByNumberUseCase: IGetOrderByNumberUseCase) {}
@@ -11,10 +11,7 @@ export class GetOrderByNumberController implements IController {
       const output = await this.getOrderByNumberUseCase.execute(input.params.orderNumber)
       return success(200, output)
     } catch (error: any) {
-      if (error instanceof InvalidParamError || error instanceof MissingParamError || error instanceof SchemaValidationError) {
-        return badRequest(error)
-      }
-      return serverError(error)
+      return handleError(error)
     }
   }
 }

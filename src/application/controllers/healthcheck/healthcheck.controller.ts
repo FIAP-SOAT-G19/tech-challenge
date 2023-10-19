@@ -1,5 +1,6 @@
 import { IController } from '@/ports/controllers/index.port'
-import { HttpRequest, HttpResponse } from '@/shared/types/http.types'
+import { handleError } from '@/shared/errors/handle-error'
+import { HttpRequest, HttpResponse } from '../../../shared/types/http.types'
 import { Pool } from 'pg'
 
 export class HealthCheckController implements IController {
@@ -21,10 +22,7 @@ export class HealthCheckController implements IController {
         body: { status: 'OK' }
       }
     } catch (error) {
-      return {
-        statusCode: 500,
-        body: error
-      }
+      return handleError(error)
     } finally {
       void pool.end()
     }

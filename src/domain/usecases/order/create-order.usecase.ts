@@ -1,5 +1,5 @@
 import { IClientRepository, ICreateOrderUseCase, IOrderProductRepository, IOrderRepository, ISchemaValidator, IUUIDGenerator } from '@/ports/'
-import { InvalidParamError, MissingParamError, SchemaValidationError } from '../../../shared/errors'
+import { InvalidParamError, SchemaValidationError } from '../../../shared/errors'
 import constants from '../../../shared/constants'
 import { ramdonStringGenerator } from '../../../shared/helpers/string.helper'
 import { IProductRepository } from '@/ports/repositories/product.port'

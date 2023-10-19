@@ -1,8 +1,9 @@
 import { IController } from '@/ports'
-import { serverError, success } from '../../../../shared/helpers/http.helper'
+import { success } from '../../../../shared/helpers/http.helper'
 import { HttpRequest, HttpResponse } from '../../../../shared/types/http.types'
 import { IUpdateOrderStatusUseCase } from '@/ports/usecases/order/update-oder-status.port'
 import constants from '../../../../shared/constants'
+import { handleError } from '../../../../shared/errors/handle-error'
 
 export class QrCodePaymentController implements IController {
   constructor(private readonly updateOrderStatusUseCase: IUpdateOrderStatusUseCase) {}
@@ -12,7 +13,7 @@ export class QrCodePaymentController implements IController {
       await this.updateOrderStatusUseCase.execute({ orderNumber: input.body.orderNumber, status })
       return success(204, null)
     } catch (error: any) {
-      return serverError(error)
+      return handleError(error)
     }
   }
 }
