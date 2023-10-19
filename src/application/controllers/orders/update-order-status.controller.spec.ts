@@ -2,7 +2,8 @@ import { HttpRequest } from '@/shared/types/http.types'
 import { UpdateOrderStatusController } from './update-order-status.controller'
 import { mock } from 'jest-mock-extended'
 import { IUpdateOrderStatusUseCase } from '@/ports/usecases/order/update-oder-status.port'
-import { serverError, success } from '@/shared/helpers/http.helper'
+import { badRequest, serverError, success } from '@/shared/helpers/http.helper'
+import { InvalidParamError } from '@/shared/errors'
 
 const updateOrderStatusUseCase = mock<IUpdateOrderStatusUseCase>()
 
@@ -29,7 +30,7 @@ describe('UpdateOrderStatusController', () => {
     expect(updateOrderStatusUseCase.execute).toHaveBeenCalledWith({ orderNumber: 'anyOrderNumber', status: 'anyStatus' })
   })
 
-  test('should return an error if UpdateOrderStatusUseCase throws', async () => {
+  test('should return a correct error if UpdateOrderStatusUseCase throws', async () => {
     const error = new Error('Internal server error')
     updateOrderStatusUseCase.execute.mockImplementationOnce(() => {
       throw error
@@ -38,6 +39,17 @@ describe('UpdateOrderStatusController', () => {
     const output = await sut.execute(input)
 
     expect(output).toEqual(serverError(error))
+  })
+
+  test('should return a correct error if UpdateOrderStatusUseCase throws', async () => {
+    const error = new InvalidParamError('Any error')
+    updateOrderStatusUseCase.execute.mockImplementationOnce(() => {
+      throw error
+    })
+
+    const output = await sut.execute(input)
+
+    expect(output).toEqual(badRequest(error))
   })
 
   test('should return 204 on success', async () => {

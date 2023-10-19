@@ -3,7 +3,8 @@ import { GetOrderByNumberController } from './get-order-by-number.controller'
 import { mock } from 'jest-mock-extended'
 import { IGetOrderByNumberUseCase } from '@/ports/usecases/order/get-order-by-number.port'
 import { OrderOutput } from '@/domain/types/orders.types'
-import { serverError, success } from '@/shared/helpers/http.helper'
+import { badRequest, serverError, success } from '@/shared/helpers/http.helper'
+import { InvalidParamError } from '@/shared/errors'
 
 const getOrderByNumberUseCase = mock<IGetOrderByNumberUseCase>()
 const orderOutput: OrderOutput = {
@@ -58,7 +59,7 @@ describe('GetOrderByNumberController', () => {
     expect(output).toEqual(success(200, orderOutput))
   })
 
-  test('should return 500 if GetOrderByNumberUseCase throws an exception', async () => {
+  test('should return a correct error if GetOrderByNumberUseCase throws an exception', async () => {
     const error = new Error('Any ERROR')
 
     getOrderByNumberUseCase.execute.mockImplementationOnce(() => { throw error })
@@ -66,5 +67,15 @@ describe('GetOrderByNumberController', () => {
     const output = await sut.execute(input)
 
     expect(output).toEqual(serverError(error))
+  })
+
+  test('should return a correct error if GetOrderByNumberUseCase throws an exception', async () => {
+    const error = new InvalidParamError('Any ERROR')
+
+    getOrderByNumberUseCase.execute.mockImplementationOnce(() => { throw error })
+
+    const output = await sut.execute(input)
+
+    expect(output).toEqual(badRequest(error))
   })
 })

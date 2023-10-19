@@ -2,7 +2,8 @@ import { HttpRequest } from '@/shared/types/http.types'
 import { CreateOrderController } from './create-order.controller'
 import { mock } from 'jest-mock-extended'
 import { ICreateOrderUseCase } from '@/ports'
-import { serverError, success } from '@/shared/helpers/http.helper'
+import { badRequest, serverError, success } from '@/shared/helpers/http.helper'
+import { InvalidParamError } from '@/shared/errors'
 
 const createOrderUseCase = mock<ICreateOrderUseCase>()
 
@@ -50,7 +51,7 @@ describe('CreateOrderController', () => {
     expect(output).toEqual(success(201, { orderNumber: 'anyOrderNumber' }))
   })
 
-  test('should return an error if CreateOrderUseCase throws', async () => {
+  test('should return a correct error if CreateOrderUseCase throws', async () => {
     const error = new Error('Internal server error')
     createOrderUseCase.execute.mockImplementationOnce(() => {
       throw error
@@ -59,5 +60,16 @@ describe('CreateOrderController', () => {
     const output = await sut.execute(input)
 
     expect(output).toEqual(serverError(error))
+  })
+
+  test('should return a correct error if CreateOrderUseCase throws', async () => {
+    const error = new InvalidParamError('anyParam')
+    createOrderUseCase.execute.mockImplementationOnce(() => {
+      throw error
+    })
+
+    const output = await sut.execute(input)
+
+    expect(output).toEqual(badRequest(error))
   })
 })

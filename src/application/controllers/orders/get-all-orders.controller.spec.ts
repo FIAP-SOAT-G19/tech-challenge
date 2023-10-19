@@ -2,8 +2,9 @@ import { HttpRequest } from '@/shared/types/http.types'
 import { GetAllOrdersController } from './get-all-orders.controller'
 import { mock } from 'jest-mock-extended'
 import { OrderOutput } from '@/domain/types/orders.types'
-import { serverError, success } from '@/shared/helpers/http.helper'
+import { badRequest, serverError, success } from '@/shared/helpers/http.helper'
 import { IGetAllOrdersUseCase } from '@/ports/usecases/order/get-all-orders.port'
+import { InvalidParamError } from '@/shared/errors'
 
 const getAllOrdersUseCase = mock<IGetAllOrdersUseCase>()
 const orderOutput: OrderOutput [] = [{
@@ -67,7 +68,7 @@ describe('GetAllOrdersController', () => {
     expect(output).toEqual(success(200, null))
   })
 
-  test('should return 500 if getAllOrdersUseCase throws an exception', async () => {
+  test('should return a correct error if getAllOrdersUseCase throws an exception', async () => {
     const error = new Error('Any ERROR')
 
     getAllOrdersUseCase.execute.mockImplementationOnce(() => { throw error })
@@ -75,5 +76,15 @@ describe('GetAllOrdersController', () => {
     const output = await sut.execute(input)
 
     expect(output).toEqual(serverError(error))
+  })
+
+  test('should return a correct error if getAllOrdersUseCase throws an exception', async () => {
+    const error = new InvalidParamError('Any ERROR')
+
+    getAllOrdersUseCase.execute.mockImplementationOnce(() => { throw error })
+
+    const output = await sut.execute(input)
+
+    expect(output).toEqual(badRequest(error))
   })
 })
