@@ -1,8 +1,8 @@
 import { serverError } from '@/shared/helpers/http.helper'
 import { HttpRequest } from '@/shared/types/http.types'
-import { mock } from 'jest-mock-extended'
 import { IUpdateClientUseCase } from '@/ports/usecases/client/update-client.port'
-import { UpdateClientController } from './update-client.controller'
+import { UpdateClientController } from '@/application/controllers/client/update-client.controller'
+import { mock } from 'jest-mock-extended'
 
 const updateClientUseCase = mock<IUpdateClientUseCase>()
 

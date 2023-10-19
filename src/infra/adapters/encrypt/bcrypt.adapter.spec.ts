@@ -1,5 +1,5 @@
 import { IEncrypt } from '@/ports/usecases/encrypt/encrypt.port'
-import { BcryptAdapter } from './bcrypt.adapter'
+import { BcryptAdapter } from '@/infra/adapters/encrypt/bcrypt.adapter'
 import bcrypt from 'bcrypt'
 
 describe('BcryptAdapter', () => {

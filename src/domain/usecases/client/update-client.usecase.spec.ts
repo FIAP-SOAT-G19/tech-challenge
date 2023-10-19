@@ -2,9 +2,9 @@ import { Client, IClientRepository, ISchemaValidator } from '@/ports'
 import { IUpdateClientUseCase } from '@/ports/usecases/client/update-client.port'
 import { IEncrypt } from '@/ports/usecases/encrypt/encrypt.port'
 import { InvalidParamError } from '@/shared/errors'
+import { UpdateClientUseCase } from '@/domain/usecases/client/update-client.usecase'
 import { mock } from 'jest-mock-extended'
 import MockDate from 'mockdate'
-import { UpdateClientUseCase } from './update-client.usecase'
 
 const schemaValidator = mock<ISchemaValidator>()
 const clientRepository = mock<IClientRepository>()

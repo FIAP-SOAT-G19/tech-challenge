@@ -1,8 +1,8 @@
 import { ICreateClientUseCase } from '@/ports/usecases/client/create-client.port'
 import { serverError } from '@/shared/helpers/http.helper'
 import { HttpRequest } from '@/shared/types/http.types'
+import { CreateClientController } from '@/application/controllers/client/create-client.controller'
 import { mock } from 'jest-mock-extended'
-import { CreateClientController } from './create-client.controller'
 
 const createClientUseCase = mock<ICreateClientUseCase>()
 

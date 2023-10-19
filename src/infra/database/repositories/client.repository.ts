@@ -1,5 +1,5 @@
 import { Client, IClientRepository, SaveClientInput, UpdateClientInput } from '@/ports'
-import { prismaClient } from '../prisma-client'
+import { prismaClient } from '@/infra/database/prisma-client'
 
 export class ClientRepository implements IClientRepository {
   async getById(clientId: string): Promise<Client | null> {
