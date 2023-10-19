@@ -1,14 +1,13 @@
 import { EmployeeRepository } from '@/infra/database/repositories/employee.repository'
 import { IReadEmployeeUseCase } from '@/ports/usecases/employee/read-employee.port'
-import { InvalidParamError } from '../../../shared/errors'
 
 export class ReadEmployeeUseCase implements IReadEmployeeUseCase {
   constructor(private readonly employeeRepository: EmployeeRepository) {
   }
 
-  async findOne(input: IReadEmployeeUseCase.Input): Promise<IReadEmployeeUseCase.Output> {
+  async findOne(input: IReadEmployeeUseCase.Input): Promise<IReadEmployeeUseCase.Output | null> {
     const employee = await this.employeeRepository.findById(input.id)
-    if (!employee) { throw new InvalidParamError('Employee not found') }
+    if (!employee) { return null }
     return {
       id: employee.id,
       name: employee.name,
@@ -19,9 +18,9 @@ export class ReadEmployeeUseCase implements IReadEmployeeUseCase {
     }
   }
 
-  async findAll(): Promise<IReadEmployeeUseCase.Output[]> {
+  async findAll(): Promise<IReadEmployeeUseCase.Output[] | null> {
     const employees = await this.employeeRepository.findAll()
-    if (!employees) { throw new InvalidParamError('Employees not found') }
+    if (!employees) { return null }
     return employees.map(employee => ({
       id: employee.id,
       name: employee.name,

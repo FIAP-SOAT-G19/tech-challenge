@@ -1,6 +1,6 @@
 export interface IReadEmployeeUseCase {
-  findOne: (input: IReadEmployeeUseCase.Input) => Promise<IReadEmployeeUseCase.Output>
-  findAll: () => Promise<IReadEmployeeUseCase.Output[]>
+  findOne: (input: IReadEmployeeUseCase.Input) => Promise<IReadEmployeeUseCase.Output | null>
+  findAll: () => Promise<IReadEmployeeUseCase.Output[] | null>
 }
 
 export namespace IReadEmployeeUseCase {

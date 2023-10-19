@@ -100,17 +100,8 @@
             "content": {
               "application/json": {
                 "example": {
-                  "error": "SchemaValidationError"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Erro de conflito",
-            "content": {
-              "application/json": {
-                "example": {
-                  "error": "Invalid param: EmailInUseError"
+                  "error": "InvalidParamError",
+                  "message": "Invalid param: The 'password' field is required."
                 }
               }
             }
@@ -142,26 +133,26 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "example": [
-                    {
-                      "id": "3a51ed19-316a-4b05-8f0e-5b691abad994",
-                      "name": "John Doe",
-                      "email": "john.doe@email.com",
-                      "cpf": "12345678900",
-                      "createdAt": "2023-10-12T21:44:36.423Z",
-                      "updatedAt": "2023-10-12T21:44:36.423Z"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Erro de validação da solicitação",
-            "content": {
-              "application/json": {
-                "example": {
-                  "error": "Invalid param: InvalidParamError"
+                  "example": {
+                    "employees": [
+                      {
+                        "id": "3a51ed19-316a-4b05-8f0e-5b691abad994",
+                        "name": "John Doe",
+                        "email": "john.doe@email.com",
+                        "cpf": "12345678900",
+                        "createdAt": "2023-10-12T21:44:36.423Z",
+                        "updatedAt": "2023-10-12T21:44:36.423Z"
+                      },
+                      {
+                        "id": "e5b5b3c7-59a6-4ed9-b13b-1af23757199e",
+                        "name": "Nome do Funcionário 5",
+                        "email": "email6@example.com",
+                        "cpf": "12345678901",
+                        "createdAt": "2023-10-12T21:50:51.553Z",
+                        "updatedAt": "2023-10-12T21:50:51.553Z"
+                      }
+                    ]
+                  }
                 }
               }
             }
@@ -205,23 +196,15 @@
                 "schema": {
                   "type": "object",
                   "example": {
-                    "id": "3a51ed19-316a-4b05-8f0e-5b691abad994",
-                    "name": "John Doe",
-                    "email": "john.doe@email.com",
-                    "cpf": "12345678900",
-                    "createdAt": "2023-10-12T21:44:36.423Z",
-                    "updatedAt": "2023-10-12T21:44:36.423Z"
+                    "employee": {
+                      "id": "3a51ed19-316a-4b05-8f0e-5b691abad994",
+                      "name": "John Doe",
+                      "email": "john.doe@email.com",
+                      "cpf": "12345678900",
+                      "createdAt": "2023-10-12T21:44:36.423Z",
+                      "updatedAt": "2023-10-12T21:44:36.423Z"
+                    }
                   }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Erro de validação da solicitação",
-            "content": {
-              "application/json": {
-                "example": {
-                  "error": "Invalid param: InvalidParamError"
                 }
               }
             }
@@ -280,12 +263,7 @@
                 "schema": {
                   "type": "object",
                   "example": {
-                    "id": "3a51ed19-316a-4b05-8f0e-5b691abad994",
-                    "name": "John Doe",
-                    "email": "john.doe@email.com",
-                    "cpf": "12345678900",
-                    "createdAt": "2023-10-12T21:44:36.423Z",
-                    "updatedAt": "2023-10-12T21:44:36.423Z"
+                    "idEmployee": "aee78fe2-9ea3-4f73-aae4-f7cb3f16e972"
                   }
                 }
               }
@@ -296,7 +274,8 @@
             "content": {
               "application/json": {
                 "example": {
-                  "error": "Invalid param: InvalidParamError"
+                  "error": "InvalidParamError",
+                  "message": "Invalid param: Employee not found"
                 }
               }
             }
@@ -333,7 +312,7 @@
           }
         ],
         "responses": {
-          "204": {
+          "200": {
             "description": "Success",
             "content": {
               "application/json": {
@@ -349,7 +328,8 @@
             "content": {
               "application/json": {
                 "example": {
-                  "error": "Invalid param: InvalidParamError"
+                    "error": "InvalidParamError",
+                    "message": "Invalid param: Employee not found"
                 }
               }
             }
