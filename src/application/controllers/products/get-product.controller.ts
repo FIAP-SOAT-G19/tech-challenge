@@ -1,7 +1,8 @@
 import { IController } from '@/ports/'
-import { serverError, success } from '../../../shared/helpers/http.helper'
+import { badRequest, serverError, success } from '../../../shared/helpers/http.helper'
 import { HttpRequest, HttpResponse } from '../../../shared/types/http.types'
 import { IGetProductUseCase } from '../../../ports/usecases/product/get-product.port'
+import { ProductNotFoundError } from '@/shared/errors'
 
 export class GetProductController implements IController {
   constructor(private readonly getProductUseCase: IGetProductUseCase) {}
@@ -12,6 +13,9 @@ export class GetProductController implements IController {
       const product = await this.getProductUseCase.execute(productId)
       return success(200, product)
     } catch (error: any) {
+      if (error instanceof ProductNotFoundError) {
+        return badRequest(error)
+      }
       return serverError(error)
     }
   }

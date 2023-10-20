@@ -3,7 +3,7 @@ import { ISchemaValidator, IUUIDGenerator } from '../../../ports'
 import { mock } from 'jest-mock-extended'
 import { CreateProductUseCase } from './create-product.use-case'
 import MockDate from 'mockdate'
-import { InvalidParamError, ServerError } from '../../../shared/errors'
+import { InvalidParamError, MissingParamError, ServerError } from '../../../shared/errors'
 
 describe('CreateProductUseCase', () => {
   let createProductUseCase: CreateProductUseCase
@@ -39,15 +39,22 @@ describe('CreateProductUseCase', () => {
       image: 'url'
     }
 
-    const productInvalidSchemaInputMock = {
-      name: 'CocaCola',
-      category: '',
+    const productInvalidInputMock = {
+      category: 'drink',
       price: 6,
       description: 'beverage',
       image: 'url'
     }
 
-    const productinValidCategoryInputMock = {
+    const productInvalidSchemaInputMock = {
+      name: 'CocaCola',
+      category: 'drink',
+      price: 6,
+      description: 3,
+      image: 'url'
+    }
+
+    const productInvalidCategoryInputMock = {
       name: 'CocaCola',
       category: 'wrong',
       price: 6,
@@ -102,6 +109,20 @@ describe('CreateProductUseCase', () => {
       expect(uuidGenerator.generate).toHaveBeenCalledTimes(1)
     })
 
+    test('should throw error if validateRequiredInput returns error', async () => {
+      schemaValidator.validate.mockReturnValue({
+        value: productInvalidInputMock
+      })
+
+      const output = createProductUseCase.execute(
+        productInvalidInputMock as any
+      )
+
+      await expect(output).rejects.toThrowError(
+        new MissingParamError('product name')
+      )
+    })
+
     test('should throw error if validateSchema returns error', async () => {
       schemaValidator.validate.mockReturnValue({
         value: productInvalidSchemaInputMock,
@@ -109,7 +130,7 @@ describe('CreateProductUseCase', () => {
       })
 
       const output = createProductUseCase.execute(
-        productInvalidSchemaInputMock
+        productInvalidSchemaInputMock as any
       )
 
       await expect(output).rejects.toThrowError(new InvalidParamError('error'))
@@ -117,11 +138,11 @@ describe('CreateProductUseCase', () => {
 
     test('should throw error if validateCategory returns error', async () => {
       schemaValidator.validate.mockReturnValue({
-        value: productinValidCategoryInputMock
+        value: productInvalidCategoryInputMock
       })
 
       const output = createProductUseCase.execute(
-        productinValidCategoryInputMock
+        productInvalidCategoryInputMock
       )
 
       await expect(output).rejects.toThrowError(

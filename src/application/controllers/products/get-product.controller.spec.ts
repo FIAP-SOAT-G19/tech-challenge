@@ -3,6 +3,7 @@ import { mock } from 'jest-mock-extended'
 import { serverError } from '@/shared/helpers/http.helper'
 import { IGetProductUseCase } from '@/ports/usecases/product/get-product.port'
 import { GetProductController } from './get-product.controller'
+import { ProductNotFoundError } from '@/shared/errors'
 
 const getProductUseCase = mock<IGetProductUseCase>()
 const productMock = {
@@ -54,7 +55,24 @@ describe('GetProductController', () => {
       })
     })
 
-    test('should return an error if GetProductUseCase throws error', async () => {
+    test('should return a product not found error if GetProductUseCase throws error', async () => {
+      const error = new ProductNotFoundError()
+      getProductUseCase.execute.mockImplementationOnce(() => {
+        throw error
+      })
+
+      const output = await getProductController.execute(input)
+
+      expect(output).toEqual({
+        statusCode: 400,
+        body: {
+          error: 'NotFoundError',
+          message: 'Product not found error'
+        }
+      })
+    })
+
+    test('should return a server error if GetProductUseCase throws error', async () => {
       const error = new Error('Internal server error')
       getProductUseCase.execute.mockImplementationOnce(() => {
         throw error

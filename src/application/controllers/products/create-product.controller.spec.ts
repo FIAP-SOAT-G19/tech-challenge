@@ -1,8 +1,8 @@
 import { HttpRequest } from '@/shared/types/http.types'
 import { mock } from 'jest-mock-extended'
-import { serverError } from '@/shared/helpers/http.helper'
 import { ICreateProductUseCase } from '@/ports/usecases/product/create-product.port'
 import { CreateProductController } from './create-product.controller'
+import { InvalidParamError, MissingParamError, ServerError } from '@/shared/errors'
 
 const createProductUseCase = mock<ICreateProductUseCase>()
 
@@ -44,7 +44,11 @@ describe('CreateProductController', () => {
     })
 
     test('should return a properly missing name error', async () => {
-      input.body.name = null
+      const error = new MissingParamError('product name')
+      createProductUseCase.execute.mockImplementationOnce(() => {
+        throw error
+      })
+
       const output = await createProductController.execute(input)
 
       expect(output).toEqual({
@@ -57,7 +61,11 @@ describe('CreateProductController', () => {
     })
 
     test('should return a properly missing category error', async () => {
-      input.body.category = null
+      const error = new MissingParamError('product category')
+      createProductUseCase.execute.mockImplementationOnce(() => {
+        throw error
+      })
+
       const output = await createProductController.execute(input)
 
       expect(output).toEqual({
@@ -70,7 +78,11 @@ describe('CreateProductController', () => {
     })
 
     test('should return a properly missing price error', async () => {
-      input.body.price = null
+      const error = new MissingParamError('product price')
+      createProductUseCase.execute.mockImplementationOnce(() => {
+        throw error
+      })
+
       const output = await createProductController.execute(input)
 
       expect(output).toEqual({
@@ -83,7 +95,11 @@ describe('CreateProductController', () => {
     })
 
     test('should return a properly missing description error', async () => {
-      input.body.description = null
+      const error = new MissingParamError('product description')
+      createProductUseCase.execute.mockImplementationOnce(() => {
+        throw error
+      })
+
       const output = await createProductController.execute(input)
 
       expect(output).toEqual({
@@ -96,27 +112,54 @@ describe('CreateProductController', () => {
     })
 
     test('should return a properly missing image error', async () => {
-      input.body.image = null
-      const output = await createProductController.execute(input)
-
-      expect(output).toEqual({
-        statusCode: 400,
-        body: {
-          error: 'MissingParamError',
-          message: 'Missing param: product image'
-        }
-      })
-    })
-
-    test('should return an error if CreateProductUseCase throws error', async () => {
-      const error = new Error('Internal server error')
+      const error = new MissingParamError('product missing')
       createProductUseCase.execute.mockImplementationOnce(() => {
         throw error
       })
 
       const output = await createProductController.execute(input)
 
-      expect(output).toEqual(serverError(error))
+      expect(output).toEqual({
+        statusCode: 400,
+        body: {
+          error: 'MissingParamError',
+          message: 'Missing param: product missing'
+        }
+      })
+    })
+
+    test('should return a properly invalid param error', async () => {
+      const error = new InvalidParamError('param')
+      createProductUseCase.execute.mockImplementationOnce(() => {
+        throw error
+      })
+
+      const output = await createProductController.execute(input)
+
+      expect(output).toEqual({
+        statusCode: 400,
+        body: {
+          error: 'InvalidParamError',
+          message: 'Invalid param: param'
+        }
+      })
+    })
+
+    test('should return an error if CreateProductUseCase throws error', async () => {
+      const error = new ServerError()
+      createProductUseCase.execute.mockImplementationOnce(() => {
+        throw error
+      })
+
+      const output = await createProductController.execute(input)
+
+      expect(output).toEqual({
+        statusCode: 500,
+        body: {
+          error: 'ServerError',
+          message: 'Internal server error'
+        }
+      })
     })
   })
 })

@@ -2,7 +2,11 @@ import { ICreateProductUseCase } from '../../../ports/usecases/product/create-pr
 import { IUUIDGenerator } from '../../../ports/usecases/uuid/uuid-generator.port'
 import { ISchemaValidator } from '../../../ports/validators/schema-validator.port'
 import constants from '../../../shared/constants'
-import { InvalidParamError, ServerError } from '../../../shared/errors'
+import {
+  InvalidParamError,
+  MissingParamError,
+  ServerError
+} from '../../../shared/errors'
 import { IProductRepository } from '../../../ports/repositories/product.port'
 
 export class CreateProductUseCase implements ICreateProductUseCase {
@@ -15,6 +19,7 @@ export class CreateProductUseCase implements ICreateProductUseCase {
   async execute(
     input: ICreateProductUseCase.Input
   ): Promise<ICreateProductUseCase.Output> {
+    await this.validateRequiredInput(input)
     await this.validateSchema(input)
     await this.validateCategory(input.category)
     await this.validatePrice(input.price)
@@ -27,6 +32,24 @@ export class CreateProductUseCase implements ICreateProductUseCase {
       throw new ServerError()
     }
     return productId
+  }
+
+  private async validateRequiredInput(
+    input: ICreateProductUseCase.Input
+  ): Promise<void> {
+    const requiredInputs: Array<keyof ICreateProductUseCase.Input> = [
+      'name',
+      'category',
+      'price',
+      'description',
+      'image'
+    ]
+
+    requiredInputs.forEach((param) => {
+      if (!input[param]) {
+        throw new MissingParamError(`product ${param}`)
+      }
+    })
   }
 
   private async validateSchema(
