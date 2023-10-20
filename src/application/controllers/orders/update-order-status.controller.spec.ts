@@ -1,9 +1,7 @@
-import { HttpRequest } from '@/shared/types/http.types'
 import { UpdateOrderStatusController } from './update-order-status.controller'
+import { HttpRequest, badRequest, serverError, success, InvalidParamError } from '@/shared'
+import { IUpdateOrderStatusUseCase } from '@/ports'
 import { mock } from 'jest-mock-extended'
-import { IUpdateOrderStatusUseCase } from '@/ports/usecases/order/update-oder-status.port'
-import { badRequest, serverError, success } from '@/shared/helpers/http.helper'
-import { InvalidParamError } from '@/shared/errors'
 
 const updateOrderStatusUseCase = mock<IUpdateOrderStatusUseCase>()
 

@@ -1,8 +1,8 @@
 import { GetOrderByNumberUseCase } from './get-order-by-number.usecase'
-import { mock } from 'jest-mock-extended'
 import { IOrderRepository } from '@/ports'
 import { OrderOutput } from '@/domain/types/orders.types'
-import { MissingParamError } from '@/shared/errors'
+import { MissingParamError } from '@/shared'
+import { mock } from 'jest-mock-extended'
 
 const orderRepository = mock<IOrderRepository>()
 const orderOutput: OrderOutput = {

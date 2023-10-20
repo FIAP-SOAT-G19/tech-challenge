@@ -1,9 +1,8 @@
-import { IGetAllOrdersUseCase } from '@/ports/usecases/order/get-all-orders.port'
 import { GetAllOrdersUseCase } from './get-all-orders.usecase'
-import { mock } from 'jest-mock-extended'
-import { IOrderRepository } from '@/ports'
+import { IGetAllOrdersUseCase, IOrderRepository } from '@/ports'
 import { OrderOutput } from '@/domain/types'
-import { InvalidParamError } from '@/shared/errors'
+import { InvalidParamError } from '@/shared'
+import { mock } from 'jest-mock-extended'
 
 const orderRepository = mock<IOrderRepository>()
 const orders: OrderOutput [] = [{

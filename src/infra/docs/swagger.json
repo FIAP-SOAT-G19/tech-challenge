@@ -154,6 +154,170 @@
             }
           }
         }
+      },
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Retorna os pedidos cadastrados",
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "0b525562-0ddc-48d2-989d-3ab76172bb69"
+                          },
+                          "orderNumber": {
+                            "type": "string",
+                            "example": "68GIKX-1697060786831"
+                          },
+                          "clientDocument": {
+                            "type": "string"
+                          },
+                          "clientId": {
+                            "type": "string",
+                            "example": "d44d8af7-b151-42e9-8159-bf2e32e85ed3"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "received"
+                          },
+                          "totalValue": {
+                            "type": "number",
+                            "example": 1900
+                          },
+                          "paidAt": {
+                            "type": "string",
+                            "example": "2023-10-16T15:07:18.547Z"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "example": "2023-10-16T15:00:18.547Z"
+                          },
+                          "client": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "example": "Maria da Silva"
+                              },
+                              "email": {
+                                "type": "string",
+                                "example": "maria@gmail.com"
+                              },
+                              "cpf": {
+                                "type": "string",
+                                "example": "14598787451"
+                              },
+                              "products": {
+                                "type": "array",
+                                "items": {
+                                  "oneOf": [
+                                    {
+                                      "type": "object",
+                                      "properties": {
+                                        "id": {
+                                          "type": "string",
+                                          "example": "86446705-9ebb-47aa-8178-1a7b232341c8"
+                                        },
+                                        "name": {
+                                          "type": "string",
+                                          "example": "Product1"
+                                        },
+                                        "category": {
+                                          "type": "string",
+                                          "example": "snack"
+                                        },
+                                        "price": {
+                                          "type": "number",
+                                          "example": 900
+                                        },
+                                        "description": {
+                                          "type": "string",
+                                          "example": "Product 1"
+                                        },
+                                        "image": {
+                                          "type": "string",
+                                          "example": "www.meuapp.com.br/images/product1.img"
+                                        },
+                                        "amount": {
+                                          "type": "number",
+                                          "example": 2
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "type": "object",
+                                      "properties": {
+                                        "id": {
+                                          "type": "string",
+                                          "example": "86446705-9ebb-47aa-8178-1a7b232388s2"
+                                        },
+                                        "name": {
+                                          "type": "string",
+                                          "example": "Product2"
+                                        },
+                                        "category": {
+                                          "type": "string",
+                                          "example": "snack"
+                                        },
+                                        "price": {
+                                          "type": "number",
+                                          "example": 1100
+                                        },
+                                        "description": {
+                                          "type": "string",
+                                          "example": "Product 2"
+                                        },
+                                        "image": {
+                                          "type": "string",
+                                          "example": "www.meuapp.com.br/images/product2.img"
+                                        },
+                                        "amount": {
+                                          "type": "number",
+                                          "example": 1
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/orders/:orderNumber": {
@@ -303,6 +467,113 @@
                       }
                     }
                   }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Deleta um pedido através de seu número.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "orderNumber",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "U0YA6T-1697468838547"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Sem conteúdo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Atualiza o status do pedido através de seu número.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "orderNumber",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "U0YA6T-1697468838547"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "received"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Sem conteúdo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
                 }
               }
             }

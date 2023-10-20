@@ -1,8 +1,5 @@
-import { IController } from '@/ports'
-import { IDeleteOrderUseCase } from '@/ports/usecases/order/delete-order.port'
-import { success } from '../../../shared/helpers/http.helper'
-import { HttpRequest, HttpResponse } from '../../../shared/types/http.types'
-import { handleError } from '../../../shared/errors/handle-error'
+import { IController, IDeleteOrderUseCase } from '@/ports'
+import { success, HttpRequest, HttpResponse, handleError } from '@/shared'
 
 export class DeleteOrderController implements IController {
   constructor(private readonly deleteOrderUseCase: IDeleteOrderUseCase) {}

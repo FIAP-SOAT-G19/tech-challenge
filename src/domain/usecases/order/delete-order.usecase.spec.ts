@@ -1,6 +1,6 @@
-import { InvalidParamError, MissingParamError } from '@/shared/errors'
-import { OrderOutput } from '../../../domain/types'
 import { DeleteOrderUseCase } from './delete-order.usecase'
+import { InvalidParamError, MissingParamError } from '@/shared/errors'
+import { OrderOutput } from '@/domain/types'
 import { IOrderRepository } from '@/ports'
 import { mock } from 'jest-mock-extended'
 

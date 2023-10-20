@@ -1,7 +1,6 @@
-import { IOrderRepository } from '@/ports'
-import { IGetAllOrdersUseCase } from '@/ports/usecases/order/get-all-orders.port'
-import constants from '../../../shared/constants'
-import { InvalidParamError } from '../../../shared/errors'
+import { IOrderRepository, IGetAllOrdersUseCase } from '@/ports'
+import constants from '@/shared/constants'
+import { InvalidParamError } from '@/shared/errors'
 
 export class GetAllOrdersUseCase implements IGetAllOrdersUseCase {
   constructor(private readonly orderRepository: IOrderRepository) {}

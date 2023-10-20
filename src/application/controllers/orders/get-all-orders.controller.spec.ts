@@ -1,10 +1,8 @@
-import { HttpRequest } from '@/shared/types/http.types'
 import { GetAllOrdersController } from './get-all-orders.controller'
-import { mock } from 'jest-mock-extended'
+import { HttpRequest, badRequest, serverError, success, InvalidParamError } from '@/shared'
 import { OrderOutput } from '@/domain/types/orders.types'
-import { badRequest, serverError, success } from '@/shared/helpers/http.helper'
-import { IGetAllOrdersUseCase } from '@/ports/usecases/order/get-all-orders.port'
-import { InvalidParamError } from '@/shared/errors'
+import { IGetAllOrdersUseCase } from '@/ports'
+import { mock } from 'jest-mock-extended'
 
 const getAllOrdersUseCase = mock<IGetAllOrdersUseCase>()
 const orderOutput: OrderOutput [] = [{

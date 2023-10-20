@@ -1,13 +1,8 @@
 import { CreateOrderUseCase } from './create-order.usecase'
-import { IUUIDGenerator } from '@/ports/usecases/uuid/uuid-generator.port'
-import { IOrderRepository } from '@/ports/repositories/order.port'
-import { IClientRepository } from '@/ports/repositories/client.port'
-import MockDate from 'mockdate'
+import { IUUIDGenerator, IOrderRepository, IClientRepository, ISchemaValidator, IOrderProductRepository, IProductRepository } from '@/ports'
+import { InvalidParamError } from '@/shared'
 import { mock } from 'jest-mock-extended'
-import { InvalidParamError, MissingParamError } from '@/shared/errors'
-import { ISchemaValidator } from '@/ports/validators/schema-validator.port'
-import { IOrderProductRepository } from '@/ports/repositories/order-product.port'
-import { IProductRepository } from '@/ports/repositories/product.port'
+import MockDate from 'mockdate'
 
 const uuidGenerator = mock<IUUIDGenerator>()
 const orderRepository = mock<IOrderRepository>()
@@ -16,8 +11,8 @@ const schemaValidator = mock<ISchemaValidator>()
 const orderProductRepository = mock<IOrderProductRepository>()
 const productRepository = mock<IProductRepository>()
 
-jest.mock('../../../shared/helpers/string.helper', () => {
-  const originalMethod = jest.requireActual('../../../shared/helpers/string.helper')
+jest.mock('@/shared/helpers/string.helper', () => {
+  const originalMethod = jest.requireActual('@/shared/helpers/string.helper')
   return {
     ...originalMethod,
     ramdonStringGenerator: jest.fn().mockReturnValue('anyOrderNumber')

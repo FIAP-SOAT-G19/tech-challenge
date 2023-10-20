@@ -1,7 +1,6 @@
-import { IUpdateOrderStatusUseCase } from '@/ports/usecases/order/update-oder-status.port'
-import constants from '../../../shared/constants'
-import { InvalidParamError, MissingParamError } from '../../../shared/errors'
-import { IOrderRepository } from '@/ports'
+import { IUpdateOrderStatusUseCase, IOrderRepository } from '@/ports'
+import constants from '@/shared/constants'
+import { InvalidParamError, MissingParamError } from '@/shared/errors'
 
 export class UpdateOrderStatusUseCase implements IUpdateOrderStatusUseCase {
   constructor(private readonly orderRepository: IOrderRepository) {}

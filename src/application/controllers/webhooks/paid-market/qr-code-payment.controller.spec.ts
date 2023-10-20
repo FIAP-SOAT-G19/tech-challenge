@@ -1,8 +1,7 @@
-import { HttpRequest } from '@/shared/types/http.types'
 import { QrCodePaymentController } from './qr-code-payment.controller'
+import { HttpRequest, serverError, success } from '@/shared'
+import { IUpdateOrderStatusUseCase } from '@/ports'
 import { mock } from 'jest-mock-extended'
-import { serverError, success } from '@/shared/helpers/http.helper'
-import { IUpdateOrderStatusUseCase } from '@/ports/usecases/order/update-oder-status.port'
 
 const updateOrderStatusUseCase = mock<IUpdateOrderStatusUseCase>()
 

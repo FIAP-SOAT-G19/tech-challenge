@@ -1,8 +1,5 @@
-import { IController } from '@/ports'
-import { IGetOrderByNumberUseCase } from '@/ports/usecases/order/get-order-by-number.port'
-import { success } from '../../../shared/helpers/http.helper'
-import { HttpRequest, HttpResponse } from '../../../shared/types/http.types'
-import { handleError } from '../../../shared/errors/handle-error'
+import { IController, IGetOrderByNumberUseCase } from '@/ports'
+import { success, HttpRequest, HttpResponse, handleError } from '@/shared'
 
 export class GetOrderByNumberController implements IController {
   constructor(private readonly getOrderByNumberUseCase: IGetOrderByNumberUseCase) {}

@@ -1,7 +1,6 @@
-import { IOrderRepository } from '@/ports'
-import { IDeleteOrderUseCase } from '@/ports/usecases/order/delete-order.port'
-import constants from '../../../shared/constants'
-import { InvalidParamError, MissingParamError } from '../../../shared/errors'
+import { IOrderRepository, IDeleteOrderUseCase } from '@/ports'
+import constants from '@/shared/constants'
+import { InvalidParamError, MissingParamError } from '@/shared/errors'
 
 export class DeleteOrderUseCase implements IDeleteOrderUseCase {
   constructor(private readonly orderRepository: IOrderRepository) {}

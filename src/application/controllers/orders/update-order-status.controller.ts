@@ -1,8 +1,5 @@
-import { IController } from '@/ports'
-import { IUpdateOrderStatusUseCase } from '@/ports/usecases/order/update-oder-status.port'
-import { success } from '../../../shared/helpers/http.helper'
-import { HttpRequest, HttpResponse } from '../../../shared/types/http.types'
-import { handleError } from '../../../shared/errors/handle-error'
+import { IController, IUpdateOrderStatusUseCase } from '@/ports'
+import { success, HttpRequest, HttpResponse, handleError } from '@/shared'
 
 export class UpdateOrderStatusController implements IController {
   constructor(private readonly updateOrderStatusUseCase: IUpdateOrderStatusUseCase) {}

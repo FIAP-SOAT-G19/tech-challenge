@@ -1,10 +1,8 @@
-import { HttpRequest } from '@/shared/types/http.types'
 import { GetOrderByNumberController } from './get-order-by-number.controller'
-import { mock } from 'jest-mock-extended'
-import { IGetOrderByNumberUseCase } from '@/ports/usecases/order/get-order-by-number.port'
+import { HttpRequest, badRequest, serverError, success, InvalidParamError } from '@/shared'
+import { IGetOrderByNumberUseCase } from '@/ports'
 import { OrderOutput } from '@/domain/types/orders.types'
-import { badRequest, serverError, success } from '@/shared/helpers/http.helper'
-import { InvalidParamError } from '@/shared/errors'
+import { mock } from 'jest-mock-extended'
 
 const getOrderByNumberUseCase = mock<IGetOrderByNumberUseCase>()
 const orderOutput: OrderOutput = {

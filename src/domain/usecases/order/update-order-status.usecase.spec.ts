@@ -1,9 +1,9 @@
-import { InvalidParamError, MissingParamError } from '@/shared/errors'
 import { UpdateOrderStatusUseCase } from './update-order-status.usecase'
+import { InvalidParamError, MissingParamError } from '@/shared'
 import { IOrderRepository } from '@/ports'
-import { mock } from 'jest-mock-extended'
-import MockDate from 'mockdate'
 import { OrderOutput } from '@/domain/types'
+import MockDate from 'mockdate'
+import { mock } from 'jest-mock-extended'
 
 const orderRepository = mock<IOrderRepository>()
 const orderOutput: OrderOutput = {

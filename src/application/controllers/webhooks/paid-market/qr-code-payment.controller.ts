@@ -1,9 +1,6 @@
-import { IController } from '@/ports'
-import { success } from '../../../../shared/helpers/http.helper'
-import { HttpRequest, HttpResponse } from '../../../../shared/types/http.types'
-import { IUpdateOrderStatusUseCase } from '@/ports/usecases/order/update-oder-status.port'
-import constants from '../../../../shared/constants'
-import { handleError } from '../../../../shared/errors/handle-error'
+import { IController, IUpdateOrderStatusUseCase } from '@/ports'
+import { success, HttpRequest, HttpResponse, handleError } from '@/shared'
+import constants from '@/shared/constants'
 
 export class QrCodePaymentController implements IController {
   constructor(private readonly updateOrderStatusUseCase: IUpdateOrderStatusUseCase) {}

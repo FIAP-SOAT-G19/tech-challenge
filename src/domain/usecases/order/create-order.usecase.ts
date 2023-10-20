@@ -1,8 +1,6 @@
-import { IClientRepository, ICreateOrderUseCase, IOrderProductRepository, IOrderRepository, ISchemaValidator, IUUIDGenerator } from '@/ports/'
-import { InvalidParamError, SchemaValidationError } from '../../../shared/errors'
-import constants from '../../../shared/constants'
-import { ramdonStringGenerator } from '../../../shared/helpers/string.helper'
-import { IProductRepository } from '@/ports/repositories/product.port'
+import { IClientRepository, ICreateOrderUseCase, IOrderProductRepository, IOrderRepository, ISchemaValidator, IUUIDGenerator, IProductRepository } from '@/ports/'
+import { InvalidParamError, SchemaValidationError, ramdonStringGenerator } from '@/shared'
+import constants from '@/shared/constants'
 import { OrderProduct } from '@/domain/types'
 export class CreateOrderUseCase implements ICreateOrderUseCase {
   constructor(
@@ -27,6 +25,15 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
   }
 
   private async validate (input: ICreateOrderUseCase.Input): Promise<void> {
+    const validation = this.schemaValidator.validate({
+      schema: constants.SCHEMAS.ORDER,
+      data: input
+    })
+
+    if (validation.error) {
+      throw new SchemaValidationError(validation.error)
+    }
+
     for (const product of input.products) {
       const productExists = await this.productRepository.getById(product.id)
       if (!productExists) {
@@ -39,15 +46,6 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
       if (!client) {
         throw new InvalidParamError('clientId')
       }
-    }
-
-    const validation = this.schemaValidator.validate({
-      schema: constants.SCHEMAS.ORDER,
-      data: input
-    })
-
-    if (validation.error) {
-      throw new SchemaValidationError(validation.error)
     }
   }
 

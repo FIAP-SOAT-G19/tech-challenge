@@ -1,8 +1,5 @@
-import { IController } from '@/ports'
-import { success } from '../../../shared/helpers/http.helper'
-import { HttpRequest, HttpResponse } from '../../../shared/types/http.types'
-import { IGetAllOrdersUseCase } from '@/ports/usecases/order/get-all-orders.port'
-import { handleError } from '../../../shared/errors/handle-error'
+import { IController, IGetAllOrdersUseCase } from '@/ports'
+import { success, HttpRequest, HttpResponse, handleError } from '@/shared'
 
 export class GetAllOrdersController implements IController {
   constructor(private readonly getAllOrdersUseCase: IGetAllOrdersUseCase) {}

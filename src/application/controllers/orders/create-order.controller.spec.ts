@@ -1,9 +1,7 @@
-import { HttpRequest } from '@/shared/types/http.types'
+import { HttpRequest, InvalidParamError, badRequest, serverError, success } from '@/shared'
 import { CreateOrderController } from './create-order.controller'
-import { mock } from 'jest-mock-extended'
 import { ICreateOrderUseCase } from '@/ports'
-import { badRequest, serverError, success } from '@/shared/helpers/http.helper'
-import { InvalidParamError } from '@/shared/errors'
+import { mock } from 'jest-mock-extended'
 
 const createOrderUseCase = mock<ICreateOrderUseCase>()
 

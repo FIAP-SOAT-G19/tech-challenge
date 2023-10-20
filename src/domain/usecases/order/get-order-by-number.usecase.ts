@@ -1,7 +1,6 @@
 import { OrderOutput } from '@/domain/types/orders.types'
-import { IOrderRepository } from '@/ports'
-import { IGetOrderByNumberUseCase } from '@/ports/usecases/order/get-order-by-number.port'
-import { MissingParamError } from '../../../shared/errors'
+import { IOrderRepository, IGetOrderByNumberUseCase } from '@/ports'
+import { MissingParamError } from '@/shared'
 
 export class GetOrderByNumberUseCase implements IGetOrderByNumberUseCase {
   constructor(private readonly orderRepository: IOrderRepository) {}
