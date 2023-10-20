@@ -73,4 +73,20 @@ describe('CreateEmployeeUseCase', () => {
     })
     await expect(sut.execute(input)).rejects.toThrow(InvalidParamError)
   })
+
+  test('should throw SchemaValidationError for invalid input', async () => {
+    const inputInvalid = {
+      name: 'John Doe',
+      email: 'john@email.com',
+      cpf: '',
+      password: 'password123'
+    }
+    schemaValidator.validate.mockReturnValue({
+      value: {
+        message: "Invalid param: The 'cpf' field is required."
+      },
+      error: 'InvalidParamError'
+    })
+    await expect(sut.execute(inputInvalid)).rejects.toThrow("Invalid param: The 'cpf' field is required.")
+  })
 })

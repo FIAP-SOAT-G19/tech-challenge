@@ -44,7 +44,7 @@ describe('ReadEmployeeUseCase', () => {
   })
 
   describe('findAll', () => {
-    it('should return a list of employees when found', async () => {
+    test('should return a list of employees when found', async () => {
       const foundEmployees = [
         {
           id: 'employeeId1',
@@ -72,7 +72,6 @@ describe('ReadEmployeeUseCase', () => {
 
       const result = await sut.findAll()
 
-      // Assertions
       expect(result).toEqual([
         {
           id: 'employeeId1',
@@ -91,6 +90,14 @@ describe('ReadEmployeeUseCase', () => {
           updatedAt: new Date('2021-09-21T22:00:00.000Z')
         }
       ])
+    })
+
+    test('should return an empty list when no employees are found', async () => {
+      employeeRepository.findAll.mockResolvedValue([])
+
+      const result = await sut.findAll()
+
+      expect(result).toEqual([])
     })
   })
 })
