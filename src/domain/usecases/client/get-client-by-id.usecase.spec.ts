@@ -1,5 +1,5 @@
 import { GetClientByIdUseCase } from '@/domain/usecases/client/get-client-by-id.usecase'
-import { IGetClientById } from '@/ports/usecases/client/get-client-by-id.port'
+import { IGetClientByIdUseCase } from '@/ports/usecases/client/get-client-by-id.port'
 import { ClientNotFoundError } from '@/shared/errors'
 import { IClientRepository, Client } from '@/ports'
 import { mock } from 'jest-mock-extended'
@@ -7,8 +7,8 @@ import { mock } from 'jest-mock-extended'
 const clientRepository = mock<IClientRepository>()
 
 describe('GetClientByIdUseCase', () => {
-  let sut: IGetClientById
-  let input: IGetClientById.Input
+  let sut: IGetClientByIdUseCase
+  let input: IGetClientByIdUseCase.Input
   let clientRepositoryOutput: Client
 
   beforeEach(() => {

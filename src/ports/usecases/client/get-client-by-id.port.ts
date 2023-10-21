@@ -1,8 +1,8 @@
-export interface IGetClientById {
-  execute: (input: IGetClientById.Input) => Promise<IGetClientById.Output | null>
+export interface IGetClientByIdUseCase {
+  execute: (input: IGetClientByIdUseCase.Input) => Promise<IGetClientByIdUseCase.Output | null>
 }
 
-export namespace IGetClientById {
+export namespace IGetClientByIdUseCase {
   export type Input = {
     id: string
   }
