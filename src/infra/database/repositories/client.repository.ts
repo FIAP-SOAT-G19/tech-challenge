@@ -46,4 +46,9 @@ export class ClientRepository implements IClientRepository {
     })
     return client.id
   }
+
+  async delete(clientId: string): Promise<string> {
+    const client = await prismaClient.client.delete({ where: { id: clientId } })
+    return client.id
+  }
 }

@@ -18,4 +18,5 @@ export interface IClientRepository {
   getByDocument: (document: string) => Promise<Client | null>
   save: (input: SaveClientInput) => Promise<string>
   update: (input: UpdateClientInput) => Promise<string>
+  delete: (clientId: string) => Promise<string>
 }
