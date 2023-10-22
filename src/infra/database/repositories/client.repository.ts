@@ -3,17 +3,17 @@ import { prismaClient } from '@/infra/database/prisma-client'
 
 export class ClientRepository implements IClientRepository {
   async getById(clientId: string): Promise<Client | null> {
-    const client = await prismaClient.client.findUnique({ where: { id: clientId } })
+    const client = await prismaClient.client.findUnique({ where: { id: clientId, deletedAt: null } })
     return client ?? null
   }
 
   async getByEmail(email: string): Promise<Client | null> {
-    const client = await prismaClient.client.findFirst({ where: { email } })
+    const client = await prismaClient.client.findFirst({ where: { email, deletedAt: null } })
     return client ?? null
   }
 
   async getByDocument(document: string): Promise<Client | null> {
-    const client = await prismaClient.client.findFirst({ where: { cpf: document } })
+    const client = await prismaClient.client.findFirst({ where: { cpf: document, deletedAt: null } })
     return client ?? null
   }
 
@@ -48,7 +48,10 @@ export class ClientRepository implements IClientRepository {
   }
 
   async delete(clientId: string): Promise<string> {
-    const client = await prismaClient.client.delete({ where: { id: clientId } })
+    const client = await prismaClient.client.update({
+      data: { deletedAt: new Date() },
+      where: { id: clientId }
+    })
     return client.id
   }
 }
