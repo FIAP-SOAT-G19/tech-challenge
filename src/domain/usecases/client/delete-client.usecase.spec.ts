@@ -1,5 +1,5 @@
 import { Client, IClientRepository } from '@/ports'
-import { IDeleteClientUseCase } from '@/ports/usecases/client/delete-client.por'
+import { IDeleteClientUseCase } from '@/ports/usecases/client/delete-client.port'
 import { ClientNotFoundError } from '@/shared/errors'
 import { mock } from 'jest-mock-extended'
 import { DeleteClientUseCase } from './delete-client.usecase'

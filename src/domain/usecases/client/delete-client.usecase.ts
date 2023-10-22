@@ -1,5 +1,5 @@
 import { IClientRepository } from '@/ports'
-import { IDeleteClientUseCase } from '@/ports/usecases/client/delete-client.por'
+import { IDeleteClientUseCase } from '@/ports/usecases/client/delete-client.port'
 import { ClientNotFoundError } from '@/shared/errors'
 
 export class DeleteClientUseCase implements IDeleteClientUseCase {
