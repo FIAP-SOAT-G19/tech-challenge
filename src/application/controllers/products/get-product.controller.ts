@@ -2,7 +2,7 @@ import { IController } from '@/ports/'
 import { badRequest, serverError, success } from '../../../shared/helpers/http.helper'
 import { HttpRequest, HttpResponse } from '../../../shared/types/http.types'
 import { IGetProductUseCase } from '../../../ports/usecases/product/get-product.port'
-import { ProductNotFoundError } from '@/shared/errors'
+import { ProductNotFoundError } from '../../../shared/errors'
 
 export class GetProductController implements IController {
   constructor(private readonly getProductUseCase: IGetProductUseCase) {}

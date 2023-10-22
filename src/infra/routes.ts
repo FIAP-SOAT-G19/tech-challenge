@@ -4,6 +4,7 @@ import { makeHealthcheckController } from './factories/controllers/healthcheck-c
 import { makeCreateOrderController } from './factories/controllers/create-order-controller.factory'
 import { makeCreateProductController } from './factories/controllers/create-product-controller.factory'
 import { makeGetProductController } from './factories/controllers/get-product-controller.factory'
+import { makeGetProductsController } from './factories/controllers/get-products-controller.factory'
 
 const router = Router()
 
@@ -11,5 +12,6 @@ router.get('/healthcheck', expressAdapter(makeHealthcheckController()))
 router.post('/orders', expressAdapter(makeCreateOrderController()))
 router.post('/products', expressAdapter(makeCreateProductController()))
 router.get('/products/:productId', expressAdapter(makeGetProductController()))
+router.get('/products', expressAdapter(makeGetProductsController()))
 
 export { router }
