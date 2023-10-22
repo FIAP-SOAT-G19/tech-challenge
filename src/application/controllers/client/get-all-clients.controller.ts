@@ -9,7 +9,7 @@ export class GetAllClientsController implements IController {
   async execute(input: HttpRequest): Promise<HttpResponse> {
     try {
       const client = await this.getAllClientsUseCase.execute(input.query)
-      return success(200, { client })
+      return success(200, client)
     } catch (error) {
       return serverError(error as Error)
     }

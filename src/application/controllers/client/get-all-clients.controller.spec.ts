@@ -35,7 +35,7 @@ describe('GetClientByIdController', () => {
   test('Should return client on sucsess', async () => {
     getClientByIdUseCase.execute.mockResolvedValueOnce(getAllClientsUseCaseOutput)
     const output = await sut.execute(input)
-    expect(output).toMatchObject({ statusCode: 200, body: { client: getAllClientsUseCaseOutput } })
+    expect(output).toEqual({ statusCode: 200, body: getAllClientsUseCaseOutput })
   })
 
   test('should return an error if GetClientByIdUseCase throws', async () => {
