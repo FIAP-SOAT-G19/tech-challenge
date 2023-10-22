@@ -14,7 +14,7 @@
 5. ✅ Retorna 400 se a senha e confirmação senha do cliente forem diferentes
 6. ✅ Retorna 400 se o email do cliente já existir
 7. ✅ Retorna 400 se o cpf do cliente já existir
-8. ⛔ Retorna 500 se houver alguma falha na hora de salvar os dados
+8. ✅ Retorna 500 se houver alguma falha na hora de salvar os dados
 
 
 ## Objeto Client
