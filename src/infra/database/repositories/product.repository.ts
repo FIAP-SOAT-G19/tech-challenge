@@ -2,6 +2,7 @@ import { ProductCategory } from '@prisma/client'
 import { prismaClient } from '../prisma-client'
 import {
   GetProductByIdOutput,
+  GetProducts,
   IProductRepository,
   SaveProductInput
 } from '@/ports/repositories/product.port'
@@ -38,5 +39,15 @@ export class ProductRepository implements IProductRepository {
       description: product.description,
       image: product.image
     }
+  }
+
+  async getAll(): Promise<GetProducts[] | []> {
+    const products = await prismaClient.product.findMany()
+    if (!products) return []
+    return products.map((product) => ({
+      id: product.id,
+      name: product.name,
+      category: product.category
+    }))
   }
 }

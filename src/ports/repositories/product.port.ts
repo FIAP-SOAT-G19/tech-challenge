@@ -1,6 +1,7 @@
 export interface IProductRepository {
   save: (product: SaveProductInput) => Promise<string>
   getById: (productId: string) => Promise<GetProductByIdOutput | null>
+  getAll: () => Promise<GetProducts[] | []>
 }
 
 export type SaveProductInput = {
@@ -20,4 +21,10 @@ export type GetProductByIdOutput = {
   price: number
   description: string
   image: string
+}
+
+export type GetProducts = {
+  id: string
+  name: string
+  category: string
 }
