@@ -1,41 +1,41 @@
 import { HttpRequest } from '@/shared/types/http.types'
-import { GetClientByIdController } from './get-client-by-id.controller'
-import { IGetClientByIdUseCase } from '@/ports/usecases/client/get-client-by-id.port'
 import { mock } from 'jest-mock-extended'
 import { serverError } from '@/shared/helpers/http.helper'
+import { GetAllClientsController } from './get-all-clients.controller'
+import { IGetAllClientsUseCase } from '@/ports/usecases/client/get-all-clients.port'
 
-const getClientByIdUseCase = mock<IGetClientByIdUseCase>()
+const getClientByIdUseCase = mock<IGetAllClientsUseCase>()
 
 describe('GetClientByIdController', () => {
-  let sut: GetClientByIdController
+  let sut: GetAllClientsController
   let input: HttpRequest
-  let getClientByIdUseCaseOutput: IGetClientByIdUseCase.Output
+  let getAllClientsUseCaseOutput: IGetAllClientsUseCase.Output[]
 
   beforeEach(() => {
-    sut = new GetClientByIdController(getClientByIdUseCase)
+    sut = new GetAllClientsController(getClientByIdUseCase)
     input = {
-      params: {
+      query: {
         id: 'anyClientId'
       }
     }
-    getClientByIdUseCaseOutput = {
+    getAllClientsUseCaseOutput = [{
       id: 'anyClientId',
       name: 'anyClientName',
       email: 'anyClientEmail',
       cpf: 'anyClientCpf'
-    }
+    }]
   })
 
   test('Should call GetClientByIdUseCase once and with correct values', async () => {
     await sut.execute(input)
-    expect(getClientByIdUseCase.execute).toHaveBeenCalledWith(input.params)
+    expect(getClientByIdUseCase.execute).toHaveBeenCalledWith(input.query)
     expect(getClientByIdUseCase.execute).toHaveBeenCalledTimes(1)
   })
 
   test('Should return client on sucsess', async () => {
-    getClientByIdUseCase.execute.mockResolvedValueOnce(getClientByIdUseCaseOutput)
+    getClientByIdUseCase.execute.mockResolvedValueOnce(getAllClientsUseCaseOutput)
     const output = await sut.execute(input)
-    expect(output).toMatchObject({ statusCode: 200, body: { client: getClientByIdUseCaseOutput } })
+    expect(output).toMatchObject({ statusCode: 200, body: { client: getAllClientsUseCaseOutput } })
   })
 
   test('should return an error if GetClientByIdUseCase throws', async () => {

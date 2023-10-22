@@ -1,4 +1,4 @@
-import { Client, IClientRepository, SaveClientInput, UpdateClientInput } from '@/ports'
+import { Client, GetAllClientsInput, IClientRepository, SaveClientInput, UpdateClientInput } from '@/ports'
 import { prismaClient } from '@/infra/database/prisma-client'
 
 export class ClientRepository implements IClientRepository {
@@ -15,6 +15,13 @@ export class ClientRepository implements IClientRepository {
   async getByDocument(document: string): Promise<Client | null> {
     const client = await prismaClient.client.findFirst({ where: { cpf: document, deletedAt: null } })
     return client ?? null
+  }
+
+  async getAll(input: GetAllClientsInput): Promise<Client[] | null> {
+    const clients = await prismaClient.client.findMany({
+      where: { ...input, deletedAt: null }
+    })
+    return clients ?? null
   }
 
   async save(input: SaveClientInput): Promise<string> {
