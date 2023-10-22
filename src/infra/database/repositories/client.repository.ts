@@ -44,7 +44,6 @@ export class ClientRepository implements IClientRepository {
         cpf: input.cpf,
         name: input.name,
         email: input.email,
-        password: input.password,
         updatedAt: input.updatedAt
       },
       where: {

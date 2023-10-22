@@ -10,7 +10,7 @@ export type Client = {
 }
 
 export type SaveClientInput = Pick<Client, 'id' | 'name' | 'email' | 'password' | 'cpf' | 'createdAt'>
-export type UpdateClientInput = Pick<Client, 'id' | 'name' | 'email' | 'password' | 'cpf' | 'updatedAt'>
+export type UpdateClientInput = Pick<Client, 'id' | 'name' | 'email' | 'cpf' | 'updatedAt'>
 
 export type GetAllClientsInput = {
   id?: string

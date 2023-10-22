@@ -1,6 +1,5 @@
 import { Client, IClientRepository, ISchemaValidator } from '@/ports'
 import { IUpdateClientUseCase } from '@/ports/usecases/client/update-client.port'
-import { IEncrypt } from '@/ports/usecases/encrypt/encrypt.port'
 import { InvalidParamError } from '@/shared/errors'
 import { UpdateClientUseCase } from '@/domain/usecases/client/update-client.usecase'
 import { mock } from 'jest-mock-extended'
@@ -8,7 +7,6 @@ import MockDate from 'mockdate'
 
 const schemaValidator = mock<ISchemaValidator>()
 const clientRepository = mock<IClientRepository>()
-const encrypt = mock<IEncrypt>()
 
 describe('UpdateClientUseCase', () => {
   let sut: IUpdateClientUseCase
@@ -16,14 +14,12 @@ describe('UpdateClientUseCase', () => {
   let clientRepositoryOutput: Client
 
   beforeEach(() => {
-    sut = new UpdateClientUseCase(schemaValidator, clientRepository, encrypt)
+    sut = new UpdateClientUseCase(schemaValidator, clientRepository)
     input = {
       id: 'anyClientId',
       name: 'anyClientName',
       email: 'anyClientEmail',
-      cpf: 'anyClientCpf',
-      password: 'anyClientPassword',
-      repeatPassword: 'anyClientRepeatPassword'
+      cpf: 'anyClientCpf'
     }
     clientRepositoryOutput = {
       id: 'anyClientId',
@@ -48,83 +44,47 @@ describe('UpdateClientUseCase', () => {
   test('should call schemaValidator once with correct values', async () => {
     clientRepository.getById.mockResolvedValueOnce(clientRepositoryOutput)
     await sut.execute(input)
-    expect(schemaValidator.validate).toHaveBeenCalledWith({ schema: 'clientSchema', data: input })
+    expect(schemaValidator.validate).toHaveBeenCalledWith({ schema: 'updateClientSchema', data: { name: input.name, email: input.email, cpf: input.cpf } })
     expect(schemaValidator.validate).toHaveBeenCalledTimes(1)
   })
 
   test('should throws if id is empty', async () => {
     input.id = ''
-    schemaValidator.validate.mockReturnValueOnce({ value: input, error: 'id' })
+    clientRepository.getById.mockResolvedValueOnce(null)
     const output = sut.execute(input)
     await expect(output).rejects.toThrow(new InvalidParamError('id'))
-  })
-
-  test('should throws if name is empty', async () => {
-    clientRepository.getById.mockResolvedValueOnce(clientRepositoryOutput)
-    schemaValidator.validate.mockReturnValueOnce({ value: input, error: 'anyError' })
-    input.name = ''
-    const output = sut.execute(input)
-    await expect(output).rejects.toThrow(new InvalidParamError('anyError'))
   })
 
   test('should throws if email is empty', async () => {
+    clientRepository.getById.mockResolvedValueOnce(clientRepositoryOutput)
+    clientRepository.getByEmail.mockResolvedValueOnce(clientRepositoryOutput)
     input.email = ''
-    schemaValidator.validate.mockReturnValueOnce({ value: input, error: 'anyError' })
     const output = sut.execute(input)
-    await expect(output).rejects.toThrow(new InvalidParamError('anyError'))
+    await expect(output).rejects.toThrow(new InvalidParamError('email'))
   })
 
   test('should throws if cpf is empty', async () => {
-    input.cpf = ''
-    schemaValidator.validate.mockReturnValueOnce({ value: input, error: 'anyError' })
-    const output = sut.execute(input)
-    await expect(output).rejects.toThrow(new InvalidParamError('anyError'))
-  })
-
-  test('should throws if password is empty', async () => {
-    input.password = ''
-    schemaValidator.validate.mockReturnValueOnce({ value: input, error: 'anyError' })
-    const output = sut.execute(input)
-    await expect(output).rejects.toThrow(new InvalidParamError('anyError'))
-  })
-
-  test('should throws if repeatPassword is empty', async () => {
-    input.repeatPassword = ''
-    schemaValidator.validate.mockReturnValueOnce({ value: input, error: 'anyError' })
-    const output = sut.execute(input)
-    await expect(output).rejects.toThrow(new InvalidParamError('anyError'))
-  })
-
-  test('should throws if password and repeatPassword are different', async () => {
-    schemaValidator.validate.mockReturnValueOnce({ value: input, error: 'anyError' })
-    const output = sut.execute(input)
-    await expect(output).rejects.toThrow(new InvalidParamError('anyError'))
-  })
-
-  test('should throws if id not exists', async () => {
-    clientRepository.getById.mockReset()
-    schemaValidator.validate.mockReturnValueOnce({ value: input, error: undefined })
-    const output = sut.execute(input)
-    await expect(output).rejects.toThrow(new InvalidParamError('id'))
-  })
-
-  test('should call encrypt once with correct values', async () => {
     clientRepository.getById.mockResolvedValueOnce(clientRepositoryOutput)
-    await sut.execute(input)
-    expect(encrypt.encrypt).toHaveBeenCalledWith(input.password)
-    expect(encrypt.encrypt).toHaveBeenCalledTimes(1)
+    clientRepository.getByEmail.mockResolvedValueOnce(null)
+    clientRepository.getByDocument.mockResolvedValueOnce(clientRepositoryOutput)
+    input.cpf = ''
+    const output = sut.execute(input)
+    await expect(output).rejects.toThrow(new InvalidParamError('document'))
+  })
+
+  test('should throws if schemaValidator returns error', async () => {
+    clientRepository.getById.mockResolvedValueOnce(clientRepositoryOutput)
+    clientRepository.getByEmail.mockResolvedValueOnce(null)
+    clientRepository.getByDocument.mockResolvedValueOnce(null)
+    schemaValidator.validate.mockReturnValueOnce({ value: input, error: 'anyError' })
+    const output = sut.execute(input)
+    await expect(output).rejects.toThrow(new InvalidParamError('anyError'))
   })
 
   test('should call clientRepository.update with correct values', async () => {
     clientRepository.getById.mockResolvedValueOnce(clientRepositoryOutput)
-    encrypt.encrypt.mockReturnValueOnce('anyEncrypt')
     await sut.execute(input)
-    expect(clientRepository.update).toHaveBeenCalledWith({
-      ...input,
-      id: 'anyClientId',
-      password: 'anyEncrypt',
-      updatedAt: new Date()
-    })
+    expect(clientRepository.update).toHaveBeenCalledWith({ ...input, id: 'anyClientId', updatedAt: new Date() })
     expect(clientRepository.update).toHaveBeenCalledTimes(1)
   })
 })

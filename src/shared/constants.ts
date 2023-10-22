@@ -9,7 +9,8 @@ export default {
   },
   SCHEMAS: {
     ORDER: 'orderSchema',
-    CLIENT: 'clientSchema'
+    CLIENT: 'clientSchema',
+    UPDATE_CLIENT: 'updateClientSchema'
   },
   PAYMENT: {
     DEFAULT_TITLE: 'Tech-Challenge Payment'

@@ -12,7 +12,7 @@ const router = Router()
 router.get('/healthcheck', expressAdapter(makeHealthcheckController()))
 router.post('/orders', expressAdapter(makeCreateOrderController()))
 router.post('/client', expressAdapter(makeCreateClientController()))
-router.put('/client', expressAdapter(makeUpdateClientController()))
+router.patch('/client/:id', expressAdapter(makeUpdateClientController()))
 router.get('/client', expressAdapter(makeGetAllClientsController()))
 router.delete('/client/:id', expressAdapter(makeDeleteClientController()))
 

@@ -8,8 +8,6 @@ export namespace IUpdateClientUseCase {
     name: string
     email: string
     cpf: string
-    password: string
-    repeatPassword: string
   }
 
   export type Output = string
