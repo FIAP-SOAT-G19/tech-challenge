@@ -6,6 +6,7 @@ export interface IProductRepository {
     productId: string,
     updateOptions: ProductUpdateOptions
   ) => Promise<GetProductByIdOutput | null>
+  delete: (productId: string) => Promise<boolean>
 }
 
 export type SaveProductInput = {

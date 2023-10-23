@@ -93,4 +93,23 @@ export class ProductRepository implements IProductRepository {
       image: productUpdated.image
     }
   }
+
+  async delete(input: string): Promise<boolean> {
+    const product = await prismaClient.product.findUnique({
+      where: {
+        id: input
+      }
+    })
+    if (!product) throw new ProductNotFoundError()
+
+    const deletedProduct = await prismaClient.product.delete({
+      where: {
+        id: product.id
+      }
+    })
+    if (!deletedProduct) {
+      return false
+    }
+    return true
+  }
 }
