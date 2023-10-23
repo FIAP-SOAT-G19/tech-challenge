@@ -214,7 +214,7 @@
           "Products"
         ],
         "description": "Rota de Products da API",
-        "summary": "Retorna os informações de um Produto da API",
+        "summary": "Retorna as informações de um Produto da API",
         "parameters":[
           {
             "in": "path",
@@ -252,6 +252,112 @@
                     "description": {
                       "type": "string",
                       "example": "Drink description"
+                    },
+                    "image": {
+                      "type": "string",
+                      "example": "http://host.com/image"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Product not found error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Products"
+        ],
+        "description": "Rota de Products da API",
+        "summary": "Atualiza as informações de um Produto da API",
+        "parameters":[
+          {
+            "in": "path",
+            "name": "productId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID do produto"
+          }],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "example": "Coca Cola"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "Updated description"
+                    }
+                  }
+                }
+              }
+            }
+          },
+        "responses": {
+          "200": {
+            "description": "Atualização da informação do Produto realizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "5ebcea6f-2391-46aa-a5bc-ab5d98527f13"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Coca Cola"
+                    },
+                    "category": {
+                      "type": "string",
+                      "example": "drink"
+                    },
+                    "price": {
+                      "type": "number",
+                      "example": "6"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "Updated description"
                     },
                     "image": {
                       "type": "string",

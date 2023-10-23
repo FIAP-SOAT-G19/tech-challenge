@@ -84,6 +84,13 @@ export class ProductRepository implements IProductRepository {
     if (!productUpdated) {
       return null
     }
-    return productUpdated
+    return {
+      id: productUpdated.id,
+      name: productUpdated.name,
+      category: productUpdated.category,
+      price: productUpdated.price,
+      description: productUpdated.description,
+      image: productUpdated.image
+    }
   }
 }
