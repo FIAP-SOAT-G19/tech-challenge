@@ -11,7 +11,8 @@ export default {
     ORDER: 'orderSchema',
     PRODUCT: 'productSchema',
     GET_PRODUCT: 'getProductSchema',
-    UPDATE_PRODUCT: 'updateProductSchema'
+    UPDATE_PRODUCT: 'updateProductSchema',
+    DELETE_PRODUCT: 'deleteProductSchema'
   },
   PAYMENT: {
     DEFAULT_TITLE: 'Tech-Challenge Payment'

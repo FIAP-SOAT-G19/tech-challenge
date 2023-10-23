@@ -18,4 +18,11 @@ const updateProductSchema = Joi.object({
   image: Joi.string()
 })
 
-export { productSchema, getProductSchema, updateProductSchema }
+const deleteProductSchema = Joi.string().required()
+
+export {
+  productSchema,
+  getProductSchema,
+  updateProductSchema,
+  deleteProductSchema
+}
