@@ -12,7 +12,7 @@ export class CreateProductController implements IController {
   async execute(input: HttpRequest): Promise<HttpResponse> {
     try {
       const productId = await this.createProductUseCase.execute(input.body)
-      return success(201, { productId })
+      return success(201, productId)
     } catch (error: any) {
       if (
         error instanceof MissingParamError ||

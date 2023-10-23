@@ -181,7 +181,7 @@ describe('CreateProductUseCase', () => {
 
       const output = await createProductUseCase.execute(productValidInputMock)
 
-      expect(output).toEqual('productId')
+      expect(output).toEqual({ productId: 'productId' })
     })
   })
 })

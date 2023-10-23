@@ -12,5 +12,7 @@ export namespace ICreateProductUseCase {
     description: string
     image: string
   }
-  export type Output = string
+  export type Output = {
+    productId: string
+  }
 }

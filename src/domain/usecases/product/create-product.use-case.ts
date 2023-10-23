@@ -31,7 +31,7 @@ export class CreateProductUseCase implements ICreateProductUseCase {
     if (!productId) {
       throw new ServerError()
     }
-    return productId
+    return { productId }
   }
 
   private async validateRequiredInput(

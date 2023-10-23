@@ -12,7 +12,7 @@ describe('CreateProductController', () => {
 
   beforeAll(() => {
     createProductController = new CreateProductController(createProductUseCase)
-    createProductUseCase.execute.mockResolvedValue('productId')
+    createProductUseCase.execute.mockResolvedValue({ productId: 'productId' })
   })
 
   beforeEach(() => {
