@@ -6,8 +6,8 @@ import {
   IProductRepository,
   ProductUpdateOptions,
   SaveProductInput
-} from '@/ports/repositories/product.port'
-import { ProductNotFoundError } from '@/shared/errors'
+} from '../../../ports/repositories/product.port'
+import { ProductNotFoundError } from '../../../shared/errors'
 
 export class ProductRepository implements IProductRepository {
   async save(input: SaveProductInput): Promise<string> {
