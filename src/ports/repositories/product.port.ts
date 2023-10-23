@@ -40,11 +40,3 @@ export type ProductUpdateOptions = {
   description?: string
   image?: string
 }
-
-// export interface ProductUpdateOptions {
-//   name?: string
-//   category?: string
-//   price?: number
-//   description?: string
-//   image?: string
-// }
