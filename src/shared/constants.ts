@@ -1,8 +1,8 @@
 export default {
   ORDER_STATUS: {
-    WAITING_PAYMENT: 'waiting_payment',
+    WAITING_PAYMENT: 'waitingPayment',
     RECEIVED: 'received',
-    IN_PREPARATION: 'in_preparation',
+    IN_PREPARATION: 'InPreparation',
     PREPARED: 'prepared',
     FINALIZED: 'finalized',
     CANCELED: 'canceled'
@@ -10,5 +10,12 @@ export default {
   SCHEMAS: {
     ORDER: 'orderSchema',
     EMPLOYEE: 'employeeSchema'
+  },
+  PAYMENT: {
+    DEFAULT_TITLE: 'Tech-Challenge Payment'
+  },
+  PAID_MARKET: {
+    STATUS_APPROVED: 'approved',
+    STATUS_REFUSED: 'refused'
   }
 }
