@@ -1,0 +1,33 @@
+import { ReadEmployeeController } from '../../../../application/controllers/employee/read-employee.controller'
+import { CreateEmployeeController } from '../../../../application/controllers/employee/create-employee.controller'
+import { UpdateEmployeeController } from '../../../../application/controllers/employee/update-employee.controller'
+import { ReadAllEmployeesController } from '../../../../application/controllers/employee/read-all-employees.controller'
+import { DeleteEmployeeController } from '../../../../application/controllers/employee/delete-employee.controller'
+
+import {
+  makeCreateEmployeeUseCase,
+  makeDeleteEmployeeUseCase,
+  makeReadAllEmployeeUseCase,
+  makeReadEmployeeUseCase,
+  makeUpdateEmployeeUseCase
+} from '../../usecases/employee/employee-usecase.factory'
+
+export const makeCreateEmployeeController = (): CreateEmployeeController => {
+  return new CreateEmployeeController(makeCreateEmployeeUseCase())
+}
+
+export const makeReadEmployeeController = (): ReadEmployeeController => {
+  return new ReadEmployeeController(makeReadEmployeeUseCase())
+}
+
+export const makeReadAllEmployeesController = (): ReadAllEmployeesController => {
+  return new ReadAllEmployeesController(makeReadAllEmployeeUseCase())
+}
+
+export const makeUpdateEmployeeController = (): UpdateEmployeeController => {
+  return new UpdateEmployeeController(makeUpdateEmployeeUseCase())
+}
+
+export const makeDeleteEmployeeController = (): DeleteEmployeeController => {
+  return new DeleteEmployeeController(makeDeleteEmployeeUseCase())
+}
