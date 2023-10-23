@@ -7,6 +7,7 @@ import { makeGetProductController } from './factories/controllers/get-product-co
 import { makeGetProductsController } from './factories/controllers/get-products-controller.factory'
 import { makeUpdateProductController } from './factories/controllers/update-product-controller.factory'
 import { makeDeleteProductController } from './factories/controllers/delete-product-controller.factory'
+import { makeGetProductByCategoryController } from './factories/controllers/get-product-by-category-controller.factory'
 
 const router = Router()
 
@@ -17,5 +18,6 @@ router.get('/products/:productId', expressAdapter(makeGetProductController()))
 router.get('/products', expressAdapter(makeGetProductsController()))
 router.patch('/products/:productId', expressAdapter(makeUpdateProductController()))
 router.delete('/products/:productId', expressAdapter(makeDeleteProductController()))
+router.get('/products/category/:category', expressAdapter(makeGetProductByCategoryController()))
 
 export { router }
