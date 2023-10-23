@@ -401,6 +401,77 @@
             }
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "Products"
+        ],
+        "description": "Rota de Products da API",
+        "summary": "Deleta um Produto da API",
+        "parameters":[
+          {
+            "in": "path",
+            "name": "productId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID do produto"
+          }],
+        "responses": {
+          "200": {
+            "description": "Produto deletado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Product deleted"
+                    },
+                    "productId": {
+                      "type": "string",
+                      "example": "ca97b811-a559-44b0-b3b0-1a9a84309aef"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Product not found error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
