@@ -9,6 +9,8 @@ export default {
   },
   SCHEMAS: {
     ORDER: 'orderSchema',
+    CLIENT: 'clientSchema',
+    UPDATE_CLIENT: 'updateClientSchema',
     EMPLOYEE: 'employeeSchema'
   },
   PAYMENT: {

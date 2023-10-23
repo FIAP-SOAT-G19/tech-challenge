@@ -22,6 +22,9 @@
     },
     {
       "name": "Employees"
+    },
+    {
+      "name": "Clients"
     }
   ],
   "paths": {
@@ -659,7 +662,7 @@
         }
       }
     },
-    "/employee" : {
+    "/employee": {
       "post": {
         "tags": [
           "Employees"
@@ -935,8 +938,8 @@
             "content": {
               "application/json": {
                 "example": {
-                    "error": "InvalidParamError",
-                    "message": "Invalid param: Employee not found"
+                  "error": "InvalidParamError",
+                  "message": "Invalid param: Employee not found"
                 }
               }
             }
@@ -947,6 +950,409 @@
               "application/json": {
                 "example": {
                   "error": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/client": {
+      "get": {
+        "tags": [
+          "Clients"
+        ],
+        "summary": "Retorna informações do cliente a partir de parâmetros de entrada",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "aa72a194-dc7e-44ef-b0be-9b2fe2bf793a",
+              "description": "Id do cliente"
+            }
+          },
+          {
+            "in": "query",
+            "name": "email",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "jose.silva@gmail.com",
+              "description": "Email do cliente"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cpf",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "32125869777",
+              "description": "CPF do cliente"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "aa72a194-dc7e-44ef-b0be-9b2fe2bf793a"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "José da Silva"
+                      },
+                      "email": {
+                        "type": "string",
+                        "example": "jose.silva@gmail.com"
+                      },
+                      "cpf": {
+                        "type": "string",
+                        "example": "32125869777"
+                      },
+                      "password": {
+                        "type": "string",
+                        "example": "J$2023"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2023-10-22T14:44:42.086Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2023-10-22T14:44:42.086Z"
+                      },
+                      "deletedAt": {
+                        "type": "string",
+                        "example": null
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Parâmetro inválido",
+                      "description": "Mensagem do erro ocorrido"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Nenhum cliente encontrado",
+                      "description": "Mensagem do erro ocorrido"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Ocorreu um erro interno",
+                      "description": "Mensagem do erro ocorrido"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Clients"
+        ],
+        "description": "Rota de manutenção de Clientes",
+        "summary": "Cadastra um cliente",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "José da Silva",
+                    "description": "Este é o nome do cliente"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "jose.silva@gmail.com",
+                    "description": "Este é o email do cliente"
+                  },
+                  "cpf": {
+                    "type": "string",
+                    "example": "32125869777",
+                    "description": "Este é o CPF do cliente"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "J$2023",
+                    "description": "Esta é a senha do cliente"
+                  },
+                  "repeatPassword": {
+                    "type": "string",
+                    "example": "J$2023",
+                    "description": "Esta é a confirmação da senha do cliente"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "clientId": {
+                      "type": "string",
+                      "example": "aa72a194-dc7e-44ef-b0be-9b2fe2bf793a",
+                      "description": "Este é o ID do cliente criado"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Parâmetro inválido",
+                      "description": "Mensagem do erro ocorrido"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Ocorreu um erro interno",
+                      "description": "Mensagem do erro ocorrido"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Clients"
+        ],
+        "summary": "Atualiza um cliente a partir de seu Id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "aa72a194-dc7e-44ef-b0be-9b2fe2bf793a",
+              "description": "Id do cliente"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "José da Silva",
+                    "description": "Este é o nome do cliente"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "jose.silva@gmail.com",
+                    "description": "Este é o email do cliente"
+                  },
+                  "cpf": {
+                    "type": "string",
+                    "example": "32125869777",
+                    "description": "Este é o CPF do cliente"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "clientId": {
+                      "type": "string",
+                      "example": "aa72a194-dc7e-44ef-b0be-9b2fe2bf793a",
+                      "description": "Este é o ID do cliente alterado"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Parâmetro inválido",
+                      "description": "Mensagem do erro ocorrido"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Ocorreu um erro interno",
+                      "description": "Mensagem do erro ocorrido"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Clients"
+        ],
+        "summary": "Deleta um cliente a partir de seu Id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "aa72a194-dc7e-44ef-b0be-9b2fe2bf793a",
+              "description": "Id do cliente"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "clientId": {
+                      "type": "string",
+                      "example": "aa72a194-dc7e-44ef-b0be-9b2fe2bf793a",
+                      "description": "Este é o ID do cliente deletado"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Parâmetro inválido",
+                      "description": "Mensagem do erro ocorrido"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Ocorreu um erro interno",
+                      "description": "Mensagem do erro ocorrido"
+                    }
+                  }
                 }
               }
             }
