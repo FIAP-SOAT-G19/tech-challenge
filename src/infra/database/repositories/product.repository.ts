@@ -4,8 +4,10 @@ import {
   GetProductByIdOutput,
   GetProducts,
   IProductRepository,
+  ProductUpdateOptions,
   SaveProductInput
 } from '@/ports/repositories/product.port'
+import { ProductNotFoundError } from '@/shared/errors'
 
 export class ProductRepository implements IProductRepository {
   async save(input: SaveProductInput): Promise<string> {
@@ -49,5 +51,39 @@ export class ProductRepository implements IProductRepository {
       name: product.name,
       category: product.category
     }))
+  }
+
+  async update(productId: string, updateOptions: ProductUpdateOptions): Promise<GetProductByIdOutput | null> {
+    const product = await prismaClient.product.findUnique({
+      where: {
+        id: productId
+      }
+    })
+    if (!product) throw new ProductNotFoundError()
+
+    const updatedFields = {
+      name: updateOptions?.name ?? product.name,
+      category: (updateOptions?.category ?? product.category) as ProductCategory,
+      price: updateOptions?.price ?? product.price,
+      description: updateOptions?.description ?? product.description,
+      image: updateOptions?.image ?? product.image
+    }
+
+    const productUpdated = await prismaClient.product.update({
+      where: {
+        id: productId
+      },
+      data: {
+        name: updatedFields.name,
+        category: updatedFields.category,
+        price: updatedFields.price,
+        description: updatedFields.description,
+        image: updatedFields.image
+      }
+    })
+    if (!productUpdated) {
+      return null
+    }
+    return productUpdated
   }
 }
