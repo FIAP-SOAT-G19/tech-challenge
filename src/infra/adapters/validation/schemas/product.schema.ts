@@ -10,4 +10,12 @@ const productSchema = Joi.object({
 
 const getProductSchema = Joi.string().required()
 
-export { productSchema, getProductSchema }
+const updateProductSchema = Joi.object({
+  name: Joi.string(),
+  category: Joi.string(),
+  price: Joi.number(),
+  description: Joi.string(),
+  image: Joi.string()
+})
+
+export { productSchema, getProductSchema, updateProductSchema }
