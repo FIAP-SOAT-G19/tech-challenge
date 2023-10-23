@@ -53,10 +53,10 @@ export class ProductRepository implements IProductRepository {
     }))
   }
 
-  async update(productId: string, updateOptions: ProductUpdateOptions): Promise<GetProductByIdOutput | null> {
+  async update(updateOptions: ProductUpdateOptions): Promise<GetProductByIdOutput | null> {
     const product = await prismaClient.product.findUnique({
       where: {
-        id: productId
+        id: updateOptions.id
       }
     })
     if (!product) throw new ProductNotFoundError()
@@ -71,7 +71,7 @@ export class ProductRepository implements IProductRepository {
 
     const productUpdated = await prismaClient.product.update({
       where: {
-        id: productId
+        id: updateOptions.id
       },
       data: {
         name: updatedFields.name,

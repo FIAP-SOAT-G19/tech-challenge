@@ -1,6 +1,6 @@
 import { ISchemaValidator } from '../../../ports/validators/schema-validator.port'
 import constants from '../../../shared/constants'
-import { InvalidParamError, ProductNotFoundError } from '../../../shared/errors'
+import { InvalidParamError, MissingParamError, ProductNotFoundError } from '../../../shared/errors'
 import { IProductRepository } from '../../../ports/repositories/product.port'
 import { IGetProductUseCase } from '../../../ports/usecases/product/get-product.port'
 
@@ -14,6 +14,7 @@ export class GetProductUseCase implements IGetProductUseCase {
     input: IGetProductUseCase.Input
   ): Promise<IGetProductUseCase.Output> {
     await this.validateSchema(input)
+    await this.validateProductId(input)
     const product = await this.productRepository.getById(input)
     if (!product) {
       throw new ProductNotFoundError()
@@ -30,6 +31,14 @@ export class GetProductUseCase implements IGetProductUseCase {
     })
     if (validation.error) {
       throw new InvalidParamError(validation.error)
+    }
+  }
+
+  private async validateProductId(
+    id: string
+  ): Promise<void> {
+    if (!id) {
+      throw new MissingParamError('product id')
     }
   }
 }

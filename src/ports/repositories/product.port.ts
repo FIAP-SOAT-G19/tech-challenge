@@ -3,7 +3,6 @@ export interface IProductRepository {
   getById: (productId: string) => Promise<GetProductByIdOutput | null>
   getAll: () => Promise<GetProducts[] | []>
   update: (
-    productId: string,
     updateOptions: ProductUpdateOptions
   ) => Promise<GetProductByIdOutput | null>
   delete: (productId: string) => Promise<boolean>
@@ -35,6 +34,7 @@ export type GetProducts = {
 }
 
 export type ProductUpdateOptions = {
+  id: string
   name?: string
   category?: string
   price?: number

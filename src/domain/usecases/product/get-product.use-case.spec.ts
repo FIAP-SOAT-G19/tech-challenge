@@ -1,7 +1,11 @@
 import { ProductRepository } from '../../../infra/database/repositories/product.repository'
 import { ISchemaValidator } from '../../../ports'
 import { mock } from 'jest-mock-extended'
-import { InvalidParamError, ProductNotFoundError } from '../../../shared/errors'
+import {
+  InvalidParamError,
+  MissingParamError,
+  ProductNotFoundError
+} from '../../../shared/errors'
 import { GetProductUseCase } from './get-product.use-case'
 
 describe('GetProductUseCase', () => {
@@ -63,11 +67,19 @@ describe('GetProductUseCase', () => {
         error: 'error'
       })
 
-      const output = getProductUseCase.execute(
-        productIdInvalidMock as any
-      )
+      const output = getProductUseCase.execute(productIdInvalidMock as any)
 
       await expect(output).rejects.toThrowError(new InvalidParamError('error'))
+    })
+
+    test('should throw error if validateProductId returns error', async () => {
+      schemaValidator.validate.mockReturnValue({
+        value: { productIdMock }
+      })
+
+      const output = getProductUseCase.execute('')
+
+      await expect(output).rejects.toThrowError(new MissingParamError('product id'))
     })
 
     test('should throw error if productRepository.getById returns null', async () => {

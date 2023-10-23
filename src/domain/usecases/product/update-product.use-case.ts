@@ -15,10 +15,9 @@ export class UpdateProductUseCase implements IUpdateProductUseCase {
   ) {}
 
   async execute(
-    productId: string,
     input: IUpdateProductUseCase.Input
   ): Promise<IUpdateProductUseCase.Output> {
-    await this.validateProductId(productId)
+    await this.validateProductId(input.id)
     await this.validateSchema(input)
     if (input.category) {
       await this.validateCategory(input.category)
@@ -27,16 +26,14 @@ export class UpdateProductUseCase implements IUpdateProductUseCase {
       await this.validatePrice(input.price)
     }
 
-    const updatedProduct = await this.productRepository.update(productId, input)
+    const updatedProduct = await this.productRepository.update(input)
     if (!updatedProduct) {
       throw new ServerError()
     }
     return updatedProduct
   }
 
-  private async validateProductId(
-    id: string
-  ): Promise<void> {
+  private async validateProductId(id: string): Promise<void> {
     if (!id) {
       throw new MissingParamError('product id')
     }

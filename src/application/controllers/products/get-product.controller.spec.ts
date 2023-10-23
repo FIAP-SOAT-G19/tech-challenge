@@ -3,7 +3,7 @@ import { mock } from 'jest-mock-extended'
 import { serverError } from '@/shared/helpers/http.helper'
 import { IGetProductUseCase } from '@/ports/usecases/product/get-product.port'
 import { GetProductController } from './get-product.controller'
-import { ProductNotFoundError } from '@/shared/errors'
+import { InvalidParamError, MissingParamError, ProductNotFoundError } from '@/shared/errors'
 
 const getProductUseCase = mock<IGetProductUseCase>()
 const productMock = {
@@ -68,6 +68,40 @@ describe('GetProductController', () => {
         body: {
           error: 'NotFoundError',
           message: 'Product not found error'
+        }
+      })
+    })
+
+    test('should return a invalid param error if GetProductUseCase throws error', async () => {
+      const error = new InvalidParamError('param')
+      getProductUseCase.execute.mockImplementationOnce(() => {
+        throw error
+      })
+
+      const output = await getProductController.execute(input)
+
+      expect(output).toEqual({
+        statusCode: 400,
+        body: {
+          error: 'InvalidParamError',
+          message: 'Invalid param: param'
+        }
+      })
+    })
+
+    test('should return a missing param error if GetProductUseCase throws error', async () => {
+      const error = new MissingParamError('param')
+      getProductUseCase.execute.mockImplementationOnce(() => {
+        throw error
+      })
+
+      const output = await getProductController.execute(input)
+
+      expect(output).toEqual({
+        statusCode: 400,
+        body: {
+          error: 'MissingParamError',
+          message: 'Missing param: param'
         }
       })
     })

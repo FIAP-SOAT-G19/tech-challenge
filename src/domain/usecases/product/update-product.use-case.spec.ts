@@ -34,10 +34,17 @@ describe('UpdateProductUseCase', () => {
     }
 
     const updateNameMock = {
+      id: 'productId',
+      name: 'CocaCola'
+    }
+
+    const updateInvalidIdNameMock = {
+      id: '',
       name: 'CocaCola'
     }
 
     const productInvalidSchemaInputMock = {
+      id: 'productId',
       name: 'CocaCola',
       category: 'drink',
       price: 6,
@@ -46,6 +53,7 @@ describe('UpdateProductUseCase', () => {
     }
 
     const productInvalidCategoryInputMock = {
+      id: 'productId',
       name: 'CocaCola',
       category: 'wrong',
       price: 6,
@@ -54,6 +62,7 @@ describe('UpdateProductUseCase', () => {
     }
 
     const productinValidPriceInputMock = {
+      id: 'productId',
       name: 'CocaCola',
       category: 'drink',
       price: -1,
@@ -66,7 +75,7 @@ describe('UpdateProductUseCase', () => {
         value: updateNameMock
       })
       productRepository.update.mockResolvedValue(productUpdatedMock)
-      await updateProductUseCase.execute(productId, updateNameMock)
+      await updateProductUseCase.execute(updateNameMock)
 
       expect(schemaValidator.validate).toHaveBeenCalledTimes(1)
       expect(schemaValidator.validate).toHaveBeenCalledWith({
@@ -80,10 +89,10 @@ describe('UpdateProductUseCase', () => {
         value: updateNameMock
       })
       productRepository.update.mockResolvedValue(productUpdatedMock)
-      await updateProductUseCase.execute(productId, updateNameMock)
+      await updateProductUseCase.execute(updateNameMock)
 
       expect(productRepository.update).toHaveBeenCalledTimes(1)
-      expect(productRepository.update).toHaveBeenCalledWith(productId, {
+      expect(productRepository.update).toHaveBeenCalledWith({
         ...updateNameMock
       })
     })
@@ -93,7 +102,7 @@ describe('UpdateProductUseCase', () => {
         value: updateNameMock
       })
 
-      const output = updateProductUseCase.execute('', updateNameMock)
+      const output = updateProductUseCase.execute(updateInvalidIdNameMock)
 
       await expect(output).rejects.toThrowError(
         new MissingParamError('product id')
@@ -107,7 +116,6 @@ describe('UpdateProductUseCase', () => {
       })
 
       const output = updateProductUseCase.execute(
-        productId,
         productInvalidSchemaInputMock as any
       )
 
@@ -120,7 +128,6 @@ describe('UpdateProductUseCase', () => {
       })
 
       const output = updateProductUseCase.execute(
-        productId,
         productInvalidCategoryInputMock
       )
 
@@ -134,10 +141,7 @@ describe('UpdateProductUseCase', () => {
         value: productinValidPriceInputMock
       })
 
-      const output = updateProductUseCase.execute(
-        productId,
-        productinValidPriceInputMock
-      )
+      const output = updateProductUseCase.execute(productinValidPriceInputMock)
 
       await expect(output).rejects.toThrowError(
         new InvalidParamError('price must be greater than zero')
@@ -150,7 +154,7 @@ describe('UpdateProductUseCase', () => {
       })
       productRepository.update.mockResolvedValue(null)
 
-      const output = updateProductUseCase.execute(productId, updateNameMock)
+      const output = updateProductUseCase.execute(updateNameMock)
 
       await expect(output).rejects.toThrowError(new ServerError())
     })
@@ -161,10 +165,7 @@ describe('UpdateProductUseCase', () => {
       })
       productRepository.update.mockResolvedValue(productUpdatedMock)
 
-      const output = await updateProductUseCase.execute(
-        productId,
-        updateNameMock
-      )
+      const output = await updateProductUseCase.execute(updateNameMock)
 
       expect(output).toEqual({
         id: 'productId',

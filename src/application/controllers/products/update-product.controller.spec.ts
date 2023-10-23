@@ -1,6 +1,11 @@
 import { HttpRequest } from '@/shared/types/http.types'
 import { mock } from 'jest-mock-extended'
-import { InvalidParamError, MissingParamError, ProductNotFoundError, ServerError } from '@/shared/errors'
+import {
+  InvalidParamError,
+  MissingParamError,
+  ProductNotFoundError,
+  ServerError
+} from '@/shared/errors'
 import { UpdateProductController } from './update-product.controller'
 import { IUpdateProductUseCase } from '@/ports/usecases/product/update-product.port'
 
@@ -42,7 +47,16 @@ describe('UpdateProductController', () => {
       await updateProductController.execute(input)
 
       expect(updateProductUseCase.execute).toHaveBeenCalledTimes(1)
-      expect(updateProductUseCase.execute).toHaveBeenCalledWith(input.params.productId, input.body)
+      expect(updateProductUseCase.execute).toHaveBeenCalledWith(
+        {
+          id: input.params.productId,
+          name: input.body.name,
+          category: input.body.category,
+          price: input.body.price,
+          description: input.body.description,
+          image: input.body.image
+        }
+      )
     })
 
     test('should return product info on success', async () => {
