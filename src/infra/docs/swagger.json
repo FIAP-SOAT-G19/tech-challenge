@@ -13,6 +13,18 @@
   "tags": [
     {
       "name": "Healthcheck"
+    },
+    {
+      "name": "Orders"
+    },
+    {
+      "name": "Webhooks"
+    },
+    {
+      "name": "Employees"
+    },
+    {
+      "name": "Clients"
     }
   ],
   "paths": {
@@ -52,6 +64,892 @@
                       "example": "error"
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders": {
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "description": "Rota de manutenção de pedidos",
+        "summary": "Cadastra um pedido",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "clientId": {
+                    "type": "string",
+                    "example": "3654df37-85a6-4b52-bce8-346b6edb6587",
+                    "description": "Este é o identificador do cliente (OPCIONAL SE FOR FORNECIDO O CPF DO CLIENTE QUE NÃO SE IDENTIFICOU)"
+                  },
+                  "clientDocument": {
+                    "type": "string",
+                    "example": "12365478996",
+                    "description": "Este é o CPF do cliente (OPCIONAL SE FOR FORNECIDO O IDENTIFICADOR DO CLIENTE QUE SE IDENTIFICOU)"
+                  },
+                  "products": {
+                    "type": "array",
+                    "items": {
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "example": "beaa6021-2303-4ea8-9368-ec25c5485ca0",
+                              "description": "Este é o identificador do produto"
+                            },
+                            "price": {
+                              "type": "number",
+                              "example": "5000",
+                              "description": "Indica o valor do produto muttiplicado por 100. No exemplo acima o valor do produto é R$50,00"
+                            },
+                            "amount": {
+                              "type": "number",
+                              "example": "2",
+                              "description": "Indica a quantidade de produtos selecionados para o pedido"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "orderNumber": {
+                      "type": "string",
+                      "example": "68GIKX-1697060786831"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Retorna os pedidos cadastrados",
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "example": "0b525562-0ddc-48d2-989d-3ab76172bb69"
+                          },
+                          "orderNumber": {
+                            "type": "string",
+                            "example": "68GIKX-1697060786831"
+                          },
+                          "clientDocument": {
+                            "type": "string"
+                          },
+                          "clientId": {
+                            "type": "string",
+                            "example": "d44d8af7-b151-42e9-8159-bf2e32e85ed3"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "received"
+                          },
+                          "totalValue": {
+                            "type": "number",
+                            "example": 1900
+                          },
+                          "paidAt": {
+                            "type": "string",
+                            "example": "2023-10-16T15:07:18.547Z"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "example": "2023-10-16T15:00:18.547Z"
+                          },
+                          "client": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "example": "Maria da Silva"
+                              },
+                              "email": {
+                                "type": "string",
+                                "example": "maria@gmail.com"
+                              },
+                              "cpf": {
+                                "type": "string",
+                                "example": "14598787451"
+                              },
+                              "products": {
+                                "type": "array",
+                                "items": {
+                                  "oneOf": [
+                                    {
+                                      "type": "object",
+                                      "properties": {
+                                        "id": {
+                                          "type": "string",
+                                          "example": "86446705-9ebb-47aa-8178-1a7b232341c8"
+                                        },
+                                        "name": {
+                                          "type": "string",
+                                          "example": "Product1"
+                                        },
+                                        "category": {
+                                          "type": "string",
+                                          "example": "snack"
+                                        },
+                                        "price": {
+                                          "type": "number",
+                                          "example": 900
+                                        },
+                                        "description": {
+                                          "type": "string",
+                                          "example": "Product 1"
+                                        },
+                                        "image": {
+                                          "type": "string",
+                                          "example": "www.meuapp.com.br/images/product1.img"
+                                        },
+                                        "amount": {
+                                          "type": "number",
+                                          "example": 2
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "type": "object",
+                                      "properties": {
+                                        "id": {
+                                          "type": "string",
+                                          "example": "86446705-9ebb-47aa-8178-1a7b232388s2"
+                                        },
+                                        "name": {
+                                          "type": "string",
+                                          "example": "Product2"
+                                        },
+                                        "category": {
+                                          "type": "string",
+                                          "example": "snack"
+                                        },
+                                        "price": {
+                                          "type": "number",
+                                          "example": 1100
+                                        },
+                                        "description": {
+                                          "type": "string",
+                                          "example": "Product 2"
+                                        },
+                                        "image": {
+                                          "type": "string",
+                                          "example": "www.meuapp.com.br/images/product2.img"
+                                        },
+                                        "amount": {
+                                          "type": "number",
+                                          "example": 1
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/:orderNumber": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Retorna informações de um pedido através de seu número.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "orderNumber",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "U0YA6T-1697468838547"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "0b525562-0ddc-48d2-989d-3ab76172bb69"
+                    },
+                    "orderNumber": {
+                      "type": "string",
+                      "example": "68GIKX-1697060786831"
+                    },
+                    "clientDocument": {
+                      "type": "string"
+                    },
+                    "clientId": {
+                      "type": "string",
+                      "example": "d44d8af7-b151-42e9-8159-bf2e32e85ed3"
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "received"
+                    },
+                    "totalValue": {
+                      "type": "number",
+                      "example": 1900
+                    },
+                    "paidAt": {
+                      "type": "string",
+                      "example": "2023-10-16T15:07:18.547Z"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2023-10-16T15:00:18.547Z"
+                    },
+                    "client": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "example": "Maria da Silva"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "maria@gmail.com"
+                        },
+                        "cpf": {
+                          "type": "string",
+                          "example": "14598787451"
+                        },
+                        "products": {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "example": "86446705-9ebb-47aa-8178-1a7b232341c8"
+                                  },
+                                  "name": {
+                                    "type": "string",
+                                    "example": "Product1"
+                                  },
+                                  "category": {
+                                    "type": "string",
+                                    "example": "snack"
+                                  },
+                                  "price": {
+                                    "type": "number",
+                                    "example": 900
+                                  },
+                                  "description": {
+                                    "type": "string",
+                                    "example": "Product 1"
+                                  },
+                                  "image": {
+                                    "type": "string",
+                                    "example": "www.meuapp.com.br/images/product1.img"
+                                  },
+                                  "amount": {
+                                    "type": "number",
+                                    "example": 2
+                                  }
+                                }
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "example": "86446705-9ebb-47aa-8178-1a7b232388s2"
+                                  },
+                                  "name": {
+                                    "type": "string",
+                                    "example": "Product2"
+                                  },
+                                  "category": {
+                                    "type": "string",
+                                    "example": "snack"
+                                  },
+                                  "price": {
+                                    "type": "number",
+                                    "example": 1100
+                                  },
+                                  "description": {
+                                    "type": "string",
+                                    "example": "Product 2"
+                                  },
+                                  "image": {
+                                    "type": "string",
+                                    "example": "www.meuapp.com.br/images/product2.img"
+                                  },
+                                  "amount": {
+                                    "type": "number",
+                                    "example": 1
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Deleta um pedido através de seu número.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "orderNumber",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "U0YA6T-1697468838547"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Sem conteúdo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Atualiza o status do pedido através de seu número.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "orderNumber",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "U0YA6T-1697468838547"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "received"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Sem conteúdo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/webhooks/paid_market/qrcodepayment": {
+      "post": {
+        "tags": [
+          "Webhooks"
+        ],
+        "description": "Rota de processamento de webhooks do mercado pago",
+        "summary": "Atualiza status de um pedido",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "orderNumber": {
+                    "type": "string",
+                    "example": "68GIKX-1697060786831",
+                    "description": "Este é o identificador do pedido"
+                  },
+                  "status": {
+                    "type": "string",
+                    "example": "approved",
+                    "description": "Este é o status do processamento da cobrança"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Sem conteúdo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employee": {
+      "post": {
+        "tags": [
+          "Employees"
+        ],
+        "description": "Rota de criação de funcionário",
+        "summary": "Cria um funcionário",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "name": "John Doe",
+                  "email": "john.doe@email.com",
+                  "cpf": "12345678900",
+                  "password": "123456"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "id": "3a51ed19-316a-4b05-8f0e-5b691abad994"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação da solicitação",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "InvalidParamError",
+                  "message": "Invalid param: The 'password' field is required."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employees": {
+      "get": {
+        "tags": [
+          "Employees"
+        ],
+        "description": "Rota de listagem de funcionários",
+        "summary": "Retorna lista de funcionários",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "example": {
+                    "employees": [
+                      {
+                        "id": "3a51ed19-316a-4b05-8f0e-5b691abad994",
+                        "name": "John Doe",
+                        "email": "john.doe@email.com",
+                        "cpf": "12345678900",
+                        "createdAt": "2023-10-12T21:44:36.423Z",
+                        "updatedAt": "2023-10-12T21:44:36.423Z"
+                      },
+                      {
+                        "id": "e5b5b3c7-59a6-4ed9-b13b-1af23757199e",
+                        "name": "Nome do Funcionário 5",
+                        "email": "email6@example.com",
+                        "cpf": "12345678901",
+                        "createdAt": "2023-10-12T21:50:51.553Z",
+                        "updatedAt": "2023-10-12T21:50:51.553Z"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employee/:id": {
+      "get": {
+        "tags": [
+          "Employees"
+        ],
+        "description": "Rota de busca de funcionário",
+        "summary": "Retorna um funcionário",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Id do funcionário",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "employee": {
+                      "id": "3a51ed19-316a-4b05-8f0e-5b691abad994",
+                      "name": "John Doe",
+                      "email": "john.doe@email.com",
+                      "cpf": "12345678900",
+                      "createdAt": "2023-10-12T21:44:36.423Z",
+                      "updatedAt": "2023-10-12T21:44:36.423Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação da solicitação",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "InvalidParamError",
+                  "message": "Invalid param: Employee not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Employee not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Employees"
+        ],
+        "description": "Rota de atualização de funcionário, todos os campos são opcionais",
+        "summary": "Atualiza um funcionário",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "name": "John Doe II",
+                  "email": "john.doeII@email.com",
+                  "cpf": "12345678900",
+                  "password": "123456"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id_",
+            "description": "Id do funcionário",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "idEmployee": "aee78fe2-9ea3-4f73-aae4-f7cb3f16e972"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação da solicitação",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "InvalidParamError",
+                  "message": "Invalid param: Employee not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Employees"
+        ],
+        "description": "Rota de remoção de funcionário",
+        "summary": "Remove um funcionário",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "_id",
+            "description": "Id do funcionário",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {}
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação da solicitação",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "InvalidParamError",
+                  "message": "Invalid param: Employee not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Internal Server Error"
                 }
               }
             }

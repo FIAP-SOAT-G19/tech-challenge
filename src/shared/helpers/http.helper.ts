@@ -7,7 +7,10 @@ export const success = (statusCode: number, body: any): HttpResponse => ({
 
 export const badRequest = (error: Error): HttpResponse => ({
   statusCode: 400,
-  body: error
+  body: {
+    error: error.name,
+    message: error.message
+  }
 })
 
 export const serverError = (error: Error): HttpResponse => ({

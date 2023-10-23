@@ -10,9 +10,14 @@ export default {
   SCHEMAS: {
     ORDER: 'orderSchema',
     CLIENT: 'clientSchema',
-    UPDATE_CLIENT: 'updateClientSchema'
+    UPDATE_CLIENT: 'updateClientSchema',
+    EMPLOYEE: 'employeeSchema'
   },
   PAYMENT: {
     DEFAULT_TITLE: 'Tech-Challenge Payment'
+  },
+  PAID_MARKET: {
+    STATUS_APPROVED: 'approved',
+    STATUS_REFUSED: 'refused'
   }
 }
