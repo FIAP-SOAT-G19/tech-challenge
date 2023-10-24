@@ -11,13 +11,29 @@ export default {
     ORDER: 'orderSchema',
     CLIENT: 'clientSchema',
     UPDATE_CLIENT: 'updateClientSchema',
-    EMPLOYEE: 'employeeSchema'
+    EMPLOYEE: 'employeeSchema',
+    PRODUCT: 'productSchema',
+    GET_PRODUCT: 'getProductSchema',
+    UPDATE_PRODUCT: 'updateProductSchema',
+    DELETE_PRODUCT: 'deleteProductSchema'
   },
   PAYMENT: {
     DEFAULT_TITLE: 'Tech-Challenge Payment'
   },
   PAID_MARKET: {
     STATUS_APPROVED: 'approved',
-    STATUS_REFUSED: 'refused'
+    STATUS_REFUSED: 'refused',
+    PRODUCT_CATEGORY: {
+      SNACK: 'snack',
+      ACCOMPANIMENT: 'accompaniment',
+      DRINK: 'drink',
+      DESSERT: 'dessert'
+    }
+  },
+  PRODUCT_CATEGORY: {
+    SNACK: 'snack',
+    ACCOMPANIMENT: 'accompaniment',
+    DRINK: 'drink',
+    DESSERT: 'dessert'
   }
 }

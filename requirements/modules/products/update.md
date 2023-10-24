@@ -10,11 +10,11 @@ No caso do update podemos deixar que o usuário escolha quais campos quer altera
 
 
 > ## Exceções
-1. ⛔ Retorna 400 se o id do produto não for fornecido
-2. ⛔ Retorna 400 se o id do produto for inválido
-3. ⛔ Retorna 400 se a categoria do produto for fornecida e for inválida (snack,accompaniment,drink,dessert)
-4. ⛔ Retorna 400 se o preço do produto for fornecido e for inválido (preco <= 0)
-5. ⛔ Retorna 500 se houver alguma falha na hora de salvar os dados
+1. ✅ Retorna 400 se o id do produto não for fornecido
+2. ✅ Retorna 400 se o id do produto for inválido
+3. ✅ Retorna 400 se a categoria do produto for fornecida e for inválida (snack,accompaniment,drink,dessert)
+4. ✅ Retorna 400 se o preço do produto for fornecido e for inválido (preco <= 0)
+5. ✅ Retorna 500 se houver alguma falha na hora de salvar os dados
 
 
 ## Objeto Product

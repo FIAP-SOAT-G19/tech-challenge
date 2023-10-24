@@ -67,6 +67,9 @@ describe('DeleteEmployeeController', () => {
     const result = await sut.execute(input)
 
     expect(result.statusCode).toBe(500)
-    expect(result.body).toEqual(new Error('Any error'))
+    expect(result.body).toEqual({
+      error: 'Error',
+      message: 'Any error'
+    })
   })
 })

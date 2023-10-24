@@ -57,9 +57,7 @@ describe('CreateOrderUseCase', () => {
       category: 'anyCategory',
       price: 2500,
       description: 'AnyDescription',
-      image: 'anyimageUrl',
-      createdAt: new Date(),
-      updatedAt: null
+      image: 'anyimageUrl'
     })
 
     jest.clearAllMocks()

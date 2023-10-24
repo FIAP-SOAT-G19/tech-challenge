@@ -33,6 +33,11 @@ export class ClientNotFoundError extends Error {
   statusCode = 404
   constructor() {
     super('Client not found error')
+  }
+}
+export class ProductNotFoundError extends Error {
+  constructor () {
+    super('Product not found error')
     this.name = 'NotFoundError'
   }
 }
