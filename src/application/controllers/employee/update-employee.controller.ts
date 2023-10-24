@@ -1,8 +1,7 @@
 import { UpdateEmployeeUseCase } from './../../../domain/usecases/employee/update-employee.usecase'
 import { HttpRequest, HttpResponse } from '@/shared/types/http.types'
-import { InvalidParamError, SchemaValidationError } from '../../../shared/errors'
-import { IController } from '../../../ports/controllers/index.port'
-import { serverError, success, badRequest } from '../../../shared/helpers/http.helper'
+import { IController } from '@/ports/'
+import { success, handleError } from '@/shared'
 
 export class UpdateEmployeeController implements IController {
   constructor(private readonly updateEmployeeUseCase: UpdateEmployeeUseCase) {}
@@ -20,10 +19,7 @@ export class UpdateEmployeeController implements IController {
       })
       return success(200, { idEmployee })
     } catch (error: any) {
-      if (error instanceof InvalidParamError || error instanceof SchemaValidationError) {
-        return badRequest(error)
-      }
-      return serverError(error)
+      return handleError(error)
     }
   }
 }

@@ -1,8 +1,7 @@
 import { ReadEmployeeUseCase } from '@/domain/usecases/employee/read-employee.usecase'
 import { IController } from '../../../ports/controllers/index.port'
 import { HttpRequest, HttpResponse } from '@/shared/types/http.types'
-import { serverError, success, badRequest } from '../../../shared/helpers/http.helper'
-import { InvalidParamError } from '../../../shared/errors'
+import { success, handleError } from '@/shared'
 
 export class ReadEmployeeController implements IController {
   constructor(private readonly readEmployeeUseCase: ReadEmployeeUseCase) {}
@@ -13,10 +12,7 @@ export class ReadEmployeeController implements IController {
       const employee = await this.readEmployeeUseCase.findOne({ id })
       return success(200, { employee })
     } catch (error: any) {
-      if (error instanceof InvalidParamError) {
-        return badRequest(error)
-      }
-      return serverError(error)
+      return handleError(error)
     }
   }
 }
