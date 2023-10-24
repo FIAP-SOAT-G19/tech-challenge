@@ -1,7 +1,6 @@
 import { HttpRequest, HttpResponse } from '@/shared/types/http.types'
 import { DeleteEmployeeUseCase } from './../../../domain/usecases/employee/delete-employee.usecase'
-import { serverError, success, badRequest } from '../../../shared/helpers/http.helper'
-import { InvalidParamError } from '../../../shared/errors'
+import { success, handleError } from '@/shared'
 
 export class DeleteEmployeeController {
   constructor(private readonly deleteEmployeeUseCase: DeleteEmployeeUseCase) {}
@@ -14,10 +13,7 @@ export class DeleteEmployeeController {
       })
       return success(204, {})
     } catch (error: any) {
-      if (error instanceof InvalidParamError) {
-        return badRequest(error)
-      }
-      return serverError(error)
+      return handleError(error)
     }
   }
 }
