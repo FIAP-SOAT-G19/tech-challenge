@@ -1,4 +1,4 @@
-import { HttpResponse } from '../types/http.types'
+import { HttpResponse } from '@/shared/types/http.types'
 
 export const success = (statusCode: number, body: any): HttpResponse => ({
   statusCode,
@@ -15,5 +15,8 @@ export const badRequest = (error: Error): HttpResponse => ({
 
 export const serverError = (error: Error): HttpResponse => ({
   statusCode: 500,
-  body: error
+  body: {
+    error: error.name,
+    message: error.message
+  }
 })

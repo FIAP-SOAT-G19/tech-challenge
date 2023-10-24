@@ -22,6 +22,9 @@
     },
     {
       "name": "Employees"
+    },
+    {
+      "name": "Clients"
     }
   ],
   "paths": {
@@ -659,7 +662,7 @@
         }
       }
     },
-    "/employee" : {
+    "/employee": {
       "post": {
         "tags": [
           "Employees"
@@ -935,8 +938,8 @@
             "content": {
               "application/json": {
                 "example": {
-                    "error": "InvalidParamError",
-                    "message": "Invalid param: Employee not found"
+                  "error": "InvalidParamError",
+                  "message": "Invalid param: Employee not found"
                 }
               }
             }
@@ -947,6 +950,916 @@
               "application/json": {
                 "example": {
                   "error": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/client": {
+      "get": {
+        "tags": [
+          "Clients"
+        ],
+        "summary": "Retorna informações do cliente a partir de parâmetros de entrada",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "aa72a194-dc7e-44ef-b0be-9b2fe2bf793a",
+              "description": "Id do cliente"
+            }
+          },
+          {
+            "in": "query",
+            "name": "email",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "jose.silva@gmail.com",
+              "description": "Email do cliente"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cpf",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "32125869777",
+              "description": "CPF do cliente"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "aa72a194-dc7e-44ef-b0be-9b2fe2bf793a"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "José da Silva"
+                      },
+                      "email": {
+                        "type": "string",
+                        "example": "jose.silva@gmail.com"
+                      },
+                      "cpf": {
+                        "type": "string",
+                        "example": "32125869777"
+                      },
+                      "password": {
+                        "type": "string",
+                        "example": "J$2023"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2023-10-22T14:44:42.086Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2023-10-22T14:44:42.086Z"
+                      },
+                      "deletedAt": {
+                        "type": "string",
+                        "example": null
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Parâmetro inválido",
+                      "description": "Mensagem do erro ocorrido"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Nenhum cliente encontrado",
+                      "description": "Mensagem do erro ocorrido"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Ocorreu um erro interno",
+                      "description": "Mensagem do erro ocorrido"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Clients"
+        ],
+        "description": "Rota de manutenção de Clientes",
+        "summary": "Cadastra um cliente",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "José da Silva",
+                    "description": "Este é o nome do cliente"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "jose.silva@gmail.com",
+                    "description": "Este é o email do cliente"
+                  },
+                  "cpf": {
+                    "type": "string",
+                    "example": "32125869777",
+                    "description": "Este é o CPF do cliente"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "J$2023",
+                    "description": "Esta é a senha do cliente"
+                  },
+                  "repeatPassword": {
+                    "type": "string",
+                    "example": "J$2023",
+                    "description": "Esta é a confirmação da senha do cliente"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "clientId": {
+                      "type": "string",
+                      "example": "aa72a194-dc7e-44ef-b0be-9b2fe2bf793a",
+                      "description": "Este é o ID do cliente criado"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Parâmetro inválido",
+                      "description": "Mensagem do erro ocorrido"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Ocorreu um erro interno",
+                      "description": "Mensagem do erro ocorrido"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Clients"
+        ],
+        "summary": "Atualiza um cliente a partir de seu Id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "aa72a194-dc7e-44ef-b0be-9b2fe2bf793a",
+              "description": "Id do cliente"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "José da Silva",
+                    "description": "Este é o nome do cliente"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "jose.silva@gmail.com",
+                    "description": "Este é o email do cliente"
+                  },
+                  "cpf": {
+                    "type": "string",
+                    "example": "32125869777",
+                    "description": "Este é o CPF do cliente"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "clientId": {
+                      "type": "string",
+                      "example": "aa72a194-dc7e-44ef-b0be-9b2fe2bf793a",
+                      "description": "Este é o ID do cliente alterado"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Parâmetro inválido",
+                      "description": "Mensagem do erro ocorrido"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Ocorreu um erro interno",
+                      "description": "Mensagem do erro ocorrido"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Clients"
+        ],
+        "summary": "Deleta um cliente a partir de seu Id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "aa72a194-dc7e-44ef-b0be-9b2fe2bf793a",
+              "description": "Id do cliente"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "clientId": {
+                      "type": "string",
+                      "example": "aa72a194-dc7e-44ef-b0be-9b2fe2bf793a",
+                      "description": "Este é o ID do cliente deletado"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Parâmetro inválido",
+                      "description": "Mensagem do erro ocorrido"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Ocorreu um erro interno",
+                      "description": "Mensagem do erro ocorrido"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products": {
+      "post": {
+        "tags": [
+          "Products"
+        ],
+        "description": "Rota de Products da API",
+        "summary": "Criar os Produtos da API",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Coca Cola"
+                  },
+                  "category": {
+                    "type": "string",
+                    "example": "drink"
+                  },
+                  "price": {
+                    "type": "number",
+                    "example": "4"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Beverage description"
+                  },
+                  "image": {
+                    "type": "string",
+                    "example": "http://host.com/image"
+                  }
+                },
+                "required": [
+                  "name",
+                  "category",
+                  "price",
+                  "description",
+                  "image"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Produto adicionado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "productId": {
+                      "type": "string",
+                      "example": "5ebcea6f-2391-46aa-a5bc-ab5d98527f13"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Missing param: product name"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "description": "Rota de Products da API",
+        "summary": "Retorna os Produtos da API",
+        "responses": {
+          "200": {
+            "description": "Produtos retornados com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "5ebcea6f-2391-46aa-a5bc-ab5d98527f13"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "Coca Cola"
+                      },
+                      "category": {
+                        "type": "string",
+                        "example": "drink"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{productId}": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "description": "Rota de Products da API",
+        "summary": "Retorna as informações de um Produto da API",
+        "parameters":[
+          {
+            "in": "path",
+            "name": "productId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID do produto"
+          }],
+        "responses": {
+          "200": {
+            "description": "Informações do Produto retornadas com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "5ebcea6f-2391-46aa-a5bc-ab5d98527f13"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Coca Cola"
+                    },
+                    "category": {
+                      "type": "string",
+                      "example": "drink"
+                    },
+                    "price": {
+                      "type": "number",
+                      "example": "6"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "Drink description"
+                    },
+                    "image": {
+                      "type": "string",
+                      "example": "http://host.com/image"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Product not found error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Products"
+        ],
+        "description": "Rota de Products da API",
+        "summary": "Atualiza as informações de um Produto da API",
+        "parameters":[
+          {
+            "in": "path",
+            "name": "productId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID do produto"
+          }],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "example": "Coca Cola"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "Updated description"
+                    }
+                  }
+                }
+              }
+            }
+          },
+        "responses": {
+          "200": {
+            "description": "Atualização da informação do Produto realizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "5ebcea6f-2391-46aa-a5bc-ab5d98527f13"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Coca Cola"
+                    },
+                    "category": {
+                      "type": "string",
+                      "example": "drink"
+                    },
+                    "price": {
+                      "type": "number",
+                      "example": "6"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "Updated description"
+                    },
+                    "image": {
+                      "type": "string",
+                      "example": "http://host.com/image"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Product not found error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Products"
+        ],
+        "description": "Rota de Products da API",
+        "summary": "Deleta um Produto da API",
+        "parameters":[
+          {
+            "in": "path",
+            "name": "productId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID do produto"
+          }],
+        "responses": {
+          "200": {
+            "description": "Produto deletado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Product deleted"
+                    },
+                    "productId": {
+                      "type": "string",
+                      "example": "ca97b811-a559-44b0-b3b0-1a9a84309aef"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Product not found error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/category/{category}": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "description": "Rota de Products da API",
+        "summary": "Retorna os Produto de uma determinada categoria da API",
+        "parameters":[
+          {
+            "in": "path",
+            "name": "category",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Categoria do produto"
+          }],
+        "responses": {
+          "200": {
+            "description": "Produtos da categoria retornadas com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "5ebcea6f-2391-46aa-a5bc-ab5d98527f13"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "Coca Cola"
+                      },
+                      "category": {
+                        "type": "string",
+                        "example": "drink"
+                      },
+                      "price": {
+                        "type": "number",
+                        "example": "6"
+                      },
+                      "description": {
+                        "type": "string",
+                        "example": "Drink description"
+                      },
+                      "image": {
+                        "type": "string",
+                        "example": "http://host.com/image"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Product not found error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    }
+                  }
                 }
               }
             }
