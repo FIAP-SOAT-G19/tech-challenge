@@ -13,6 +13,6 @@ export namespace IReadEmployeeUseCase {
     email: string
     cpf: string
     createdAt: Date
-    updatedAt: Date
+    updatedAt: Date | null
   }
 }

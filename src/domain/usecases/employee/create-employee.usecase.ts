@@ -26,8 +26,8 @@ export class CreateEmployeeUseCase implements ICreateEmployeeUseCase {
       cpf: input.cpf,
       password: this.encryptoPassword.generate(input.password),
       createdAt: new Date(),
-      updatedAt: new Date(),
-      deletedAt: new Date('9999-12-31T23:59:59.999Z')
+      updatedAt: null,
+      deletedAt: null
     })
   }
 
