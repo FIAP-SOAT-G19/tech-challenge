@@ -473,6 +473,98 @@
           }
         }
       }
+    },
+    "/products/category/{category}": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "description": "Rota de Products da API",
+        "summary": "Retorna os Produto de uma determinada categoria da API",
+        "parameters":[
+          {
+            "in": "path",
+            "name": "category",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Categoria do produto"
+          }],
+        "responses": {
+          "200": {
+            "description": "Produtos da categoria retornadas com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "5ebcea6f-2391-46aa-a5bc-ab5d98527f13"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "Coca Cola"
+                      },
+                      "category": {
+                        "type": "string",
+                        "example": "drink"
+                      },
+                      "price": {
+                        "type": "number",
+                        "example": "6"
+                      },
+                      "description": {
+                        "type": "string",
+                        "example": "Drink description"
+                      },
+                      "image": {
+                        "type": "string",
+                        "example": "http://host.com/image"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Product not found error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
