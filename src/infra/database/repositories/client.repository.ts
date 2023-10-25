@@ -53,11 +53,10 @@ export class ClientRepository implements IClientRepository {
     return client.id
   }
 
-  async delete(clientId: string): Promise<string> {
-    const client = await prismaClient.client.update({
+  async delete(clientId: string): Promise<void> {
+    await prismaClient.client.update({
       data: { deletedAt: new Date() },
       where: { id: clientId }
     })
-    return client.id
   }
 }

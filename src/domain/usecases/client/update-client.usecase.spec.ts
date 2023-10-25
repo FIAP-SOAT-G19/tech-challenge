@@ -22,7 +22,7 @@ describe('UpdateClientUseCase', () => {
       cpf: 'anyClientCpf'
     }
     clientRepositoryOutput = {
-      id: 'anyClientId',
+      id: 'otherAnyClientId',
       name: 'anyClientName',
       email: 'anyClientEmail',
       password: 'anyClientPassword',
@@ -60,7 +60,7 @@ describe('UpdateClientUseCase', () => {
     clientRepository.getByEmail.mockResolvedValueOnce(clientRepositoryOutput)
     input.email = ''
     const output = sut.execute(input)
-    await expect(output).rejects.toThrow(new InvalidParamError('email'))
+    await expect(output).rejects.toThrow(new InvalidParamError('the email is already being used by another user'))
   })
 
   test('should throws if cpf is empty', async () => {
@@ -69,7 +69,7 @@ describe('UpdateClientUseCase', () => {
     clientRepository.getByDocument.mockResolvedValueOnce(clientRepositoryOutput)
     input.cpf = ''
     const output = sut.execute(input)
-    await expect(output).rejects.toThrow(new InvalidParamError('document'))
+    await expect(output).rejects.toThrow(new InvalidParamError('there is already a user with this document'))
   })
 
   test('should throws if schemaValidator returns error', async () => {

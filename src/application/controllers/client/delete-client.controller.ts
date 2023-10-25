@@ -7,8 +7,8 @@ export class DeleteClientController implements IController {
   constructor(private readonly deleteClientUseCase: IDeleteClientUseCase) { }
   async execute(input: HttpRequest): Promise<HttpResponse> {
     try {
-      const clientId = await this.deleteClientUseCase.execute(input.params)
-      return success(200, { clientId })
+      await this.deleteClientUseCase.execute(input.params)
+      return success(200, {})
     } catch (error) {
       return serverError(error as Error)
     }

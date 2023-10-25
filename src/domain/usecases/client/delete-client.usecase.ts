@@ -5,9 +5,9 @@ import { ClientNotFoundError } from '@/shared/errors'
 export class DeleteClientUseCase implements IDeleteClientUseCase {
   constructor(private readonly clientRepository: IClientRepository) { }
 
-  async execute(input: IDeleteClientUseCase.Input): Promise<IDeleteClientUseCase.Output> {
+  async execute(input: IDeleteClientUseCase.Input): Promise<void> {
     await this.validate(input)
-    return await this.clientRepository.delete(input.id)
+    await this.clientRepository.delete(input.id)
   }
 
   private async validate(input: IDeleteClientUseCase.Input): Promise<void> {
