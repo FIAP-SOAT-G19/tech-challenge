@@ -32,9 +32,6 @@ export type GetProductByCategoryOutput = {
   id: string
   name: string
   category: string
-  price: number
-  description: string
-  image: string
 }
 
 export type GetProducts = {

@@ -13,10 +13,7 @@ const productMock = [
   {
     id: 'productId',
     name: 'Coca Cola',
-    category: 'drink',
-    price: 6,
-    description: 'description',
-    image: 'url'
+    category: 'drink'
   }
 ]
 
@@ -33,18 +30,18 @@ describe('GetProductByCategoryController', () => {
 
   beforeEach(() => {
     input = {
-      params: {
+      query: {
         category: 'drink'
       }
     }
   })
-  describe('GET /products/:category', () => {
+  describe('GET /products?category', () => {
     test('should execute GetProductByCategoryUseCase once and with valid input', async () => {
       await getProductByCategoryController.execute(input)
 
       expect(getProductByCategoryUseCase.execute).toHaveBeenCalledTimes(1)
       expect(getProductByCategoryUseCase.execute).toHaveBeenCalledWith(
-        input.params.category
+        input.query.category
       )
     })
 
@@ -57,10 +54,7 @@ describe('GetProductByCategoryController', () => {
           {
             id: 'productId',
             name: 'Coca Cola',
-            category: 'drink',
-            price: 6,
-            description: 'description',
-            image: 'url'
+            category: 'drink'
           }
         ]
       })

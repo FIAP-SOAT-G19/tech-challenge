@@ -30,10 +30,7 @@ describe('GetProductByCategoryUseCase', () => {
       {
         id: '1',
         name: 'Coca Cola',
-        category: 'drink',
-        price: 6,
-        description: 'description',
-        image: 'url'
+        category: 'drink'
       }
     ]
 
@@ -114,10 +111,7 @@ describe('GetProductByCategoryUseCase', () => {
         {
           id: '1',
           name: 'Coca Cola',
-          category: 'drink',
-          price: 6,
-          description: 'description',
-          image: 'url'
+          category: 'drink'
         }
       ])
     })
