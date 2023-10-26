@@ -1450,6 +1450,17 @@
         ],
         "description": "Rota de Products da API",
         "summary": "Retorna os Produtos da API",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "A categoria dos produtos a serem consultados."
+          }
+        ],
         "responses": {
           "200": {
             "description": "Produtos retornados com sucesso",

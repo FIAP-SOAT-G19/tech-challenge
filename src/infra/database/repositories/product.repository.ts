@@ -55,10 +55,7 @@ export class ProductRepository implements IProductRepository {
     return products.map((product) => ({
       id: product.id,
       name: product.name,
-      category: product.category,
-      price: product.price,
-      description: product.description,
-      image: product.image
+      category: product.category
     }))
   }
 

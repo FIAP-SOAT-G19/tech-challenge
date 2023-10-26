@@ -46,7 +46,7 @@ router.get('/products/:productId', expressAdapter(makeGetProductController()))
 router.get('/products', expressAdapter(makeGetProductsController()))
 router.patch('/products/:productId', expressAdapter(makeUpdateProductController()))
 router.delete('/products/:productId', expressAdapter(makeDeleteProductController()))
-router.get('/products/category/:category', expressAdapter(makeGetProductByCategoryController()))
+router.get('/products', expressAdapter(makeGetProductByCategoryController()))
 
 // Webhooks
 router.post('/webhooks/paid_market/qrcodepayment', expressAdapter(makeQrCodePaymentController()))

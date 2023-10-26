@@ -15,8 +15,8 @@ export type SaveEmployeeInput = {
   cpf: string
   password: string
   createdAt: Date
-  updatedAt: Date
-  deletedAt: Date
+  updatedAt: Date | null
+  deletedAt: Date | null
 }
 
 export type FindEmployeeOutput = SaveEmployeeInput
