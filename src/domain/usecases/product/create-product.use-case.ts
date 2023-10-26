@@ -72,6 +72,9 @@ export class CreateProductUseCase implements ICreateProductUseCase {
   }
 
   private async validatePrice(price: number): Promise<void> {
+    if (typeof price === 'string') {
+      throw new InvalidParamError('invalid price')
+    }
     if (price <= 0) {
       throw new InvalidParamError('price must be greater than zero')
     }

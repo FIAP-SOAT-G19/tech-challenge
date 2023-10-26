@@ -26,9 +26,9 @@ describe('DeleteClientController', () => {
   })
 
   test('should return a clientId on success', async () => {
-    deleteClientUseCase.execute.mockResolvedValueOnce('anyClientId')
+    deleteClientUseCase.execute.mockResolvedValueOnce()
     const output = await sut.execute(input)
-    expect(output).toEqual({ statusCode: 200, body: { clientId: 'anyClientId' } })
+    expect(output).toEqual({ statusCode: 200, body: {} })
   })
 
   test('should return an error if DeleteClientUseCase throws', async () => {

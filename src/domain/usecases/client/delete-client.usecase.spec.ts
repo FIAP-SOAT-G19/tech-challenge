@@ -41,10 +41,10 @@ describe('DeleteClientUseCase', () => {
     expect(clientRepository.delete).toHaveBeenCalledTimes(1)
   })
 
-  test('should returns id on success', async () => {
+  test('should rethrows if throws', async () => {
     clientRepository.getById.mockResolvedValueOnce(clientRepositoryOutput)
-    clientRepository.delete.mockResolvedValueOnce(clientRepositoryOutput.id)
-    const output = await sut.execute(input)
-    expect(output).toEqual(clientRepositoryOutput.id)
+    clientRepository.delete.mockRejectedValueOnce(new Error())
+    const output = sut.execute(input)
+    await expect(output).rejects.toThrow(new Error())
   })
 })
