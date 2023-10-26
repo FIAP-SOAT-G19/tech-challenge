@@ -42,7 +42,7 @@ router.patch('/client/:id', expressAdapter(makeUpdateClientController()))
 router.get('/client', expressAdapter(makeGetAllClientsController()))
 router.delete('/client/:id', expressAdapter(makeDeleteClientController()))
 // Products
-const getProductsController = selectProductsRoute(expressAdapter(makeGetProductByCategoryController()), expressAdapter(makeGetProductsController()))
+const getProductsController = selectProductsRoute(makeGetProductByCategoryController(), makeGetProductsController())
 router.get('/products', getProductsController)
 router.post('/products', expressAdapter(makeCreateProductController()))
 router.get('/products/:productId', expressAdapter(makeGetProductController()))
