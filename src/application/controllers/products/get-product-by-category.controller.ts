@@ -15,7 +15,7 @@ export class GetProductByCategoryController implements IController {
   constructor(private readonly getProductByCategoryUseCase: IGetProductByCategoryUseCase) {}
   async execute(input: HttpRequest): Promise<HttpResponse> {
     try {
-      const productCategory = input.query.category
+      const productCategory = input.params.category
 
       const products = await this.getProductByCategoryUseCase.execute(productCategory)
       return success(200, products)
