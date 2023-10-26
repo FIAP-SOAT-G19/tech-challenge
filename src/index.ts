@@ -1,9 +1,9 @@
-import 'module-alias/register'
+import './shared/config/module-alias'
 import express from 'express'
 import cors from 'cors'
-import { router } from './infra/routes'
 import swaggerUi from 'swagger-ui-express'
-import swaggerDocument from './infra/docs/swagger.json'
+import { router } from '@/infra/routes'
+import swaggerDocument from '@/infra/docs/swagger.json'
 
 const app = express()
 

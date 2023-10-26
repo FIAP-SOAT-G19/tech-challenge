@@ -1,4 +1,4 @@
-import { HttpResponse } from '../types/http.types'
+import { HttpResponse } from '@/shared/types/http.types'
 
 export const success = (statusCode: number, body: any): HttpResponse => ({
   statusCode,
