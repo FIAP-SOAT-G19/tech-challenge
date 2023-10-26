@@ -18,6 +18,7 @@ import { makeGetProductsController } from './factories/controllers/get-products-
 import { makeUpdateProductController } from './factories/controllers/update-product-controller.factory'
 import { makeDeleteProductController } from './factories/controllers/delete-product-controller.factory'
 import { makeGetProductByCategoryController } from './factories/controllers/get-product-by-category-controller.factory'
+import { selectProductsRoute } from './middleware/select-products-route'
 
 const router = Router()
 
@@ -41,12 +42,12 @@ router.patch('/client/:id', expressAdapter(makeUpdateClientController()))
 router.get('/client', expressAdapter(makeGetAllClientsController()))
 router.delete('/client/:id', expressAdapter(makeDeleteClientController()))
 // Products
+const getProductsController = selectProductsRoute(expressAdapter(makeGetProductByCategoryController()), expressAdapter(makeGetProductsController()))
+router.get('/products', getProductsController)
 router.post('/products', expressAdapter(makeCreateProductController()))
 router.get('/products/:productId', expressAdapter(makeGetProductController()))
-router.get('/products', expressAdapter(makeGetProductsController()))
 router.patch('/products/:productId', expressAdapter(makeUpdateProductController()))
 router.delete('/products/:productId', expressAdapter(makeDeleteProductController()))
-router.get('/products', expressAdapter(makeGetProductByCategoryController()))
 
 // Webhooks
 router.post('/webhooks/paid_market/qrcodepayment', expressAdapter(makeQrCodePaymentController()))
