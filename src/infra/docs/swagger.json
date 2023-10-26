@@ -1383,7 +1383,8 @@
                   },
                   "price": {
                     "type": "number",
-                    "example": "499"
+                    "example": "499",
+                    "description": "Preço em centavos"
                   },
                   "description": {
                     "type": "string",
@@ -1560,7 +1561,8 @@
                     },
                     "price": {
                       "type": "number",
-                      "example": "699"
+                      "example": "699",
+                      "description": "Preço em centavos"
                     },
                     "description": {
                       "type": "string",
@@ -1666,7 +1668,8 @@
                     },
                     "price": {
                       "type": "number",
-                      "example": "699"
+                      "example": "699",
+                      "description": "Preço em centavos"
                     },
                     "description": {
                       "type": "string",
