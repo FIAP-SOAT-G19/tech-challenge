@@ -25,5 +25,5 @@ export interface IClientRepository {
   getAll: (input: GetAllClientsInput) => Promise<Client[] | null>
   save: (input: SaveClientInput) => Promise<string>
   update: (input: UpdateClientInput) => Promise<string>
-  delete: (clientId: string) => Promise<string>
+  delete: (clientId: string) => Promise<void>
 }

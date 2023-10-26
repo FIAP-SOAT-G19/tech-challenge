@@ -1,8 +1,7 @@
 export interface IDeleteClientUseCase {
-  execute: (input: IDeleteClientUseCase.Input) => Promise<IDeleteClientUseCase.Output>
+  execute: (input: IDeleteClientUseCase.Input) => Promise<void>
 }
 
 export namespace IDeleteClientUseCase {
   export type Input = { id: string }
-  export type Output = string
 }

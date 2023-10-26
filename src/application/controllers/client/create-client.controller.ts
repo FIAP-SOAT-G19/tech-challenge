@@ -1,6 +1,7 @@
 import { IController } from '@/ports'
 import { ICreateClientUseCase } from '@/ports/usecases/client/create-client.port'
-import { serverError, success } from '@/shared/helpers/http.helper'
+import { handleError } from '@/shared'
+import { success } from '@/shared/helpers/http.helper'
 import { HttpRequest, HttpResponse } from '@/shared/types/http.types'
 
 export class CreateClientController implements IController {
@@ -10,7 +11,7 @@ export class CreateClientController implements IController {
       const clientId = await this.createClientUseCase.execute(input.body)
       return success(201, { clientId })
     } catch (error) {
-      return serverError(error as Error)
+      return handleError(error as Error)
     }
   }
 }

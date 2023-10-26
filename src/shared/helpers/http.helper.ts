@@ -20,3 +20,11 @@ export const serverError = (error: Error): HttpResponse => ({
     message: error.message
   }
 })
+
+export const notFound = (error: Error): HttpResponse => ({
+  statusCode: 404,
+  body: {
+    error: error.name,
+    message: error.message
+  }
+})
