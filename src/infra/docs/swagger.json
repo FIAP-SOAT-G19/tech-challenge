@@ -1190,7 +1190,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/client/:id": {
       "patch": {
         "tags": [
           "Clients"
@@ -1307,21 +1309,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Sucesso",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "clientId": {
-                      "type": "string",
-                      "example": "aa72a194-dc7e-44ef-b0be-9b2fe2bf793a",
-                      "description": "Este é o ID do cliente deletado"
-                    }
-                  }
-                }
-              }
-            }
+            "description": "Sucesso"
           },
           "400": {
             "description": "Error",
@@ -1516,7 +1504,7 @@
         ],
         "description": "Rota de Products da API",
         "summary": "Retorna as informações de um Produto da API",
-        "parameters":[
+        "parameters": [
           {
             "in": "path",
             "name": "productId",
@@ -1525,7 +1513,8 @@
             },
             "required": true,
             "description": "ID do produto"
-          }],
+          }
+        ],
         "responses": {
           "200": {
             "description": "Informações do Produto retornadas com sucesso",
@@ -1603,7 +1592,7 @@
         ],
         "description": "Rota de Products da API",
         "summary": "Atualiza as informações de um Produto da API",
-        "parameters":[
+        "parameters": [
           {
             "in": "path",
             "name": "productId",
@@ -1612,26 +1601,27 @@
             },
             "required": true,
             "description": "ID do produto"
-          }],
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "type": "string",
-                      "example": "Coca Cola"
-                    },
-                    "description": {
-                      "type": "string",
-                      "example": "Updated description"
-                    }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Coca Cola"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Updated description"
                   }
                 }
               }
             }
-          },
+          }
+        },
         "responses": {
           "200": {
             "description": "Atualização da informação do Produto realizada com sucesso",
@@ -1709,7 +1699,7 @@
         ],
         "description": "Rota de Products da API",
         "summary": "Deleta um Produto da API",
-        "parameters":[
+        "parameters": [
           {
             "in": "path",
             "name": "productId",
@@ -1718,7 +1708,8 @@
             },
             "required": true,
             "description": "ID do produto"
-          }],
+          }
+        ],
         "responses": {
           "200": {
             "description": "Produto deletado com sucesso",
@@ -1782,7 +1773,7 @@
         ],
         "description": "Rota de Products da API",
         "summary": "Retorna os Produto de uma determinada categoria da API",
-        "parameters":[
+        "parameters": [
           {
             "in": "path",
             "name": "category",
@@ -1791,7 +1782,8 @@
             },
             "required": true,
             "description": "Categoria do produto"
-          }],
+          }
+        ],
         "responses": {
           "200": {
             "description": "Produtos da categoria retornadas com sucesso",
