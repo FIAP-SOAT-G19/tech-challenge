@@ -165,6 +165,71 @@
         "tags": [
           "Orders"
         ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "clientId",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "d44d8af7-b151-42e9-8159-bf2e32e85ed3"
+            }
+          },
+          {
+            "in": "query",
+            "name": "clientDocument",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "14578996558"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "received"
+            }
+          },
+          {
+            "in": "query",
+            "name": "paidAtInitialDate",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "2023-10-01"
+            }
+          },
+          {
+            "in": "query",
+            "name": "paidAtEndDate",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "2023-10-25"
+            }
+          },
+          {
+            "in": "query",
+            "name": "createdAtInitialDate",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "2023-10-01"
+            }
+          },
+          {
+            "in": "query",
+            "name": "createdAtEndDate",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "2023-10-25"
+            }
+          }
+        ],
         "summary": "Retorna os pedidos cadastrados",
         "responses": {
           "200": {
@@ -326,7 +391,7 @@
         }
       }
     },
-    "/orders/:orderNumber": {
+    "/orders/{orderNumber}": {
       "get": {
         "tags": [
           "Orders"
@@ -334,7 +399,7 @@
         "summary": "Retorna informações de um pedido através de seu número.",
         "parameters": [
           {
-            "in": "query",
+            "in": "path",
             "name": "orderNumber",
             "required": true,
             "schema": {
@@ -502,7 +567,7 @@
         "summary": "Deleta um pedido através de seu número.",
         "parameters": [
           {
-            "in": "query",
+            "in": "path",
             "name": "orderNumber",
             "required": true,
             "schema": {
@@ -548,7 +613,7 @@
         "summary": "Atualiza o status do pedido através de seu número.",
         "parameters": [
           {
-            "in": "query",
+            "in": "path",
             "name": "orderNumber",
             "required": true,
             "schema": {
@@ -773,7 +838,7 @@
         }
       }
     },
-    "/employee/:id": {
+    "/employee/{id}": {
       "get": {
         "tags": [
           "Employees"
@@ -859,7 +924,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "id_",
+            "name": "id",
             "description": "Id do funcionário",
             "required": true,
             "schema": {
@@ -913,7 +978,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "_id",
+            "name": "id",
             "description": "Id do funcionário",
             "required": true,
             "schema": {
@@ -965,7 +1030,7 @@
         "summary": "Retorna informações do cliente a partir de parâmetros de entrada",
         "parameters": [
           {
-            "in": "query",
+            "in": "path",
             "name": "id",
             "required": false,
             "schema": {
@@ -975,7 +1040,7 @@
             }
           },
           {
-            "in": "query",
+            "in": "path",
             "name": "email",
             "required": false,
             "schema": {
@@ -985,7 +1050,7 @@
             }
           },
           {
-            "in": "query",
+            "in": "path",
             "name": "cpf",
             "required": false,
             "schema": {
@@ -1527,7 +1592,7 @@
         ],
         "description": "Rota de Products da API",
         "summary": "Retorna as informações de um Produto da API",
-        "parameters":[
+        "parameters": [
           {
             "in": "path",
             "name": "productId",
@@ -1536,7 +1601,8 @@
             },
             "required": true,
             "description": "ID do produto"
-          }],
+          }
+        ],
         "responses": {
           "200": {
             "description": "Informações do Produto retornadas com sucesso",
@@ -1614,7 +1680,7 @@
         ],
         "description": "Rota de Products da API",
         "summary": "Atualiza as informações de um Produto da API",
-        "parameters":[
+        "parameters": [
           {
             "in": "path",
             "name": "productId",
@@ -1623,26 +1689,27 @@
             },
             "required": true,
             "description": "ID do produto"
-          }],
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "type": "string",
-                      "example": "Coca Cola"
-                    },
-                    "description": {
-                      "type": "string",
-                      "example": "Updated description"
-                    }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Coca Cola"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Updated description"
                   }
                 }
               }
             }
-          },
+          }
+        },
         "responses": {
           "200": {
             "description": "Atualização da informação do Produto realizada com sucesso",
@@ -1720,7 +1787,7 @@
         ],
         "description": "Rota de Products da API",
         "summary": "Deleta um Produto da API",
-        "parameters":[
+        "parameters": [
           {
             "in": "path",
             "name": "productId",
@@ -1729,7 +1796,8 @@
             },
             "required": true,
             "description": "ID do produto"
-          }],
+          }
+        ],
         "responses": {
           "200": {
             "description": "Produto deletado com sucesso",
@@ -1745,6 +1813,99 @@
                     "productId": {
                       "type": "string",
                       "example": "ca97b811-a559-44b0-b3b0-1a9a84309aef"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Product not found error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/category/{category}": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "description": "Rota de Products da API",
+        "summary": "Retorna os Produto de uma determinada categoria da API",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "category",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Categoria do produto"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Produtos da categoria retornadas com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "5ebcea6f-2391-46aa-a5bc-ab5d98527f13"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "Coca Cola"
+                      },
+                      "category": {
+                        "type": "string",
+                        "example": "drink"
+                      },
+                      "price": {
+                        "type": "number",
+                        "example": "6"
+                      },
+                      "description": {
+                        "type": "string",
+                        "example": "Drink description"
+                      },
+                      "image": {
+                        "type": "string",
+                        "example": "http://host.com/image"
+                      }
                     }
                   }
                 }
