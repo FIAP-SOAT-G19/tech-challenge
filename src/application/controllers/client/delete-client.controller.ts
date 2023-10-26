@@ -1,6 +1,7 @@
 import { IController } from '@/ports'
 import { IDeleteClientUseCase } from '@/ports/usecases/client/delete-client.port'
-import { serverError, success } from '@/shared/helpers/http.helper'
+import { handleError } from '@/shared'
+import { success } from '@/shared/helpers/http.helper'
 import { HttpRequest, HttpResponse } from '@/shared/types/http.types'
 
 export class DeleteClientController implements IController {
@@ -10,7 +11,7 @@ export class DeleteClientController implements IController {
       await this.deleteClientUseCase.execute(input.params)
       return success(200, {})
     } catch (error) {
-      return serverError(error as Error)
+      return handleError(error as Error)
     }
   }
 }
