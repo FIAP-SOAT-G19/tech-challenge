@@ -1383,7 +1383,7 @@
                   },
                   "price": {
                     "type": "number",
-                    "example": "4"
+                    "example": "400"
                   },
                   "description": {
                     "type": "string",
@@ -1439,7 +1439,7 @@
             }
           },
           "500": {
-            "description": "Error",
+            "description": "Internal Server Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1447,7 +1447,7 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "example": "error"
+                      "example": "Internal Server Error"
                     }
                   }
                 }
@@ -1462,17 +1462,6 @@
         ],
         "description": "Rota de Products da API",
         "summary": "Retorna os Produtos da API",
-        "parameters": [
-          {
-            "name": "category",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            },
-            "description": "A categoria dos produtos a serem consultados."
-          }
-        ],
         "responses": {
           "200": {
             "description": "Produtos retornados com sucesso",
@@ -1502,7 +1491,7 @@
             }
           },
           "500": {
-            "description": "Error",
+            "description": "Internal Server Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1510,7 +1499,7 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "example": "error"
+                      "example": "Internal Server Error"
                     }
                   }
                 }
@@ -1525,7 +1514,7 @@
         "tags": [
           "Products"
         ],
-        "description": "Rota de Products da API",
+        "description": "Rota de Products da API - price é retornado o valor em R$",
         "summary": "Retorna as informações de um Produto da API",
         "parameters":[
           {
@@ -1559,7 +1548,7 @@
                     },
                     "price": {
                       "type": "number",
-                      "example": "6"
+                      "example": "400"
                     },
                     "description": {
                       "type": "string",
@@ -1591,7 +1580,7 @@
             }
           },
           "500": {
-            "description": "Error",
+            "description": "Internal Server Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1599,7 +1588,7 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "example": "error"
+                      "example": "Internal Server Error"
                     }
                   }
                 }
@@ -1697,7 +1686,7 @@
             }
           },
           "500": {
-            "description": "Error",
+            "description": "Internal Server Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1705,7 +1694,7 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "example": "error"
+                      "example": "Internal Server Error"
                     }
                   }
                 }
@@ -1745,6 +1734,98 @@
                     "productId": {
                       "type": "string",
                       "example": "ca97b811-a559-44b0-b3b0-1a9a84309aef"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Product not found error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/category/{category}": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "description": "Rota de Products da API",
+        "summary": "Retorna os Produto de uma determinada categoria da API",
+        "parameters":[
+          {
+            "in": "path",
+            "name": "category",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Categoria do produto"
+          }],
+        "responses": {
+          "200": {
+            "description": "Produtos da categoria retornadas com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "5ebcea6f-2391-46aa-a5bc-ab5d98527f13"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "Coca Cola"
+                      },
+                      "category": {
+                        "type": "string",
+                        "example": "drink"
+                      },
+                      "price": {
+                        "type": "number",
+                        "example": "6"
+                      },
+                      "description": {
+                        "type": "string",
+                        "example": "Drink description"
+                      },
+                      "image": {
+                        "type": "string",
+                        "example": "http://host.com/image"
+                      }
                     }
                   }
                 }

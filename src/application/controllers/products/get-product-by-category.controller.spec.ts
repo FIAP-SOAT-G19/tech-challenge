@@ -30,7 +30,7 @@ describe('GetProductByCategoryController', () => {
 
   beforeEach(() => {
     input = {
-      query: {
+      params: {
         category: 'drink'
       }
     }
@@ -41,7 +41,7 @@ describe('GetProductByCategoryController', () => {
 
       expect(getProductByCategoryUseCase.execute).toHaveBeenCalledTimes(1)
       expect(getProductByCategoryUseCase.execute).toHaveBeenCalledWith(
-        input.query.category
+        input.params.category
       )
     })
 
