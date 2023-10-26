@@ -1383,7 +1383,8 @@
                   },
                   "price": {
                     "type": "number",
-                    "example": "4"
+                    "example": "499",
+                    "description": "Preço em centavos"
                   },
                   "description": {
                     "type": "string",
@@ -1447,7 +1448,7 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "example": "error"
+                      "example": "Internal Server Error"
                     }
                   }
                 }
@@ -1468,7 +1469,8 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "enum": ["snack", "drink", "dessert", "accompaniment"]
             },
             "description": "A categoria dos produtos a serem consultados."
           }
@@ -1502,7 +1504,7 @@
             }
           },
           "500": {
-            "description": "Error",
+            "description": "Internal Server Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1510,7 +1512,7 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "example": "error"
+                      "example": "Internal Server Error"
                     }
                   }
                 }
@@ -1559,7 +1561,8 @@
                     },
                     "price": {
                       "type": "number",
-                      "example": "6"
+                      "example": "699",
+                      "description": "Preço em centavos"
                     },
                     "description": {
                       "type": "string",
@@ -1591,7 +1594,7 @@
             }
           },
           "500": {
-            "description": "Error",
+            "description": "Internal Server Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1599,7 +1602,7 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "example": "error"
+                      "example": "Internal Server Error"
                     }
                   }
                 }
@@ -1665,7 +1668,8 @@
                     },
                     "price": {
                       "type": "number",
-                      "example": "6"
+                      "example": "699",
+                      "description": "Preço em centavos"
                     },
                     "description": {
                       "type": "string",
@@ -1697,7 +1701,7 @@
             }
           },
           "500": {
-            "description": "Error",
+            "description": "Internal Server Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1705,7 +1709,7 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "example": "error"
+                      "example": "Internal Server Error"
                     }
                   }
                 }
@@ -1768,7 +1772,7 @@
             }
           },
           "500": {
-            "description": "Error",
+            "description": "Internal Server Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -1776,7 +1780,7 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "example": "error"
+                      "example": "Internal Server Error"
                     }
                   }
                 }
