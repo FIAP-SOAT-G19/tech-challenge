@@ -73,18 +73,18 @@ describe('UpdateEmployeeController', () => {
       cpf: '1234567890',
       password: 'password123',
       createdAt: new Date('2021-09-21T22:00:00.000Z'),
-      updatedAt: new Date('2021-09-21T22:00:00.000Z'),
-      deletedAt: new Date('9999-12-31T23:59:59.999Z')
+      updatedAt: null,
+      deletedAt: null
     })
     employeeRepository.findByEmail.mockResolvedValue({
-      id: 'anyId',
+      id: 'anyId2',
       name: 'John Doe',
       email: 'anyEmail',
-      cpf: '1234567890',
+      cpf: '1234567891',
       password: 'password123',
       createdAt: new Date('2021-09-21T22:00:00.000Z'),
-      updatedAt: new Date('2021-09-21T22:00:00.000Z'),
-      deletedAt: new Date('9999-12-31T23:59:59.999Z')
+      updatedAt: null,
+      deletedAt: null
     })
     const result = await sut.execute(input)
 
@@ -103,18 +103,18 @@ describe('UpdateEmployeeController', () => {
       cpf: '1234567890',
       password: 'password123',
       createdAt: new Date('2021-09-21T22:00:00.000Z'),
-      updatedAt: new Date('2021-09-21T22:00:00.000Z'),
-      deletedAt: new Date('9999-12-31T23:59:59.999Z')
+      updatedAt: null,
+      deletedAt: null
     })
     employeeRepository.findByCpf.mockResolvedValue({
-      id: 'anyId',
+      id: 'anyId2',
       name: 'John Doe',
-      email: 'anyEmail',
+      email: 'anyEmaill',
       cpf: '1234567890',
       password: 'password123',
       createdAt: new Date('2021-09-21T22:00:00.000Z'),
-      updatedAt: new Date('2021-09-21T22:00:00.000Z'),
-      deletedAt: new Date('9999-12-31T23:59:59.999Z')
+      updatedAt: null,
+      deletedAt: null
     })
     const result = await sut.execute(input)
 

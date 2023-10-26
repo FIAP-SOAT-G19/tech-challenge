@@ -40,12 +40,12 @@ export class UpdateEmployeeUseCase implements IUpdateEmployeeUseCase {
   private async validateInput (input: IUpdateEmployeeUseCase.Input): Promise<void> {
     if (input.email) {
       const emailAlreadyInUse = await this.employeeRepository.findByEmail(input.email)
-      if (emailAlreadyInUse) throw new InvalidParamError('Email already in use')
+      if (emailAlreadyInUse && input.id !== emailAlreadyInUse.id) throw new InvalidParamError('Email already in use')
     }
 
     if (input.cpf) {
       const cpfAlreadyInUse = await this.employeeRepository.findByCpf(input.cpf)
-      if (cpfAlreadyInUse) throw new InvalidParamError('CPF already in use')
+      if (cpfAlreadyInUse && input.id !== cpfAlreadyInUse.id) throw new InvalidParamError('CPF already in use')
     }
 
     const validation = this.schemaValidator.validate({
