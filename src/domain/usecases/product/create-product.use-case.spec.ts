@@ -70,6 +70,14 @@ describe('CreateProductUseCase', () => {
       image: 'url'
     }
 
+    const productInvalidStringPriceInputMock = {
+      name: 'CocaCola',
+      category: 'drink',
+      price: '12',
+      description: 'beverage',
+      image: 'url'
+    }
+
     test('should call validateSchema once with correct product input', async () => {
       schemaValidator.validate.mockReturnValue({
         value: productValidInputMock
@@ -150,7 +158,7 @@ describe('CreateProductUseCase', () => {
       )
     })
 
-    test('should throw error if validatePrice returns error', async () => {
+    test('should throw error if validatePrice returns error - price below zero', async () => {
       schemaValidator.validate.mockReturnValue({
         value: productinValidPriceInputMock
       })
@@ -159,6 +167,18 @@ describe('CreateProductUseCase', () => {
 
       await expect(output).rejects.toThrowError(
         new InvalidParamError('price must be greater than zero')
+      )
+    })
+
+    test('should throw error if validatePrice returns error - price as string', async () => {
+      schemaValidator.validate.mockReturnValue({
+        value: productInvalidStringPriceInputMock
+      })
+
+      const output = createProductUseCase.execute(productInvalidStringPriceInputMock as any)
+
+      await expect(output).rejects.toThrowError(
+        new InvalidParamError('invalid price')
       )
     })
 

@@ -70,6 +70,15 @@ describe('UpdateProductUseCase', () => {
       image: 'url'
     }
 
+    const productInvalidStringPriceInputMock = {
+      id: 'productId',
+      name: 'CocaCola',
+      category: 'drink',
+      price: '12',
+      description: 'beverage',
+      image: 'url'
+    }
+
     test('should call validateSchema once with correct product input', async () => {
       schemaValidator.validate.mockReturnValue({
         value: updateNameMock
@@ -145,6 +154,18 @@ describe('UpdateProductUseCase', () => {
 
       await expect(output).rejects.toThrowError(
         new InvalidParamError('price must be greater than zero')
+      )
+    })
+
+    test('should throw error if validatePrice returns error - price as string', async () => {
+      schemaValidator.validate.mockReturnValue({
+        value: productInvalidStringPriceInputMock
+      })
+
+      const output = updateProductUseCase.execute(productInvalidStringPriceInputMock as any)
+
+      await expect(output).rejects.toThrowError(
+        new InvalidParamError('invalid price')
       )
     })
 
