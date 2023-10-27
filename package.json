@@ -1,6 +1,9 @@
 {
   "name": "tech-challenge",
   "version": "1.0.0",
+  "prisma": {
+    "seed": "node prisma/seeders/index.js"
+  },
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -18,8 +21,8 @@
     "test-integration": "npm t -- --config ./jest.integration.config.js",
     "test-integration:watch": "npm run test-integration -- --watch",
     "build-image": "docker build -t tech-challenge:1.0 .",
-    "up-logs": "clear && npm run build && docker compose down && docker compose up",
-    "up": "clear && npm run build && docker compose down && docker compose up -d"
+    "up-logs": "npm run build && docker compose down && docker compose up",
+    "up": "npm run build && docker compose down && docker compose up -d"
   },
   "repository": {
     "type": "git",
