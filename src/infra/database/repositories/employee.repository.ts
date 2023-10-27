@@ -17,7 +17,7 @@ export class EmployeeRepository implements IEmployeeRepository {
         deletedAt: null
       }
     })
-    return employees.map(employee => ({
+    return employees.map((employee: FindEmployeeOutput) => ({
       id: employee.id,
       name: employee.name,
       email: employee.email,

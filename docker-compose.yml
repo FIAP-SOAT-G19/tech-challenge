@@ -2,19 +2,18 @@ version: '3.5'
 
 services:
   app:
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: 'app'
-    image: node:16
     restart: always
-    working_dir: /app
     ports:
       - 3000:3000
     env_file:
       - .env
     volumes:
       - ./:/app
-      - ./dist:/app/dist/
-    command: bash -c "npm install && npx prisma migrate dev && npm run start"
-    user: "1000:1000"
+    command: bash -c "npm install && npm run build && npx prisma generate && npx prisma migrate dev && npx prisma db seed && npm start"
     depends_on:
       - postgresql
 
@@ -28,19 +27,8 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin-container
-    env_file:
-      - .env
-    ports:
-      - "8080:80"
-    depends_on:
-      - postgresql
-
 volumes:
   postgres-data:
-
 
 networks:
   default:
