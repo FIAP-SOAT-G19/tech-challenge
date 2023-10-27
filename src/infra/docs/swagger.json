@@ -172,7 +172,7 @@
             "required": false,
             "schema": {
               "type": "string",
-              "example": "d44d8af7-b151-42e9-8159-bf2e32e85ed3"
+              "example": "d44d8af7-b151-42e9-8159-bf2e32e85ed1"
             }
           },
           {
@@ -1523,7 +1523,12 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["snack", "drink", "dessert", "accompaniment"]
+              "enum": [
+                "snack",
+                "drink",
+                "dessert",
+                "accompaniment"
+              ]
             },
             "description": "A categoria dos produtos a serem consultados."
           }
