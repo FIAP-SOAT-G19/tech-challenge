@@ -8,12 +8,12 @@ export class ClientRepository implements IClientRepository {
   }
 
   async getByEmail(email: string): Promise<Client | null> {
-    const client = await prismaClient.client.findFirst({ where: { email, deletedAt: null } })
+    const client = await prismaClient.client.findFirst({ where: { email: email ?? '', deletedAt: null } })
     return client ?? null
   }
 
   async getByDocument(document: string): Promise<Client | null> {
-    const client = await prismaClient.client.findFirst({ where: { cpf: document, deletedAt: null } })
+    const client = await prismaClient.client.findFirst({ where: { cpf: document ?? '', deletedAt: null } })
     return client ?? null
   }
 
