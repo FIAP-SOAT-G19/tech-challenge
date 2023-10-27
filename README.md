@@ -131,7 +131,7 @@ Os ambientes de desenvolvimentos seguem os links abaixo:
 
 | Backend                                  | Swagger                                  |
 |------------------------------------------|-------------------------------------------|
-| [Backend](http://localhost:3000)| [Swagger](http://localhost:3000/api-docs|
+| [Backend](http://localhost:3000)| [Swagger](http://localhost:3000/api-docs|)
 
 
 ---
