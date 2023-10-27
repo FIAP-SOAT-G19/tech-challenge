@@ -40,7 +40,7 @@ Existe o arquivo `.env` com todas as variáveis utilizadas para rodar o sistema.
 ## ▶️ Executando o projeto
 - inicie o banco de dados via **docker compose**
   ```bash
-  docker-compose up <comando>
+  docker-compose up
   ```
 - Instale as dependências **npm i**:
   ```bash
@@ -54,7 +54,7 @@ Existe o arquivo `.env` com todas as variáveis utilizadas para rodar o sistema.
 
 - Inicie o [**Express**](https://expressjs.com/pt-br/) em modo de desenvolvimento
   ```bash
-  npm run start:dev
+  npm run start
   ```
 
 - O Backend iniciará em [http://localhost:3000](http://localhost:3000)
@@ -131,7 +131,7 @@ Os ambientes de desenvolvimentos seguem os links abaixo:
 
 | Backend                                  | Swagger                                  |
 |------------------------------------------|-------------------------------------------|
-| [Backend](http://localhost:3000)| [Swagger](http://localhost:3000/api)|
+| [Backend](http://localhost:3000)| [Swagger](http://localhost:3000/api-docs|
 
 
 ---
