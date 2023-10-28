@@ -1116,8 +1116,13 @@
                   "properties": {
                     "error": {
                       "type": "string",
-                      "example": "Parâmetro inválido",
-                      "description": "Mensagem do erro ocorrido"
+                      "example": "InvalidParamError",
+                      "description": ""
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid Param: name",
+                      "description": ""
                     }
                   }
                 }
@@ -1133,8 +1138,13 @@
                   "properties": {
                     "error": {
                       "type": "string",
-                      "example": "Nenhum cliente encontrado",
-                      "description": "Mensagem do erro ocorrido"
+                      "example": "Error",
+                      "description": ""
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Client not found error",
+                      "description": ""
                     }
                   }
                 }
@@ -1150,8 +1160,8 @@
                   "properties": {
                     "error": {
                       "type": "string",
-                      "example": "Ocorreu um erro interno",
-                      "description": "Mensagem do erro ocorrido"
+                      "example": "Internal Server Error",
+                      "description": ""
                     }
                   }
                 }
@@ -1229,8 +1239,13 @@
                   "properties": {
                     "error": {
                       "type": "string",
-                      "example": "Parâmetro inválido",
-                      "description": "Mensagem do erro ocorrido"
+                      "example": "InvalidParamError",
+                      "description": ""
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid Param: name",
+                      "description": ""
                     }
                   }
                 }
@@ -1246,8 +1261,8 @@
                   "properties": {
                     "error": {
                       "type": "string",
-                      "example": "Ocorreu um erro interno",
-                      "description": "Mensagem do erro ocorrido"
+                      "example": "Internal Server Error",
+                      "description": ""
                     }
                   }
                 }
@@ -1328,8 +1343,13 @@
                   "properties": {
                     "error": {
                       "type": "string",
-                      "example": "Parâmetro inválido",
-                      "description": "Mensagem do erro ocorrido"
+                      "example": "InvalidParamError",
+                      "description": ""
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid Param: name",
+                      "description": ""
                     }
                   }
                 }
@@ -1345,8 +1365,8 @@
                   "properties": {
                     "error": {
                       "type": "string",
-                      "example": "Ocorreu um erro interno",
-                      "description": "Mensagem do erro ocorrido"
+                      "example": "Internal Server Error",
+                      "description": ""
                     }
                   }
                 }
@@ -1385,8 +1405,13 @@
                   "properties": {
                     "error": {
                       "type": "string",
-                      "example": "Parâmetro inválido",
-                      "description": "Mensagem do erro ocorrido"
+                      "example": "InvalidParamError",
+                      "description": ""
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid Param: name",
+                      "description": ""
                     }
                   }
                 }
@@ -1402,8 +1427,106 @@
                   "properties": {
                     "error": {
                       "type": "string",
-                      "example": "Ocorreu um erro interno",
-                      "description": "Mensagem do erro ocorrido"
+                      "example": "Internal Server Error",
+                      "description": ""
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/client/auth": {
+      "post": {
+        "tags": [
+          "Clients"
+        ],
+        "description": "Rota de autenticação de Clientes",
+        "summary": "Autentica um cliente",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "jose.silva@gmail.com",
+                    "description": "Este é o email do cliente"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "J$2023",
+                    "description": "Esta é a senha do cliente"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "example": "José da Silva",
+                      "description": "Este é o nome do cliente"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "jose.silva@gmail.com",
+                      "description": "Este é o email do cliente"
+                    },
+                    "cpf": {
+                      "type": "string",
+                      "example": "32125869777",
+                      "description": "Este é o CPF do cliente"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "InvalidParamError",
+                      "description": ""
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid Param: name",
+                      "description": ""
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Internal Server Error",
+                      "description": ""
                     }
                   }
                 }

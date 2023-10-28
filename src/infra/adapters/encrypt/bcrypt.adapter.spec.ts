@@ -14,9 +14,22 @@ describe('BcryptAdapter', () => {
     expect(hash).toBeTruthy()
   })
 
-  test('should returna correctly hash', () => {
+  test('should return correctly hash', () => {
     const hash = sut.encrypt('anyValue')
     const hashCompare = bcrypt.compareSync('anyValue', hash)
     expect(hashCompare).toBeTruthy()
+  })
+
+  test('should compare values', async () => {
+    const value = 'anyValue'
+    const valueToCompare = sut.encrypt('anyValue')
+    const output = await sut.compare(value, valueToCompare)
+    expect(output).toBeTruthy()
+  })
+  test('should compare values', async () => {
+    const value = 'otherAnyValue'
+    const valueToCompare = sut.encrypt('anyValue')
+    const output = await sut.compare(value, valueToCompare)
+    expect(output).toBeFalsy()
   })
 })

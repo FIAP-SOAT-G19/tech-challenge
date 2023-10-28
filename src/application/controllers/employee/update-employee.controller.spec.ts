@@ -1,14 +1,14 @@
 import { IEmployeeRepository } from '@/ports/repositories/employee.port'
-import { IEncryptoPasswordGenerator } from '@/ports/usecases/encrypto-password/encrypto-password.port'
 import { ISchemaValidator } from '@/ports/validators/schema-validator.port'
 import { mock } from 'jest-mock-extended'
 import { UpdateEmployeeController } from './update-employee.controller'
 import { UpdateEmployeeUseCase } from '@/domain/usecases/employee/update-employee.usecase'
 import { ServerError } from '@/shared/errors'
+import { IEncrypt } from '@/ports/usecases/encrypt/encrypt.port'
 
 const employeeRepository = mock<IEmployeeRepository>()
 const schemaValidator = mock<ISchemaValidator>()
-const encryptoPassword = mock<IEncryptoPasswordGenerator>()
+const encryptoPassword = mock<IEncrypt>()
 
 describe('UpdateEmployeeController', () => {
   let sut: UpdateEmployeeController
@@ -30,7 +30,7 @@ describe('UpdateEmployeeController', () => {
       }
     }
     schemaValidator.validate.mockReturnValue({ value: input.body })
-    encryptoPassword.generate.mockReturnValue('encryptedPassword')
+    encryptoPassword.encrypt.mockReturnValue('encryptedPassword')
     employeeRepository.findById.mockResolvedValue(null)
     employeeRepository.findByEmail.mockResolvedValue(null)
     employeeRepository.findByCpf.mockResolvedValue(null)

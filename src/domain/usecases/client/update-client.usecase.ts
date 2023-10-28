@@ -19,11 +19,15 @@ export class UpdateClientUseCase implements IUpdateClientUseCase {
     const client = await this.clientRepository.getById(input.id)
     if (!client) throw new InvalidParamError('id')
 
-    const clientEmail = await this.clientRepository.getByEmail(input.email)
-    if (clientEmail && clientEmail.id !== input.id) throw new InvalidParamError('the email is already being used by another user')
+    if (input.email) {
+      const clientEmail = await this.clientRepository.getByEmail(input.email)
+      if (clientEmail && clientEmail.id !== input.id) throw new InvalidParamError('the email is already being used by another user')
+    }
 
-    const clientDocument = await this.clientRepository.getByDocument(input.cpf)
-    if (clientDocument && clientDocument.id !== input.id) throw new InvalidParamError('there is already a user with this document')
+    if (input.cpf) {
+      const clientDocument = await this.clientRepository.getByDocument(input.cpf)
+      if (clientDocument && clientDocument.id !== input.id) throw new InvalidParamError('there is already a user with this document')
+    }
 
     const validation = this.schemaValidator.validate({
       schema: constants.SCHEMAS.UPDATE_CLIENT,

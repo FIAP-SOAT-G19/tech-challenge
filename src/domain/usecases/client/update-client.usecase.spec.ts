@@ -57,19 +57,19 @@ describe('UpdateClientUseCase', () => {
 
   test('should throws if email is empty', async () => {
     clientRepository.getById.mockResolvedValueOnce(clientRepositoryOutput)
-    clientRepository.getByEmail.mockResolvedValueOnce(clientRepositoryOutput)
+    schemaValidator.validate.mockReturnValueOnce({ value: input, error: 'anyError' })
     input.email = ''
     const output = sut.execute(input)
-    await expect(output).rejects.toThrow(new InvalidParamError('the email is already being used by another user'))
+    await expect(output).rejects.toThrow(new InvalidParamError('anyError'))
   })
 
   test('should throws if cpf is empty', async () => {
     clientRepository.getById.mockResolvedValueOnce(clientRepositoryOutput)
     clientRepository.getByEmail.mockResolvedValueOnce(null)
-    clientRepository.getByDocument.mockResolvedValueOnce(clientRepositoryOutput)
+    schemaValidator.validate.mockReturnValueOnce({ value: input, error: 'anyError' })
     input.cpf = ''
     const output = sut.execute(input)
-    await expect(output).rejects.toThrow(new InvalidParamError('there is already a user with this document'))
+    await expect(output).rejects.toThrow(new InvalidParamError('anyError'))
   })
 
   test('should throws if schemaValidator returns error', async () => {
@@ -83,6 +83,8 @@ describe('UpdateClientUseCase', () => {
 
   test('should call clientRepository.update with correct values', async () => {
     clientRepository.getById.mockResolvedValueOnce(clientRepositoryOutput)
+    clientRepository.getByEmail.mockResolvedValueOnce(null)
+    clientRepository.getByDocument.mockResolvedValueOnce(null)
     await sut.execute(input)
     expect(clientRepository.update).toHaveBeenCalledWith({ ...input, id: 'anyClientId', updatedAt: new Date() })
     expect(clientRepository.update).toHaveBeenCalledTimes(1)
