@@ -12,11 +12,11 @@ const getProductSchema = Joi.string().required()
 
 const updateProductSchema = Joi.object({
   id: Joi.string().required(),
-  name: Joi.string(),
-  category: Joi.string(),
-  price: Joi.number(),
-  description: Joi.string(),
-  image: Joi.string()
+  name: Joi.string().optional(),
+  category: Joi.string().optional(),
+  price: Joi.number().optional(),
+  description: Joi.string().optional(),
+  image: Joi.string().optional()
 })
 
 const deleteProductSchema = Joi.string().required()
