@@ -18,6 +18,7 @@ import { makeGetProductsController } from './factories/controllers/get-products-
 import { makeUpdateProductController } from './factories/controllers/update-product-controller.factory'
 import { makeDeleteProductController } from './factories/controllers/delete-product-controller.factory'
 import { makeGetProductByCategoryController } from './factories/controllers/get-product-by-category-controller.factory'
+import { makeLoginClientController } from './factories/controllers/login-client-controller.factory'
 
 const router = Router()
 
@@ -36,6 +37,7 @@ router.get('/orders/:orderNumber', expressAdapter(makeGetOrderByNumberController
 router.get('/orders', expressAdapter(makeGetAllOrdersController()))
 router.post('/orders', expressAdapter(makeCreateOrderController()))
 // Clients
+router.post('/client/auth', expressAdapter(makeLoginClientController()))
 router.post('/client', expressAdapter(makeCreateClientController()))
 router.patch('/client/:id', expressAdapter(makeUpdateClientController()))
 router.get('/client', expressAdapter(makeGetAllClientsController()))
