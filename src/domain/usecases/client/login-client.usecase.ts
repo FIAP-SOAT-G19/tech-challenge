@@ -14,11 +14,11 @@ export class LoginClientUseCase implements ILoginClientUseCase {
     if (!client) {
       throw new InvalidParamError('email or password is incorrect')
     }
-    const passwordCompare = this.encrypt.compare(input.password, client.password)
+    const passwordCompare = await this.encrypt.compare(input.password, client.password)
     if (!passwordCompare) {
       throw new InvalidParamError('email or password is incorrect')
     }
 
-    return client
+    return { name: client.name, email: client.email, cpf: client.cpf }
   }
 }

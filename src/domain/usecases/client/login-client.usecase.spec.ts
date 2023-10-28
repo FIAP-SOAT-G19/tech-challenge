@@ -54,6 +54,6 @@ describe('LoginClientUseCase', () => {
     encrypt.compare.mockResolvedValueOnce(true)
     clientRepository.getByEmail.mockResolvedValueOnce(clientRepositoryOutput)
     const client = await sut.execute(input)
-    expect(client).toMatchObject(clientRepositoryOutput)
+    expect(client).toEqual({ name: clientRepositoryOutput.name, email: clientRepositoryOutput.email, cpf: clientRepositoryOutput.cpf })
   })
 })
