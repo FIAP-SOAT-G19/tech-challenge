@@ -112,3 +112,11 @@ enum PaymentStatus {
   approved
   refused
 }
+
+model SeedersHistory {
+  id         String   @id
+  name       String
+  executedAt DateTime
+
+  @@map("seeders_histories")
+}

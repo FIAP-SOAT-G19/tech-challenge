@@ -1,8 +1,9 @@
 import { GetAllOrdersInput, GetAllOrdersOutput, IOrderRepository, SaveOrderInput, UpdateOrderStatusInput } from '@/ports'
 import { prismaClient } from '../prisma-client'
-import { OrderStatus } from '@prisma/client'
 import { OrderOutput } from '@/domain/types/orders.types'
 import { OrderProduct } from '@/domain/types/order-products.types'
+
+type OrderStatus = 'waitingPayment' | 'received' | 'InPreparation' | 'prepared' | 'finalized' | 'canceled'
 
 export class OrderRepository implements IOrderRepository {
   async save(input: SaveOrderInput): Promise<string> {
@@ -79,7 +80,7 @@ export class OrderRepository implements IOrderRepository {
 
     if (order) {
       const products: OrderProduct [] = []
-      order.OrderProduct.map((product) => {
+      order.OrderProduct.map((product: any) => {
         products.push({
           id: product.product.id,
           name: product.product.name,
@@ -202,7 +203,7 @@ export class OrderRepository implements IOrderRepository {
             email: orders[i].client?.email ?? '',
             cpf: orders[i].client?.cpf ?? ''
           },
-          products: orders[i].OrderProduct.map((product) => ({
+          products: orders[i].OrderProduct.map((product: any) => ({
             id: product.product.id,
             name: product.product.name,
             category: product.product.category,

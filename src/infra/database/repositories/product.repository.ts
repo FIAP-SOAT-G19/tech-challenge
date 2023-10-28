@@ -1,4 +1,3 @@
-import { ProductCategory } from '@prisma/client'
 import { prismaClient } from '../prisma-client'
 import {
   GetProductByCategoryOutput,
@@ -9,6 +8,8 @@ import {
   SaveProductInput
 } from '../../../ports/repositories/product.port'
 import { ProductNotFoundError } from '../../../shared/errors'
+
+type ProductCategory = 'snack' | 'accompaniment' | 'drink' | 'dessert'
 
 export class ProductRepository implements IProductRepository {
   async save(input: SaveProductInput): Promise<string> {
@@ -52,7 +53,7 @@ export class ProductRepository implements IProductRepository {
     })
     if (!products) return null
 
-    return products.map((product) => ({
+    return products.map((product: GetProductByCategoryOutput) => ({
       id: product.id,
       name: product.name,
       category: product.category
@@ -62,7 +63,7 @@ export class ProductRepository implements IProductRepository {
   async getAll(): Promise<GetProducts[] | []> {
     const products = await prismaClient.product.findMany()
     if (!products) return []
-    return products.map((product) => ({
+    return products.map((product: GetProductByCategoryOutput) => ({
       id: product.id,
       name: product.name,
       category: product.category

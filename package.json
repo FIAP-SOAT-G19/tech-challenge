@@ -1,6 +1,9 @@
 {
   "name": "tech-challenge",
   "version": "1.0.0",
+  "prisma": {
+    "seed": "node prisma/seeders/index.js"
+  },
   "description": "",
   "main": "index.js",
   "scripts": {
