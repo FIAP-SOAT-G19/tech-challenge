@@ -9,7 +9,7 @@ const employeesGenerate = (amount) => {
       id: crypto.randomUUID(),
       name: `Employee Test ${i}`,
       email: `employee${i}@email.com`,
-      cpf: new Date().getTime().toString().slice(1),
+      cpf: new Date().getTime().toString().slice(2),
       password: bcrypt.hashSync(`employee${i}`, 10),
       createdAt: new Date()
     })
