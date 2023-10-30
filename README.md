@@ -23,7 +23,7 @@ O **Tech Challenge** é um projeto de um sistema de autoatendimento de fast food
 ---
 
 ## 🏠 Adicionando variáveis de ambiente (.env)
-Existe o arquivo `.env.example` com todas as variáveis utilizadas para rodar o sistema. Para desenvolvimento local, é preciso criar o arquivo `.env` na raiz do projeto e adicionar algumas variáveis, conforme abaixo:
+Existe o arquivo `.env.example` com todas as variáveis utilizadas para rodar o sistema. Faça uma cópia desse arquivo e renomeie a cópia para `.env` antes de executar o comando para iniciar a aplicação.
 ---
 
 ## ▶️ Executando o projeto
