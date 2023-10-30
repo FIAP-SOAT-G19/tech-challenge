@@ -1030,7 +1030,7 @@
         "summary": "Retorna informações do cliente a partir de parâmetros de entrada",
         "parameters": [
           {
-            "in": "path",
+            "in": "query",
             "name": "id",
             "required": false,
             "schema": {
@@ -1040,7 +1040,7 @@
             }
           },
           {
-            "in": "path",
+            "in": "query",
             "name": "email",
             "required": false,
             "schema": {
@@ -1050,7 +1050,7 @@
             }
           },
           {
-            "in": "path",
+            "in": "query",
             "name": "cpf",
             "required": false,
             "schema": {
