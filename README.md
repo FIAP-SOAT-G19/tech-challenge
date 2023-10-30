@@ -79,4 +79,3 @@ Exemplos de commits válidos:
   git commit -m "docs(readme): removing deploy section from readme"
   ```
 ---
-
