@@ -1,71 +1,72 @@
-import {
-  IClientRepository, ICreateOrderUseCase, IOrderProductRepository, IOrderRepository,
-  IPayment, ISchemaValidator, IUUIDGenerator, PaymentItems
-} from '@/ports/'
-import { InvalidParamError } from '@/shared/errors'
+import { IClientRepository, ICreateOrderUseCase, IOrderProductRepository, IOrderRepository, ISchemaValidator, IUUIDGenerator, IProductRepository } from '@/ports/'
+import { InvalidParamError, SchemaValidationError, ramdonStringGenerator } from '@/shared'
 import constants from '@/shared/constants'
-import { Product } from '@/domain/types/products.types'
+import { OrderProduct } from '@/domain/types'
 export class CreateOrderUseCase implements ICreateOrderUseCase {
-  private orderTotalValue: number = 0
-
   constructor(
     private readonly schemaValidator: ISchemaValidator,
     private readonly uuidGenerator: IUUIDGenerator,
     private readonly clientRepository: IClientRepository,
     private readonly orderRepository: IOrderRepository,
     private readonly orderProductRepository: IOrderProductRepository,
-    private readonly paymentGateway: IPayment
+    private readonly productRepository: IProductRepository
   ) {}
 
   async execute (input: ICreateOrderUseCase.Input): Promise<ICreateOrderUseCase.Output> {
     await this.validate(input)
 
-    this.orderTotalValue = this.calculateTotalValue(input.products)
-
-    const orderId = await this.saveOrder(input)
+    const { orderId, orderNumber } = await this.saveOrder(input)
 
     await this.saveOrderProducts(orderId, input.products)
 
-    const processedPayment = await this.paymentGateway.process(this.makePaymentInput(orderId, input))
-
-    await this.orderRepository.updateStatus(processedPayment.status)
-
-    return orderId
+    return {
+      orderNumber
+    }
   }
 
   private async validate (input: ICreateOrderUseCase.Input): Promise<void> {
-    if (input.clientId) {
-      const client = await this.clientRepository.getById(input.clientId)
-      if (!client) {
-        throw new InvalidParamError('clientId')
-      }
-    }
-
     const validation = this.schemaValidator.validate({
       schema: constants.SCHEMAS.ORDER,
       data: input
     })
 
     if (validation.error) {
-      throw new InvalidParamError(validation.error)
+      throw new SchemaValidationError(validation.error)
+    }
+
+    for (const product of input.products) {
+      const productExists = await this.productRepository.getById(product.id)
+      if (!productExists) {
+        throw new InvalidParamError('productId')
+      }
+    }
+
+    if (input.clientId) {
+      const client = await this.clientRepository.getById(input.clientId)
+      if (!client) {
+        throw new InvalidParamError('clientId')
+      }
     }
   }
 
-  calculateTotalValue (products: Product []): number {
-    return products.reduce((accumulator, element) => accumulator + (element.price * element.amount), 0)
-  }
+  private async saveOrder (input: ICreateOrderUseCase.Input): Promise<{ orderId: string, orderNumber: string }> {
+    const orderId = this.uuidGenerator.generate()
+    const orderNumber = ramdonStringGenerator()
 
-  async saveOrder (input: ICreateOrderUseCase.Input): Promise<string> {
-    return await this.orderRepository.save({
-      id: this.uuidGenerator.generate(),
+    await this.orderRepository.save({
+      id: orderId,
+      orderNumber,
       clientId: input.clientId ?? null,
+      clientDocument: input.clientDocument ?? null,
       status: constants.ORDER_STATUS.WAITING_PAYMENT,
-      totalValue: this.orderTotalValue,
+      totalValue: this.calculateTotalValue(input.products),
       createdAt: new Date()
     })
+
+    return { orderId, orderNumber }
   }
 
-  async saveOrderProducts (orderId: string, products: Product []): Promise<void> {
+  private async saveOrderProducts (orderId: string, products: OrderProduct []): Promise<void> {
     for (const product of products) {
       await this.orderProductRepository.save({
         id: this.uuidGenerator.generate(),
@@ -78,25 +79,7 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
     }
   }
 
-  makePaymentInput (orderId: string, input: ICreateOrderUseCase.Input): IPayment.Input {
-    const items: PaymentItems [] = []
-
-    input.products.map((item) => {
-      return items.push({
-        category: item.category,
-        title: item.name,
-        description: item.description,
-        unit_price: item.price,
-        amount: item.amount,
-        total_amount: item.price * item.amount
-      })
-    })
-
-    return {
-      external_reference: orderId,
-      title: constants.PAYMENT.DEFAULT_TITLE,
-      total_amount: this.orderTotalValue,
-      items
-    }
+  public calculateTotalValue (products: OrderProduct []): number {
+    return products.reduce((accumulator, element) => accumulator + (element.price * element.amount), 0)
   }
 }

@@ -11,12 +11,6 @@ O **Tech Challenge** é um projeto de um sistema de autoatendimento de fast food
 - [PostgreSQL](https://www.postgresql.org/)
 - [Prisma](https://www.prisma.io/)
 - [Jest](https://jestjs.io)
-
----
-## 💻 Configurando o Ambiente
-
-- Instale o [NVM](https://github.com/nvm-sh/nvm) (Gerenciador de versão do Node)
-
 ---
 
 ## 💻 Clonando o repositório
@@ -28,33 +22,14 @@ O **Tech Challenge** é um projeto de um sistema de autoatendimento de fast food
   ````
 ---
 
-## 🏠 Adicionando variáveis de ambiente (.env.local)
-Existe o arquivo `.env` com todas as variáveis utilizadas para rodar o sistema. Para desenvolvimento local, é preciso criar o arquivo `.env.local` na raiz do projeto e adicionar algumas variáveis, conforme abaixo:
-
-> Adicione as seguintes variáveis para login como admin no sistema:
-> - USER=\<user>
-> - PASSWORD=\<senha-qualquer>
-
+## 🏠 Adicionando variáveis de ambiente (.env)
+Existe o arquivo `.env.example` com todas as variáveis utilizadas para rodar o sistema. Para desenvolvimento local, é preciso criar o arquivo `.env` na raiz do projeto e adicionar algumas variáveis, conforme abaixo:
 ---
 
 ## ▶️ Executando o projeto
-- inicie o banco de dados via **docker compose**
+- inicie a aplicação com o comando
   ```bash
-  docker-compose up
-  ```
-- Instale as dependências **npm i**:
-  ```bash
-  npm i
-  ```
-
-- Se necessário, rode a migração do banco de dados
-  ```bash
-  npm run <comando>
-  ```
-
-- Inicie o [**Express**](https://expressjs.com/pt-br/) em modo de desenvolvimento
-  ```bash
-  npm run start
+  docker compose up --build
   ```
 
 - O Backend iniciará em [http://localhost:3000](http://localhost:3000)
@@ -66,30 +41,10 @@ Existe o arquivo `.env` com todas as variáveis utilizadas para rodar o sistema.
 
 ---
 
-## 🎲 Migrações de banco de dados
-- Ao alterar uma entidade é necessário gerar nova migração para o banco de dados
-  ```bash
-  npm run <comando>
-  ```
-
-- Rodar as migrações para efetivar alterações no banco
-  ```bash
-  npm run <comando>
-  ```
----
-
 ## 🧪 Testes:
 - Rodar todos os testes
   ```bash
-  npm run test
-  ```
-- Rodar apenas testes unitários
-  ```bash
-  npm run test:unit
-  ```
-- Rodar apenas testes de integração
-  ```bash
-  npm run test:integration
+  npm t
   ```
 ---
 
@@ -124,15 +79,3 @@ Exemplos de commits válidos:
   git commit -m "docs(readme): removing deploy section from readme"
   ```
 ---
-
-## 🔗	 Ambiente de desenvolvimento ###
-
-Os ambientes de desenvolvimentos seguem os links abaixo:
-
-| Backend                                  | Swagger                                  |
-|------------------------------------------|-------------------------------------------|
-| [Backend](http://localhost:3000)| [Swagger](http://localhost:3000/api-docs)|
-
-
----
-

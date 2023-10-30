@@ -1,29 +1,33 @@
 import { CreateOrderUseCase } from './create-order.usecase'
-import { IUUIDGenerator } from '@/ports/usecases/uuid/uuid-generator.port'
-import { IOrderRepository } from '@/ports/repositories/order.port'
-import { IClientRepository } from '@/ports/repositories/client.port'
-import MockDate from 'mockdate'
+import { IUUIDGenerator, IOrderRepository, IClientRepository, ISchemaValidator, IOrderProductRepository, IProductRepository } from '@/ports'
+import { InvalidParamError } from '@/shared'
 import { mock } from 'jest-mock-extended'
-import { InvalidParamError } from '@/shared/errors'
-import { ISchemaValidator } from '@/ports/validators/schema-validator.port'
-import { IOrderProductRepository } from '@/ports/repositories/order-product.port'
-import { IPayment } from '@/ports/gateways/payment/process-payment.port'
+import MockDate from 'mockdate'
 
 const uuidGenerator = mock<IUUIDGenerator>()
 const orderRepository = mock<IOrderRepository>()
 const clientRepository = mock<IClientRepository>()
 const schemaValidator = mock<ISchemaValidator>()
 const orderProductRepository = mock<IOrderProductRepository>()
-const paymentGateway = mock<IPayment>()
+const productRepository = mock<IProductRepository>()
+
+jest.mock('@/shared/helpers/string.helper', () => {
+  const originalMethod = jest.requireActual('@/shared/helpers/string.helper')
+  return {
+    ...originalMethod,
+    ramdonStringGenerator: jest.fn().mockReturnValue('anyOrderNumber')
+  }
+})
 
 describe('CreateOrderUseCase', () => {
   let sut: CreateOrderUseCase
   let input: any
 
   beforeEach(() => {
-    sut = new CreateOrderUseCase(schemaValidator, uuidGenerator, clientRepository, orderRepository, orderProductRepository, paymentGateway)
+    sut = new CreateOrderUseCase(schemaValidator, uuidGenerator, clientRepository, orderRepository, orderProductRepository, productRepository)
     input = {
       clientId: 'anyClientId',
+      clientDocument: null,
       products: [{
         id: 'anyProductId',
         name: 'anyProductName',
@@ -37,17 +41,26 @@ describe('CreateOrderUseCase', () => {
     uuidGenerator.generate.mockReturnValue('anyUUID')
     orderRepository.save.mockResolvedValue('anyOrderId')
     clientRepository.getById.mockResolvedValue({
-      id: '',
-      name: '',
-      email: '',
-      password: '',
-      cpf: '',
+      id: 'anyClientId',
+      name: 'anyClientName',
+      email: 'anyClientEmail',
+      password: 'anyClientPassword',
+      cpf: 'anyClientCpf',
       createdAt: new Date('2023-01-01 13:45:18'),
       updatedAt: null,
       deletedAt: null
     })
     schemaValidator.validate.mockReturnValue({ value: input })
-    paymentGateway.process.mockResolvedValue({ status: 'received' })
+    productRepository.getById.mockResolvedValue({
+      id: 'anyProductId',
+      name: 'anyProductName',
+      category: 'anyCategory',
+      price: 2500,
+      description: 'AnyDescription',
+      image: 'anyimageUrl'
+    })
+
+    jest.clearAllMocks()
   })
 
   beforeAll(() => {
@@ -72,6 +85,15 @@ describe('CreateOrderUseCase', () => {
     expect(schemaValidator.validate).toHaveBeenCalledWith({ schema: 'orderSchema', data: input })
   })
 
+  test('should throws if validation fails', async () => {
+    const error = { value: {}, error: 'anyError' }
+    schemaValidator.validate.mockReturnValueOnce(error)
+
+    const output = sut.execute(input)
+
+    await expect(output).rejects.toThrow()
+  })
+
   test('should throws if clientRepository.getById returns null', async () => {
     clientRepository.getById.mockResolvedValueOnce(null)
 
@@ -80,14 +102,12 @@ describe('CreateOrderUseCase', () => {
     await expect(output).rejects.toThrowError(new InvalidParamError('clientId'))
   })
 
-  test('should throws if totalValue is falsy', async () => {
-    input.totalValue = null
-
-    schemaValidator.validate.mockReturnValueOnce({ value: input, error: 'anyError' })
+  test('should throws if ProductRepository.getById returns null', async () => {
+    productRepository.getById.mockResolvedValueOnce(null)
 
     const output = sut.execute(input)
 
-    await expect(output).rejects.toThrowError(new InvalidParamError('anyError'))
+    await expect(output).rejects.toThrowError(new InvalidParamError('productId'))
   })
 
   test('should call UUIDGenerator', async () => {
@@ -103,7 +123,9 @@ describe('CreateOrderUseCase', () => {
     expect(orderRepository.save).toHaveBeenCalledWith({
       id: 'anyUUID',
       clientId: 'anyClientId',
-      status: 'waiting_payment',
+      orderNumber: 'anyOrderNumber',
+      clientDocument: null,
+      status: 'waitingPayment',
       totalValue: 5000,
       createdAt: new Date()
     })
@@ -111,23 +133,28 @@ describe('CreateOrderUseCase', () => {
 
   test('should call OrderRepository.save once and with correct values and without clientId', async () => {
     input.clientId = null
+    input.clientDocument = 'anyClientDocument'
 
     await sut.execute(input)
 
     expect(orderRepository.save).toHaveBeenCalledTimes(1)
     expect(orderRepository.save).toHaveBeenCalledWith({
       id: 'anyUUID',
+      orderNumber: 'anyOrderNumber',
       clientId: null,
-      status: 'waiting_payment',
+      clientDocument: 'anyClientDocument',
+      status: 'waitingPayment',
       totalValue: 5000,
       createdAt: new Date()
     })
   })
 
-  test('should return a correct orderId', async () => {
+  test('should return a correct orderId and orderNumber', async () => {
     const output = await sut.execute(input)
 
-    expect(output).toBe('anyOrderId')
+    expect(output).toEqual({
+      orderNumber: 'anyOrderNumber'
+    })
   })
 
   test('should call calculateTotalValue once and with correct values', async () => {
@@ -151,38 +178,10 @@ describe('CreateOrderUseCase', () => {
     expect(orderProductRepository.save).toHaveBeenCalledWith({
       id: 'anyUUID',
       productId: 'anyProductId',
-      orderId: 'anyOrderId',
+      orderId: 'anyUUID',
       amount: 2,
       productPrice: 2500,
       createdAt: new Date()
     })
-  })
-
-  test('should call PaymentGateway once and with correct values', async () => {
-    await sut.execute(input)
-
-    expect(paymentGateway.process).toHaveBeenCalledTimes(1)
-    expect(paymentGateway.process).toHaveBeenCalledWith({
-      external_reference: 'anyOrderId',
-      title: 'Tech-Challenge Payment',
-      total_amount: 5000,
-      items: [
-        {
-          category: input.products[0].category,
-          title: input.products[0].name,
-          description: input.products[0].description,
-          unit_price: input.products[0].price,
-          amount: input.products[0].amount,
-          total_amount: 5000
-        }
-      ]
-    })
-  })
-
-  test('should call OrderRepository.updateStatus once and with correct status', async () => {
-    await sut.execute(input)
-
-    expect(orderRepository.updateStatus).toHaveBeenCalledTimes(1)
-    expect(orderRepository.updateStatus).toHaveBeenCalledWith('received')
   })
 })

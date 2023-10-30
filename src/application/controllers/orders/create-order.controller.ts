@@ -1,9 +1,14 @@
-import { IController } from '@/ports/controllers/index.port'
-import { success } from '@/shared/helpers/http.helper'
-import { HttpRequest, HttpResponse } from '@/shared/types/http.types'
+import { ICreateOrderUseCase, IController } from '@/ports/'
+import { HttpRequest, HttpResponse, handleError, success } from '@/shared'
 
 export class CreateOrderController implements IController {
+  constructor(private readonly createOrderUseCase: ICreateOrderUseCase) {}
   async execute (input: HttpRequest): Promise<HttpResponse> {
-    return success(200, {})
+    try {
+      const output = await this.createOrderUseCase.execute(input.body)
+      return success(201, output)
+    } catch (error: any) {
+      return handleError(error)
+    }
   }
 }
