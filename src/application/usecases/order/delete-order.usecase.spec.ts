@@ -1,17 +1,17 @@
-import { IOrderRepository } from '@/application/interfaces'
 import { MissingParamError, InvalidParamError } from '@/infra/shared'
 import { DeleteOrderUseCase } from './delete-order.usecase'
 import { mock } from 'jest-mock-extended'
 import { OrderOutput } from './orders.types'
+import { IDeleteOrderGateway } from '@/application/interfaces/gateways/order/delete-order-gateway.interface'
 
-const orderRepository = mock<IOrderRepository>()
+const gateway = mock<IDeleteOrderGateway>()
 let orderOutput: OrderOutput
 
 describe('DeleteOrderUseCase', () => {
   let sut: DeleteOrderUseCase
 
   beforeEach(() => {
-    sut = new DeleteOrderUseCase(orderRepository)
+    sut = new DeleteOrderUseCase(gateway)
     orderOutput = {
       id: 'anyOrderId',
       orderNumber: 'anyOrderNumber',
@@ -36,14 +36,14 @@ describe('DeleteOrderUseCase', () => {
         amount: 3
       }]
     }
-    orderRepository.getByOrderNumber.mockResolvedValue(orderOutput)
+    gateway.getOrderByNumber.mockResolvedValue(orderOutput)
   })
 
   test('should call OrderRepository.getOrderByNumber once and with correct orderNumber', async () => {
     await sut.execute('anyOrderNumber')
 
-    expect(orderRepository.getByOrderNumber).toHaveBeenCalledTimes(1)
-    expect(orderRepository.getByOrderNumber).toHaveBeenCalledWith('anyOrderNumber')
+    expect(gateway.getOrderByNumber).toHaveBeenCalledTimes(1)
+    expect(gateway.getOrderByNumber).toHaveBeenCalledWith('anyOrderNumber')
   })
 
   test('should throws if orderNumber is not provided', async () => {
@@ -53,7 +53,7 @@ describe('DeleteOrderUseCase', () => {
   })
 
   test('should throws an exception if order status is invalid', async () => {
-    orderRepository.getByOrderNumber.mockResolvedValueOnce({
+    gateway.getOrderByNumber.mockResolvedValueOnce({
       id: 'anyOrderId',
       orderNumber: 'anyOrderNumber',
       clientId: 'anyClientId',
@@ -84,17 +84,17 @@ describe('DeleteOrderUseCase', () => {
   })
 
   test('should throws an exception if order status is invalid', async () => {
-    orderRepository.getByOrderNumber.mockResolvedValueOnce(null)
+    gateway.getOrderByNumber.mockResolvedValueOnce(null)
 
     const output = sut.execute('anyOrderNumber')
 
     await expect(output).rejects.toThrowError(new InvalidParamError('orderNumber'))
   })
 
-  test('should call OrderRepository.delete once and with correct orderNumber', async () => {
+  test('should call gateway.deleteOrder once and with correct orderNumber', async () => {
     await sut.execute('anyOrderNumber')
 
-    expect(orderRepository.delete).toHaveBeenCalledTimes(1)
-    expect(orderRepository.delete).toHaveBeenCalledWith('anyOrderNumber')
+    expect(gateway.deleteOrder).toHaveBeenCalledTimes(1)
+    expect(gateway.deleteOrder).toHaveBeenCalledWith('anyOrderNumber')
   })
 })
