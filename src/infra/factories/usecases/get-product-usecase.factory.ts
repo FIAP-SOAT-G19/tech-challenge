@@ -1,6 +1,6 @@
+import { GetProductUseCase } from '@/application/usecases/product/get-product.use-case'
+import { JoiValidatorSchemaAdapter } from '@/infra/adapters/tools/validation/joi-validator.adapter'
 import { ProductRepository } from '../../../infra/database/repositories/product.repository'
-import { JoiValidatorSchemaAdapter } from '../../../infra/adapters/validation/joi-validator.adapter'
-import { GetProductUseCase } from '../../../domain/usecases/product/get-product.use-case'
 
 export const makeGetProductUseCase = (): GetProductUseCase => {
   const schemaValidator = new JoiValidatorSchemaAdapter()

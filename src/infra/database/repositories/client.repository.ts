@@ -1,4 +1,5 @@
-import { Client, GetAllClientsInput, IClientRepository, SaveClientInput, UpdateClientInput } from '@/ports'
+
+import { Client, GetAllClientsInput, IClientRepository, SaveClientInput, UpdateClientInput } from '@/application/interfaces'
 import { prismaClient } from '@/infra/database/prisma-client'
 
 export class ClientRepository implements IClientRepository {

@@ -1,13 +1,11 @@
-import { CreateEmployeeUseCase } from '../../../../domain/usecases/employee/create-employee.usecase'
-import { ReadEmployeeUseCase } from '../../../../domain/usecases/employee/read-employee.usecase'
-import { UpdateEmployeeUseCase } from '../../../../domain/usecases/employee/update-employee.usecase'
-import { DeleteEmployeeUseCase } from '../../../../domain/usecases/employee/delete-employee.usecase'
-
+import { CreateEmployeeUseCase } from '@/application/usecases/employee/create-employee.usecase'
+import { DeleteEmployeeUseCase } from '@/application/usecases/employee/delete-employee.usecase'
+import { ReadEmployeeUseCase } from '@/application/usecases/employee/read-employee.usecase'
+import { UpdateEmployeeUseCase } from '@/application/usecases/employee/update-employee.usecase'
+import { BcryptAdapter } from '@/infra/adapters/tools/encrypt/bcrypt.adapter'
+import { UUIDGeneratorAdapter } from '@/infra/adapters/tools/uuid/uuid-generator'
+import { JoiValidatorSchemaAdapter } from '@/infra/adapters/tools/validation/joi-validator.adapter'
 import { EmployeeRepository } from '../../../database/repositories/employee.repository'
-
-import { UUIDGeneratorAdapter } from '../../../../infra/adapters/uuid/uuid-generator'
-import { JoiValidatorSchemaAdapter } from '../../../../infra/adapters/validation/joi-validator.adapter'
-import { BcryptAdapter } from '@/infra/adapters/encrypt/bcrypt.adapter'
 
 const uuidGenerator = new UUIDGeneratorAdapter()
 const employeeRepository = new EmployeeRepository()

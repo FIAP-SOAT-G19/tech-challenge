@@ -1,4 +1,4 @@
-import { FindEmployeeOutput, IEmployeeRepository, SaveEmployeeInput } from '@/ports/repositories/employee.port'
+import { IEmployeeRepository, SaveEmployeeInput, FindEmployeeOutput } from '@/application/interfaces/repositories/employee.interface'
 import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()

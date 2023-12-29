@@ -1,4 +1,4 @@
-import { GetAllClientsController } from '@/application/controllers/client/get-all-clients.controller'
+import { GetAllClientsController } from '@/infra/adapters/controllers/client/get-all-clients.controller'
 import { makeGetAllClientsUseCase } from '../usecases/get-all-clients-usecase.factory'
 
 export const makeGetAllClientsController = (): GetAllClientsController => {

@@ -1,4 +1,4 @@
-import { IOrderProductRepository, SaveOrderProductInput } from '@/ports'
+import { IOrderProductRepository, SaveOrderProductInput } from '@/application/interfaces'
 import { prismaClient } from '../prisma-client'
 
 export class OrderProductRepository implements IOrderProductRepository {

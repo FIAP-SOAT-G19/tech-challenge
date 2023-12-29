@@ -1,6 +1,6 @@
-import { IController } from '@/ports'
+import { IController } from '@/application/interfaces'
 import { Request, Response } from 'express'
-import { expressAdapter } from '../adapters/http/express.adapter'
+import { expressAdapter } from '../adapters/tools/http/express.adapter'
 
 export function selectProductsRoute(getProductByCategoryController: IController, getProductsController: IController) {
   return async (req: Request, res: Response) => {
