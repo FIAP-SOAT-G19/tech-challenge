@@ -1,4 +1,4 @@
-import { DeleteOrderUseCase } from '../../../domain/usecases/order/delete-order.usecase'
+import { DeleteOrderUseCase } from '@/application/usecases/order/delete-order.usecase'
 import { OrderRepository } from '../../../infra/database/repositories/order.repository'
 
 export const makeDeleteOrderUseCase = (): DeleteOrderUseCase => {

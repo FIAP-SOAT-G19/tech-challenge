@@ -1,5 +1,5 @@
-import { UpdateClientUseCase } from '@/domain/usecases/client/update-client.usecase'
-import { JoiValidatorSchemaAdapter } from '@/infra/adapters/validation/joi-validator.adapter'
+import { UpdateClientUseCase } from '@/application/usecases/client/update-client.usecase'
+import { JoiValidatorSchemaAdapter } from '@/infra/adapters/tools/validation/joi-validator.adapter'
 import { ClientRepository } from '@/infra/database/repositories/client.repository'
 
 export const makeUpdateClientUseCase = (): UpdateClientUseCase => {

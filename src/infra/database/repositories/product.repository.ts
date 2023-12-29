@@ -1,13 +1,6 @@
+import { GetProductByCategoryOutput, GetProductByIdOutput, GetProducts, IProductRepository, ProductUpdateOptions, SaveProductInput } from '@/application/interfaces'
 import { prismaClient } from '../prisma-client'
-import {
-  GetProductByCategoryOutput,
-  GetProductByIdOutput,
-  GetProducts,
-  IProductRepository,
-  ProductUpdateOptions,
-  SaveProductInput
-} from '../../../ports/repositories/product.port'
-import { ProductNotFoundError } from '../../../shared/errors'
+import { ProductNotFoundError } from '@/infra/shared'
 
 type ProductCategory = 'snack' | 'accompaniment' | 'drink' | 'dessert'
 

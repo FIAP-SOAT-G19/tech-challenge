@@ -1,6 +1,6 @@
-import { GetAllClientsUseCase } from '@/domain/usecases/client/get-all-clients.usecase'
+import { IGetAllClientsUseCase } from '@/application/interfaces/usecases/client/get-all-clients.interface'
+import { GetAllClientsUseCase } from '@/application/usecases/client/get-all-clients.usecase'
 import { ClientRepository } from '@/infra/database/repositories/client.repository'
-import { IGetAllClientsUseCase } from '@/ports/usecases/client/get-all-clients.port'
 
 const clientRepository = new ClientRepository()
 

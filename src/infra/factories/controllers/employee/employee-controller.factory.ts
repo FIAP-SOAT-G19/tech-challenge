@@ -1,9 +1,8 @@
-import { ReadEmployeeController } from '../../../../application/controllers/employee/read-employee.controller'
-import { CreateEmployeeController } from '../../../../application/controllers/employee/create-employee.controller'
-import { UpdateEmployeeController } from '../../../../application/controllers/employee/update-employee.controller'
-import { ReadAllEmployeesController } from '../../../../application/controllers/employee/read-all-employees.controller'
-import { DeleteEmployeeController } from '../../../../application/controllers/employee/delete-employee.controller'
-
+import { CreateEmployeeController } from '@/infra/adapters/controllers/employee/create-employee.controller'
+import { DeleteEmployeeController } from '@/infra/adapters/controllers/employee/delete-employee.controller'
+import { ReadAllEmployeesController } from '@/infra/adapters/controllers/employee/read-all-employees.controller'
+import { ReadEmployeeController } from '@/infra/adapters/controllers/employee/read-employee.controller'
+import { UpdateEmployeeController } from '@/infra/adapters/controllers/employee/update-employee.controller'
 import {
   makeCreateEmployeeUseCase,
   makeDeleteEmployeeUseCase,

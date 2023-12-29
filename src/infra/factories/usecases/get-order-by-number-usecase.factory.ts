@@ -1,4 +1,4 @@
-import { GetOrderByNumberUseCase } from '../../../domain/usecases/order/get-order-by-number.usecase'
+import { GetOrderByNumberUseCase } from '@/application/usecases/order/get-order-by-number.usecase'
 import { OrderRepository } from '../../../infra/database/repositories/order.repository'
 
 export const makeGetOrderByNumberUseCase = (): GetOrderByNumberUseCase => {

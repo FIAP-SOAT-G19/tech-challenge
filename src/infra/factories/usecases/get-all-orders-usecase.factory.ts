@@ -1,4 +1,4 @@
-import { GetAllOrdersUseCase } from '../../../domain/usecases/order/get-all-orders.usecase'
+import { GetAllOrdersUseCase } from '@/application/usecases/order/get-all-orders.usecase'
 import { OrderRepository } from '../../../infra/database/repositories/order.repository'
 
 export const makeGetAllOrdersUseCase = (): GetAllOrdersUseCase => {

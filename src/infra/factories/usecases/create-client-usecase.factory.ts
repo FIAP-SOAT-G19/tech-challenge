@@ -1,7 +1,7 @@
-import { CreateClientUseCase } from '@/domain/usecases/client/create-client.usecase'
-import { BcryptAdapter } from '@/infra/adapters/encrypt/bcrypt.adapter'
-import { UUIDGeneratorAdapter } from '@/infra/adapters/uuid/uuid-generator'
-import { JoiValidatorSchemaAdapter } from '@/infra/adapters/validation/joi-validator.adapter'
+import { CreateClientUseCase } from '@/application/usecases/client/create-client.usecase'
+import { BcryptAdapter } from '@/infra/adapters/tools/encrypt/bcrypt.adapter'
+import { UUIDGeneratorAdapter } from '@/infra/adapters/tools/uuid/uuid-generator'
+import { JoiValidatorSchemaAdapter } from '@/infra/adapters/tools/validation/joi-validator.adapter'
 import { ClientRepository } from '@/infra/database/repositories/client.repository'
 
 export const makeCreateClientUseCase = (): CreateClientUseCase => {
