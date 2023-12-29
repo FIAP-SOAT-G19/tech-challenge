@@ -1,4 +1,4 @@
-import './shared/config/module-alias'
+import '../shared/config/module-alias'
 import express from 'express'
 import cors from 'cors'
 import swaggerUi from 'swagger-ui-express'
