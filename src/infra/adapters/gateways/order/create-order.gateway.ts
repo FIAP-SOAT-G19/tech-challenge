@@ -1,5 +1,4 @@
-import { Client, SaveOrderInput, SaveOrderProductInput, GetProductByIdOutput, IClientRepository, IOrderRepository, IOrderProductRepository, IProductRepository } from '@/application/interfaces'
-import { ICreateOrderGateway } from '@/application/interfaces/gateways/order/create-order-gateway.interface'
+import { Client, SaveOrderInput, SaveOrderProductInput, GetProductByIdOutput, IClientRepository, IOrderRepository, IOrderProductRepository, IProductRepository, ICreateOrderGateway } from '@/application/interfaces'
 
 export class CreateOrderGateway implements ICreateOrderGateway {
   constructor(

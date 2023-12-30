@@ -1,8 +1,7 @@
-import { ICreateOrderUseCase, ISchemaValidator, IUUIDGenerator } from '@/application/interfaces'
+import { ICreateOrderUseCase, ISchemaValidator, IUUIDGenerator, ICreateOrderGateway } from '@/application/interfaces'
 import { SchemaValidationError, InvalidParamError, ramdonStringGenerator } from '@/infra/shared'
 import constants from '@/infra/shared/constants'
 import { OrderProduct } from './order-products.types'
-import { ICreateOrderGateway } from '@/application/interfaces/gateways/order/create-order-gateway.interface'
 
 export class CreateOrderUseCase implements ICreateOrderUseCase {
   constructor(

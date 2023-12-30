@@ -1,9 +1,8 @@
-import { IUUIDGenerator, ISchemaValidator } from '@/application/interfaces'
+import { IUUIDGenerator, ISchemaValidator, ICreateOrderGateway } from '@/application/interfaces'
 import { InvalidParamError } from '@/infra/shared'
 import { CreateOrderUseCase } from './create-order.usecase'
 import { mock } from 'jest-mock-extended'
 import MockDate from 'mockdate'
-import { ICreateOrderGateway } from '@/application/interfaces/gateways/order/create-order-gateway.interface'
 
 const uuidGenerator = mock<IUUIDGenerator>()
 const schemaValidator = mock<ISchemaValidator>()

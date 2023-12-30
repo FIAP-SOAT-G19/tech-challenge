@@ -1,5 +1,4 @@
-import { GetAllOrdersInput, GetAllOrdersOutput, IOrderRepository } from '@/application/interfaces'
-import { IGetAllOrdersGateway } from '@/application/interfaces/gateways/order/get-all-order-gateway.interface'
+import { GetAllOrdersInput, GetAllOrdersOutput, IOrderRepository, IGetAllOrdersGateway } from '@/application/interfaces'
 
 export class GetAllOrdersGateway implements IGetAllOrdersGateway {
   constructor(private readonly orderRepository: IOrderRepository) {}

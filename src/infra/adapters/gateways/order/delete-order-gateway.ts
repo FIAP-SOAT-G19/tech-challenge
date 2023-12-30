@@ -1,5 +1,4 @@
-import { IOrderRepository } from '@/application/interfaces'
-import { IDeleteOrderGateway } from '@/application/interfaces/gateways/order/delete-order-gateway.interface'
+import { IOrderRepository, IDeleteOrderGateway } from '@/application/interfaces'
 import { OrderOutput } from '@/application/usecases/order/orders.types'
 
 export class DeleteOrderGateway implements IDeleteOrderGateway {

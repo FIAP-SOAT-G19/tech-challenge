@@ -1,8 +1,8 @@
 import { MissingParamError, InvalidParamError } from '@/infra/shared'
 import { DeleteOrderUseCase } from './delete-order.usecase'
-import { mock } from 'jest-mock-extended'
 import { OrderOutput } from './orders.types'
-import { IDeleteOrderGateway } from '@/application/interfaces/gateways/order/delete-order-gateway.interface'
+import { IDeleteOrderGateway } from '@/application/interfaces'
+import { mock } from 'jest-mock-extended'
 
 const gateway = mock<IDeleteOrderGateway>()
 let orderOutput: OrderOutput

@@ -1,5 +1,4 @@
-import { IDeleteOrderUseCase } from '@/application/interfaces'
-import { IDeleteOrderGateway } from '@/application/interfaces/gateways/order/delete-order-gateway.interface'
+import { IDeleteOrderUseCase, IDeleteOrderGateway } from '@/application/interfaces'
 import { MissingParamError, InvalidParamError } from '@/infra/shared'
 import constants from '@/infra/shared/constants'
 

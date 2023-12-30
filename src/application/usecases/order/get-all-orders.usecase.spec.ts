@@ -1,9 +1,8 @@
-import { IGetAllOrdersUseCase } from '@/application/interfaces'
+import { IGetAllOrdersUseCase, IGetAllOrdersGateway } from '@/application/interfaces'
 import { InvalidParamError } from '@/infra/shared'
 import { GetAllOrdersUseCase } from './get-all-orders.usecase'
-import { mock } from 'jest-mock-extended'
 import { OrderOutput } from './orders.types'
-import { IGetAllOrdersGateway } from '@/application/interfaces/gateways/order/get-all-order-gateway.interface'
+import { mock } from 'jest-mock-extended'
 
 const gateway = mock<IGetAllOrdersGateway>()
 const orders: OrderOutput [] = [{

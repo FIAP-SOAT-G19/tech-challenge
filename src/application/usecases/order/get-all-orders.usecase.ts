@@ -1,5 +1,4 @@
-import { IGetAllOrdersUseCase } from '@/application/interfaces'
-import { IGetAllOrdersGateway } from '@/application/interfaces/gateways/order/get-all-order-gateway.interface'
+import { IGetAllOrdersUseCase, IGetAllOrdersGateway } from '@/application/interfaces'
 import { InvalidParamError } from '@/infra/shared'
 import constants from '@/infra/shared/constants'
 
