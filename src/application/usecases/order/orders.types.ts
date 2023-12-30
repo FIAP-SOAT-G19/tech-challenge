@@ -1,5 +1,3 @@
-import { OrderProduct } from './order-products.types'
-
 export type OrderOutput = {
   id: string
   orderNumber: string
@@ -17,4 +15,14 @@ export type Client = {
   name: string
   email: string
   cpf: string
+}
+
+export type OrderProduct = {
+  id: string
+  name: string
+  category: string
+  price: number
+  description: string
+  image: string
+  amount: number
 }

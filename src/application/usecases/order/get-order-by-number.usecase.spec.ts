@@ -1,4 +1,4 @@
-import { MissingParamError } from '@/infra/shared'
+import { InvalidParamError, MissingParamError } from '@/infra/shared'
 import { GetOrderByNumberUseCase } from './get-order-by-number.usecase'
 import { mock } from 'jest-mock-extended'
 import { OrderOutput } from './orders.types'
@@ -57,10 +57,11 @@ describe('GetOrderByNumberUseCase', () => {
     expect(output).toEqual(orderOutput)
   })
 
-  test('should return null if gateway.getByOrderNumbergetByNumber returns', async () => {
+  test('should throws if orderNumber is invalid', async () => {
     gateway.getByOrderNumber.mockResolvedValueOnce(null)
-    const output = await sut.execute('anyOrderNumber')
 
-    expect(output).toBeNull()
+    const output = sut.execute('anyOrderNumber')
+
+    await expect(output).rejects.toThrowError(new InvalidParamError('orderNumber'))
   })
 })
