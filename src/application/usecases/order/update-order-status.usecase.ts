@@ -1,13 +1,13 @@
-import { IUpdateOrderStatusUseCase, IOrderRepository } from '@/application/interfaces'
+import { IUpdateOrderStatusUseCase, IUpdateOrderStatusGateway } from '@/application/interfaces'
 import { MissingParamError, InvalidParamError } from '@/infra/shared'
 import constants from '@/infra/shared/constants'
 
 export class UpdateOrderStatusUseCase implements IUpdateOrderStatusUseCase {
-  constructor(private readonly orderRepository: IOrderRepository) {}
+  constructor(private readonly gateway: IUpdateOrderStatusGateway) {}
   async execute (input: IUpdateOrderStatusUseCase.Input): Promise<void> {
     await this.validate(input)
 
-    await this.orderRepository.updateStatus({
+    await this.gateway.updateStatus({
       orderNumber: input.orderNumber,
       status: input.status,
       paidAt: input.status === constants.ORDER_STATUS.RECEIVED ? new Date() : null
@@ -23,7 +23,7 @@ export class UpdateOrderStatusUseCase implements IUpdateOrderStatusUseCase {
       throw new MissingParamError('status')
     }
 
-    const order = await this.orderRepository.getByOrderNumber(input.orderNumber)
+    const order = await this.gateway.getByOrderNumber(input.orderNumber)
     if (!order) {
       throw new InvalidParamError('orderNumber')
     }
