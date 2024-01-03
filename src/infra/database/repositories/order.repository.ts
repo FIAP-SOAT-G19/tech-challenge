@@ -1,7 +1,6 @@
 import { GetAllOrdersInput, GetAllOrdersOutput, IOrderRepository, SaveOrderInput, UpdateOrderStatusInput } from '@/application/interfaces'
 import { prismaClient } from '../prisma-client'
-import { OrderOutput } from '@/application/usecases/order/orders.types'
-import { OrderProduct } from '@/application/usecases/order/order-products.types'
+import { OrderOutput, OrderProduct } from '@/application/usecases/order/orders.types'
 
 type OrderStatus = 'waitingPayment' | 'received' | 'InPreparation' | 'prepared' | 'finalized' | 'canceled'
 

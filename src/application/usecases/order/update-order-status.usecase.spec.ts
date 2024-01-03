@@ -1,11 +1,11 @@
 import { UpdateOrderStatusUseCase } from './update-order-status.usecase'
-import MockDate from 'mockdate'
-import { IOrderRepository } from '@/application/interfaces'
 import { MissingParamError, InvalidParamError } from '@/infra/shared'
 import { OrderOutput } from './orders.types'
+import { IUpdateOrderStatusGateway } from '@/application/interfaces'
 import { mock } from 'jest-mock-extended'
+import MockDate from 'mockdate'
 
-const orderRepository = mock<IOrderRepository>()
+const gateway = mock<IUpdateOrderStatusGateway>()
 const orderOutput: OrderOutput = {
   id: 'anyOrderId',
   orderNumber: 'anyOrderNumber',
@@ -36,12 +36,12 @@ describe('UpdateOrderStatusUseCase', () => {
   let input: any
 
   beforeEach(() => {
-    sut = new UpdateOrderStatusUseCase(orderRepository)
+    sut = new UpdateOrderStatusUseCase(gateway)
     input = {
       orderNumber: 'anyOrderNumber',
       status: 'received'
     }
-    orderRepository.getByOrderNumber.mockResolvedValue(orderOutput)
+    gateway.getByOrderNumber.mockResolvedValue(orderOutput)
   })
 
   beforeAll(() => {
@@ -77,30 +77,30 @@ describe('UpdateOrderStatusUseCase', () => {
   })
 
   test('should throws if orderNumber is invalid', async () => {
-    orderRepository.getByOrderNumber.mockResolvedValueOnce(null)
+    gateway.getByOrderNumber.mockResolvedValueOnce(null)
 
     const output = sut.execute(input)
 
     await expect(output).rejects.toThrowError(new InvalidParamError('orderNumber'))
   })
 
-  test('should call OrderRepository.updateStatus once and with correct values', async () => {
+  test('should call gateway.updateStatus once and with correct values', async () => {
     await sut.execute(input)
 
-    expect(orderRepository.updateStatus).toHaveBeenCalledTimes(1)
-    expect(orderRepository.updateStatus).toHaveBeenCalledWith({
+    expect(gateway.updateStatus).toHaveBeenCalledTimes(1)
+    expect(gateway.updateStatus).toHaveBeenCalledWith({
       orderNumber: 'anyOrderNumber',
       status: 'received',
       paidAt: new Date()
     })
   })
 
-  test('should call OrderRepository.updateStatus once and with correct values without paidAt', async () => {
+  test('should call gateway.updateStatus once and with correct values without paidAt', async () => {
     input.status = 'canceled'
     await sut.execute(input)
 
-    expect(orderRepository.updateStatus).toHaveBeenCalledTimes(1)
-    expect(orderRepository.updateStatus).toHaveBeenCalledWith({
+    expect(gateway.updateStatus).toHaveBeenCalledTimes(1)
+    expect(gateway.updateStatus).toHaveBeenCalledWith({
       orderNumber: 'anyOrderNumber',
       status: 'canceled',
       paidAt: null

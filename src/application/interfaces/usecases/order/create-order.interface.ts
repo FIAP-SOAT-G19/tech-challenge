@@ -1,4 +1,4 @@
-import { OrderProduct } from '@/application/usecases/order/order-products.types'
+import { OrderProduct } from '@/application/usecases/order/orders.types'
 
 export interface ICreateOrderUseCase {
   execute: (input: ICreateOrderUseCase.Input) => Promise<ICreateOrderUseCase.Output>

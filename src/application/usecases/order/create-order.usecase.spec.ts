@@ -1,15 +1,12 @@
-import { IUUIDGenerator, IOrderRepository, IClientRepository, ISchemaValidator, IOrderProductRepository, IProductRepository } from '@/application/interfaces'
+import { IUUIDGenerator, ISchemaValidator, ICreateOrderGateway } from '@/application/interfaces'
 import { InvalidParamError } from '@/infra/shared'
 import { CreateOrderUseCase } from './create-order.usecase'
 import { mock } from 'jest-mock-extended'
 import MockDate from 'mockdate'
 
 const uuidGenerator = mock<IUUIDGenerator>()
-const orderRepository = mock<IOrderRepository>()
-const clientRepository = mock<IClientRepository>()
 const schemaValidator = mock<ISchemaValidator>()
-const orderProductRepository = mock<IOrderProductRepository>()
-const productRepository = mock<IProductRepository>()
+const gateway = mock<ICreateOrderGateway>()
 
 jest.mock('@/infra/shared/helpers/string.helper', () => {
   const originalMethod = jest.requireActual('@/infra/shared/helpers/string.helper')
@@ -24,7 +21,7 @@ describe('CreateOrderUseCase', () => {
   let input: any
 
   beforeEach(() => {
-    sut = new CreateOrderUseCase(schemaValidator, uuidGenerator, clientRepository, orderRepository, orderProductRepository, productRepository)
+    sut = new CreateOrderUseCase(schemaValidator, uuidGenerator, gateway)
     input = {
       clientId: 'anyClientId',
       clientDocument: null,
@@ -39,8 +36,8 @@ describe('CreateOrderUseCase', () => {
       }]
     }
     uuidGenerator.generate.mockReturnValue('anyUUID')
-    orderRepository.save.mockResolvedValue('anyOrderId')
-    clientRepository.getById.mockResolvedValue({
+    gateway.saveOrder.mockResolvedValue('anyOrderId')
+    gateway.getClientById.mockResolvedValue({
       id: 'anyClientId',
       name: 'anyClientName',
       email: 'anyClientEmail',
@@ -51,7 +48,7 @@ describe('CreateOrderUseCase', () => {
       deletedAt: null
     })
     schemaValidator.validate.mockReturnValue({ value: input })
-    productRepository.getById.mockResolvedValue({
+    gateway.getProductById.mockResolvedValue({
       id: 'anyProductId',
       name: 'anyProductName',
       category: 'anyCategory',
@@ -71,11 +68,11 @@ describe('CreateOrderUseCase', () => {
     MockDate.reset()
   })
 
-  test('should call clientRepository.getById once and with correct clientId', async () => {
+  test('should call gateway.getClientById once and with correct clientId', async () => {
     await sut.execute(input)
 
-    expect(clientRepository.getById).toHaveBeenCalledTimes(1)
-    expect(clientRepository.getById).toHaveBeenCalledWith('anyClientId')
+    expect(gateway.getClientById).toHaveBeenCalledTimes(1)
+    expect(gateway.getClientById).toHaveBeenCalledWith('anyClientId')
   })
 
   test('should call schemaValidator once and with correct values', async () => {
@@ -94,16 +91,16 @@ describe('CreateOrderUseCase', () => {
     await expect(output).rejects.toThrow()
   })
 
-  test('should throws if clientRepository.getById returns null', async () => {
-    clientRepository.getById.mockResolvedValueOnce(null)
+  test('should throws if gateway.getClientById returns null', async () => {
+    gateway.getClientById.mockResolvedValueOnce(null)
 
     const output = sut.execute(input)
 
     await expect(output).rejects.toThrowError(new InvalidParamError('clientId'))
   })
 
-  test('should throws if ProductRepository.getById returns null', async () => {
-    productRepository.getById.mockResolvedValueOnce(null)
+  test('should throws if gateway.getProductById returns null', async () => {
+    gateway.getProductById.mockResolvedValueOnce(null)
 
     const output = sut.execute(input)
 
@@ -116,11 +113,11 @@ describe('CreateOrderUseCase', () => {
     expect(uuidGenerator.generate).toHaveBeenCalledTimes(2)
   })
 
-  test('should call OrderRepository.save once and with correct values', async () => {
+  test('should call gateway.saveOrder once and with correct values', async () => {
     await sut.execute(input)
 
-    expect(orderRepository.save).toHaveBeenCalledTimes(1)
-    expect(orderRepository.save).toHaveBeenCalledWith({
+    expect(gateway.saveOrder).toHaveBeenCalledTimes(1)
+    expect(gateway.saveOrder).toHaveBeenCalledWith({
       id: 'anyUUID',
       clientId: 'anyClientId',
       orderNumber: 'anyOrderNumber',
@@ -131,14 +128,14 @@ describe('CreateOrderUseCase', () => {
     })
   })
 
-  test('should call OrderRepository.save once and with correct values and without clientId', async () => {
+  test('should call gateway.saveOrder once and with correct values and without clientId', async () => {
     input.clientId = null
     input.clientDocument = 'anyClientDocument'
 
     await sut.execute(input)
 
-    expect(orderRepository.save).toHaveBeenCalledTimes(1)
-    expect(orderRepository.save).toHaveBeenCalledWith({
+    expect(gateway.saveOrder).toHaveBeenCalledTimes(1)
+    expect(gateway.saveOrder).toHaveBeenCalledWith({
       id: 'anyUUID',
       orderNumber: 'anyOrderNumber',
       clientId: null,
@@ -172,10 +169,10 @@ describe('CreateOrderUseCase', () => {
     expect(total).toBe(5000)
   })
 
-  test('should call OrderProductRepository.save once and with correct values', async () => {
+  test('should call gateway.saveOrderProduct once and with correct values', async () => {
     await sut.execute(input)
 
-    expect(orderProductRepository.save).toHaveBeenCalledWith({
+    expect(gateway.saveOrderProduct).toHaveBeenCalledWith({
       id: 'anyUUID',
       productId: 'anyProductId',
       orderId: 'anyUUID',

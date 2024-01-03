@@ -1,10 +1,10 @@
-import { IOrderRepository, IGetAllOrdersUseCase } from '@/application/interfaces'
+import { IGetAllOrdersUseCase, IGetAllOrdersGateway } from '@/application/interfaces'
 import { InvalidParamError } from '@/infra/shared'
 import { GetAllOrdersUseCase } from './get-all-orders.usecase'
-import { mock } from 'jest-mock-extended'
 import { OrderOutput } from './orders.types'
+import { mock } from 'jest-mock-extended'
 
-const orderRepository = mock<IOrderRepository>()
+const gateway = mock<IGetAllOrdersGateway>()
 const orders: OrderOutput [] = [{
   id: 'anyOrderId',
   orderNumber: 'anyOrderNumber',
@@ -59,28 +59,28 @@ describe('GetAllOrdersUseCase', () => {
   let input: IGetAllOrdersUseCase.Input
 
   beforeEach(() => {
-    sut = new GetAllOrdersUseCase(orderRepository)
+    sut = new GetAllOrdersUseCase(gateway)
     input = {}
-    orderRepository.getAll.mockResolvedValue(orders)
+    gateway.getAllOrders.mockResolvedValue(orders)
   })
 
-  test('should call OrderRepository.getAll once and with correct values', async () => {
+  test('should call gateway.getAllOrders once and with correct values', async () => {
     input.clientId = 'anyClientId'
 
     await sut.execute(input)
 
-    expect(orderRepository.getAll).toHaveBeenCalledTimes(1)
-    expect(orderRepository.getAll).toHaveBeenCalledWith({ clientId: 'anyClientId' })
+    expect(gateway.getAllOrders).toHaveBeenCalledTimes(1)
+    expect(gateway.getAllOrders).toHaveBeenCalledWith({ clientId: 'anyClientId' })
   })
 
-  test('should call OrderRepository.getAll once and with correct values', async () => {
+  test('should call gateway.getAllOrders once and with correct values', async () => {
     input.clientId = 'anyClientId'
     input.status = 'waitingPayment'
 
     await sut.execute(input)
 
-    expect(orderRepository.getAll).toHaveBeenCalledTimes(1)
-    expect(orderRepository.getAll).toHaveBeenCalledWith({ clientId: 'anyClientId', status: 'waitingPayment' })
+    expect(gateway.getAllOrders).toHaveBeenCalledTimes(1)
+    expect(gateway.getAllOrders).toHaveBeenCalledWith({ clientId: 'anyClientId', status: 'waitingPayment' })
   })
 
   test('should throws if invalid status is provided', async () => {
@@ -91,22 +91,22 @@ describe('GetAllOrdersUseCase', () => {
     await expect(output).rejects.toThrowError(new InvalidParamError('status'))
   })
 
-  test('should call OrderRepository.getAll once and with correct values', async () => {
+  test('should call gateway.getAllOrders once and with correct values', async () => {
     input.clientId = 'anyClientId'
     input.status = 'waitingPayment'
     input.paidAtInitialDate = '2023-01-01 00:00:00'
 
     await sut.execute(input)
 
-    expect(orderRepository.getAll).toHaveBeenCalledTimes(1)
-    expect(orderRepository.getAll).toHaveBeenCalledWith({
+    expect(gateway.getAllOrders).toHaveBeenCalledTimes(1)
+    expect(gateway.getAllOrders).toHaveBeenCalledWith({
       clientId: 'anyClientId',
       status: 'waitingPayment',
       paidAtInitialDate: '2023-01-01 00:00:00'
     })
   })
 
-  test('should call OrderRepository.getAll once and with correct values', async () => {
+  test('should call gateway.getAllOrders once and with correct values', async () => {
     input.clientId = 'anyClientId'
     input.status = 'waitingPayment'
     input.paidAtInitialDate = '2023-01-01 00:00:00'
@@ -114,8 +114,8 @@ describe('GetAllOrdersUseCase', () => {
 
     await sut.execute(input)
 
-    expect(orderRepository.getAll).toHaveBeenCalledTimes(1)
-    expect(orderRepository.getAll).toHaveBeenCalledWith({
+    expect(gateway.getAllOrders).toHaveBeenCalledTimes(1)
+    expect(gateway.getAllOrders).toHaveBeenCalledWith({
       clientId: 'anyClientId',
       status: 'waitingPayment',
       paidAtInitialDate: '2023-01-01 00:00:00',
@@ -123,7 +123,7 @@ describe('GetAllOrdersUseCase', () => {
     })
   })
 
-  test('should call OrderRepository.getAll once and with correct values', async () => {
+  test('should call gateway.getAllOrders once and with correct values', async () => {
     input.clientId = 'anyClientId'
     input.status = 'waitingPayment'
     input.paidAtInitialDate = '2023-01-01 00:00:00'
@@ -132,8 +132,8 @@ describe('GetAllOrdersUseCase', () => {
 
     await sut.execute(input)
 
-    expect(orderRepository.getAll).toHaveBeenCalledTimes(1)
-    expect(orderRepository.getAll).toHaveBeenCalledWith({
+    expect(gateway.getAllOrders).toHaveBeenCalledTimes(1)
+    expect(gateway.getAllOrders).toHaveBeenCalledWith({
       clientId: 'anyClientId',
       status: 'waitingPayment',
       paidAtInitialDate: '2023-01-01 00:00:00',
@@ -142,7 +142,7 @@ describe('GetAllOrdersUseCase', () => {
     })
   })
 
-  test('should call OrderRepository.getAll once and with correct values', async () => {
+  test('should call gateway.getAllOrders once and with correct values', async () => {
     input.clientId = 'anyClientId'
     input.status = 'waitingPayment'
     input.paidAtInitialDate = '2023-01-01 00:00:00'
@@ -152,8 +152,8 @@ describe('GetAllOrdersUseCase', () => {
 
     await sut.execute(input)
 
-    expect(orderRepository.getAll).toHaveBeenCalledTimes(1)
-    expect(orderRepository.getAll).toHaveBeenCalledWith({
+    expect(gateway.getAllOrders).toHaveBeenCalledTimes(1)
+    expect(gateway.getAllOrders).toHaveBeenCalledWith({
       clientId: 'anyClientId',
       status: 'waitingPayment',
       paidAtInitialDate: '2023-01-01 00:00:00',
@@ -163,7 +163,7 @@ describe('GetAllOrdersUseCase', () => {
     })
   })
 
-  test('should call OrderRepository.getAll once and with correct values', async () => {
+  test('should call gateway.getAllOrders once and with correct values', async () => {
     input.clientId = 'anyClientId'
     input.clientDocument = 'anyClientDocuyment'
     input.status = 'waitingPayment'
@@ -174,8 +174,8 @@ describe('GetAllOrdersUseCase', () => {
 
     await sut.execute(input)
 
-    expect(orderRepository.getAll).toHaveBeenCalledTimes(1)
-    expect(orderRepository.getAll).toHaveBeenCalledWith({
+    expect(gateway.getAllOrders).toHaveBeenCalledTimes(1)
+    expect(gateway.getAllOrders).toHaveBeenCalledWith({
       clientId: 'anyClientId',
       clientDocument: 'anyClientDocuyment',
       status: 'waitingPayment',
@@ -186,8 +186,8 @@ describe('GetAllOrdersUseCase', () => {
     })
   })
 
-  test('should return null if OrderRepository.getAll returns null', async () => {
-    orderRepository.getAll.mockResolvedValueOnce(null)
+  test('should return null if gateway.getAllOrders returns null', async () => {
+    gateway.getAllOrders.mockResolvedValueOnce(null)
 
     const output = await sut.execute(input)
 

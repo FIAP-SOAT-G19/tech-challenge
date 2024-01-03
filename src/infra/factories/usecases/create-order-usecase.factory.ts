@@ -5,21 +5,21 @@ import { OrderRepository } from '../../../infra/database/repositories/order.repo
 import { CreateOrderUseCase } from '@/application/usecases/order/create-order.usecase'
 import { UUIDGeneratorAdapter } from '@/infra/adapters/tools/uuid/uuid-generator'
 import { JoiValidatorSchemaAdapter } from '@/infra/adapters/tools/validation/joi-validator.adapter'
+import { CreateOrderGateway } from '@/infra/adapters/gateways/order/create-order.gateway'
 
 export const makeCreateOrderUseCase = (): CreateOrderUseCase => {
   const schemaValidator = new JoiValidatorSchemaAdapter()
   const uuidGenerator = new UUIDGeneratorAdapter()
-  const clientRepository = new ClientRepository()
-  const orderRepository = new OrderRepository()
-  const orderProductRepository = new OrderProductRepository()
-  const productOrder = new ProductRepository()
+  const gateway = new CreateOrderGateway(
+    new ClientRepository(),
+    new OrderRepository(),
+    new OrderProductRepository(),
+    new ProductRepository()
+  )
 
   return new CreateOrderUseCase(
     schemaValidator,
     uuidGenerator,
-    clientRepository,
-    orderRepository,
-    orderProductRepository,
-    productOrder
+    gateway
   )
 }
