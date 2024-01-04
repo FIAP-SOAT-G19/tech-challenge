@@ -62,6 +62,6 @@ describe('GetOrderByNumberUseCase', () => {
 
     const output = sut.execute('anyOrderNumber')
 
-    await expect(output).rejects.toThrowError(new InvalidParamError('orderNumber'))
+    await expect(output).rejects.toThrowError(new InvalidParamError('Order not found'))
   })
 })

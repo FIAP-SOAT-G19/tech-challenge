@@ -8,7 +8,7 @@ export class GetOrderStatusUseCase implements IGetOrderStatusUseCase {
     const order = await this.gateway.getByOrderNumber(orderNumber)
 
     if (!order) {
-      throw new InvalidParamError('orderNumber')
+      throw new InvalidParamError('Order not found')
     }
 
     return { status: order.status }
