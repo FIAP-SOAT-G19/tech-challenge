@@ -1,5 +1,5 @@
 
-import { ISchemaValidator, IUUIDGenerator, IClientRepository, Client } from '@/application/interfaces'
+import { ISchemaValidator, IUUIDGenerator, Client, ICreateClientGateway } from '@/application/interfaces'
 import { ICreateClientUseCase } from '@/application/interfaces/usecases/client/create-client.interface'
 import { IEncrypt } from '@/application/interfaces/usecases/encrypt/encrypt.interface'
 import { InvalidParamError } from '@/infra/shared'
@@ -9,7 +9,7 @@ import { CreateClientUseCase } from './create-client.usecase'
 
 const schemaValidator = mock<ISchemaValidator>()
 const uuidGenerator = mock<IUUIDGenerator>()
-const clientRepository = mock<IClientRepository>()
+const gateway = mock<ICreateClientGateway>()
 const encrypt = mock<IEncrypt>()
 
 describe('CreateClientUseCase', () => {
@@ -18,7 +18,7 @@ describe('CreateClientUseCase', () => {
   let clientRepositoryOutput: Client
 
   beforeEach(() => {
-    sut = new CreateClientUseCase(schemaValidator, uuidGenerator, clientRepository, encrypt)
+    sut = new CreateClientUseCase(schemaValidator, uuidGenerator, gateway, encrypt)
     input = {
       name: 'anyClientName',
       email: 'anyClientEmail',
@@ -95,13 +95,13 @@ describe('CreateClientUseCase', () => {
   })
 
   test('should throws if email already exists', async () => {
-    clientRepository.getByEmail.mockResolvedValueOnce(clientRepositoryOutput)
+    gateway.getClientByEmail.mockResolvedValueOnce(clientRepositoryOutput)
     const output = sut.execute(input)
     await expect(output).rejects.toThrow(new InvalidParamError('email'))
   })
 
   test('should throws if document already exists', async () => {
-    clientRepository.getByDocument.mockResolvedValueOnce(clientRepositoryOutput)
+    gateway.getClientByDocument.mockResolvedValueOnce(clientRepositoryOutput)
     const output = sut.execute(input)
     await expect(output).rejects.toThrow(new InvalidParamError('document'))
   })
@@ -122,12 +122,12 @@ describe('CreateClientUseCase', () => {
     uuidGenerator.generate.mockReturnValueOnce('anyUuid')
     encrypt.encrypt.mockReturnValueOnce('anyEncrypt')
     await sut.execute(input)
-    expect(clientRepository.save).toHaveBeenCalledWith({
+    expect(gateway.saveClient).toHaveBeenCalledWith({
       ...input,
       id: 'anyUuid',
       password: 'anyEncrypt',
       createdAt: new Date()
     })
-    expect(clientRepository.save).toHaveBeenCalledTimes(1)
+    expect(gateway.saveClient).toHaveBeenCalledTimes(1)
   })
 })
