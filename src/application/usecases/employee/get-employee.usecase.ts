@@ -6,7 +6,7 @@ export class GetEmployeeUseCase implements IGetEmployeeUseCase {
   constructor(private readonly getEmployeeGateway: IGetEmployeeGateway) {
   }
 
-  async findOne(input: IGetEmployeeUseCase.Input): Promise<IGetEmployeeUseCase.Output> {
+  async findById(input: IGetEmployeeUseCase.Input): Promise<IGetEmployeeUseCase.Output> {
     const employee = await this.getEmployeeGateway.findById(input.id)
     if (!employee) throw new InvalidParamError('Employee not found')
     return {

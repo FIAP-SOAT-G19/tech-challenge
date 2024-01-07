@@ -1,5 +1,5 @@
 export interface IGetEmployeeUseCase {
-  findOne: (input: IGetEmployeeUseCase.Input) => Promise<IGetEmployeeUseCase.Output>
+  findById: (input: IGetEmployeeUseCase.Input) => Promise<IGetEmployeeUseCase.Output>
   findAll: () => Promise<IGetEmployeeUseCase.Output[] | []>
 }
 

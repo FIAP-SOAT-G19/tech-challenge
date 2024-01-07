@@ -1,17 +1,17 @@
 import { mock } from 'jest-mock-extended'
-import { IEmployeeRepository } from '@/application/interfaces/repositories/employee.interface'
-import { GetEmployeeUseCase } from '@/application/usecases/employee/read-employee.usecase'
+import { GetEmployeeUseCase } from '@/application/usecases/employee/get-employee.usecase'
 import { GetEmployeeController } from './get-employee.controller'
+import { IGetEmployeeGateway } from '@/application/interfaces'
 
-const employeeRepository = mock<IEmployeeRepository>()
+const gateway = mock<IGetEmployeeGateway>()
 
 describe('ReadEmployeeController', () => {
   let sut: GetEmployeeController
-  let readEmployeeUseCase: GetEmployeeUseCase
+  let getEmployeeUseCase: GetEmployeeUseCase
 
   beforeEach(() => {
-    getEmployeeUseCase = new GetEmployeeUseCase(employeeRepository)
-    sut = new GetEmployeeUseCase(readEmployeeUseCase)
+    getEmployeeUseCase = new GetEmployeeUseCase(gateway)
+    sut = new GetEmployeeController(getEmployeeUseCase)
   })
 
   test('should return an employee with valid param', async () => {
@@ -20,7 +20,7 @@ describe('ReadEmployeeController', () => {
         id: 'anyId'
       }
     }
-    employeeRepository.findById.mockResolvedValue({
+    gateway.findById.mockResolvedValue({
       id: 'anyId',
       name: 'John Doe',
       email: 'anyEmail',
@@ -52,7 +52,7 @@ describe('ReadEmployeeController', () => {
         id: 'anyId'
       }
     }
-    employeeRepository.findById.mockResolvedValue(null)
+    gateway.findById.mockResolvedValue(null)
 
     const result = await sut.execute(input)
 
@@ -69,7 +69,7 @@ describe('ReadEmployeeController', () => {
         id: 'anyId'
       }
     }
-    employeeRepository.findById.mockRejectedValue(new Error('Any error'))
+    gateway.findById.mockRejectedValue(new Error('Any error'))
 
     const result = await sut.execute(input)
 
