@@ -1,17 +1,17 @@
 import { mock } from 'jest-mock-extended'
-import { ReadAllEmployeesController } from './read-all-employees.controller'
+import { GetAllEmployeesController } from './get-all-employees.controller'
 import { IEmployeeRepository } from '@/application/interfaces/repositories/employee.interface'
-import { ReadEmployeeUseCase } from '@/application/usecases/employee/read-employee.usecase'
+import { GetEmployeeUseCase } from '@/application/usecases/employee/get-employee.usecase'
 
 const employeeRepository = mock<IEmployeeRepository>()
 
 describe('ReadAllEmployeesController', () => {
-  let sut: ReadAllEmployeesController
-  let readEmployeeUseCase: ReadEmployeeUseCase
+  let sut: GetAllEmployeesController
+  let getEmployeeUseCase: GetEmployeeUseCase
 
   beforeEach(() => {
-    readEmployeeUseCase = new ReadEmployeeUseCase(employeeRepository)
-    sut = new ReadAllEmployeesController(readEmployeeUseCase)
+    getEmployeeUseCase = new GetEmployeeUseCase(employeeRepository)
+    sut = new GetAllEmployeesController(getEmployeeUseCase)
   })
 
   test('should return all employees', async () => {

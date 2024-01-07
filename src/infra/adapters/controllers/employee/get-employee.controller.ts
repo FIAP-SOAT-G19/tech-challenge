@@ -1,9 +1,9 @@
 import { IController } from '@/application/interfaces'
-import { ReadEmployeeUseCase } from '@/application/usecases/employee/read-employee.usecase'
+import { GetEmployeeUseCase } from '@/application/usecases/employee/get-employee.usecase'
 import { HttpRequest, HttpResponse, success, handleError } from '@/infra/shared'
 
-export class ReadEmployeeController implements IController {
-  constructor(private readonly readEmployeeUseCase: ReadEmployeeUseCase) {}
+export class GetEmployeeController implements IController {
+  constructor(private readonly readEmployeeUseCase: GetEmployeeUseCase) {}
 
   async execute (input: HttpRequest): Promise<HttpResponse> {
     try {
