@@ -97,12 +97,13 @@ model OrderProduct {
 }
 
 model Payment {
-  id        String        @id
-  order     Order         @relation(fields: [orderId], references: [id])
-  orderId   String
-  status    PaymentStatus @default(waiting)
-  createdAt DateTime
-  updatedAt DateTime?     @updatedAt
+  id          String        @id
+  order       Order         @relation(fields: [orderNumber], references: [orderNumber])
+  orderNumber String
+  status      PaymentStatus @default(waiting)
+  reason      String?
+  createdAt   DateTime
+  updatedAt   DateTime?     @updatedAt
 
   @@map("payments")
 }
