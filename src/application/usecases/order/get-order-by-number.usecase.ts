@@ -11,7 +11,7 @@ export class GetOrderByNumberUseCase implements IGetOrderByNumberUseCase {
 
     const order = await this.gateway.getByOrderNumber(orderNumber)
     if (!order) {
-      throw new InvalidParamError('orderNumber')
+      throw new InvalidParamError('Order not found')
     }
     return order
   }

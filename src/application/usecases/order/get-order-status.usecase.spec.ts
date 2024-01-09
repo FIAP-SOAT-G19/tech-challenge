@@ -1,11 +1,11 @@
-import { InvalidParamError, MissingParamError } from '@/infra/shared'
-import { GetOrderByNumberUseCase } from './get-order-by-number.usecase'
 import { mock } from 'jest-mock-extended'
-import { OrderOutput } from './orders.types'
+import { GetOrderStatusUseCase } from './get-order-status.usecase'
 import { IGetOrderByNumberGateway } from '@/application/interfaces'
+import { InvalidParamError } from '@/infra/shared'
+import { OrderOutput } from './orders.types'
 
 const gateway = mock<IGetOrderByNumberGateway>()
-const orderOutput: OrderOutput = {
+const order: OrderOutput = {
   id: 'anyOrderId',
   orderNumber: 'anyOrderNumber',
   clientId: 'anyClientId',
@@ -30,38 +30,32 @@ const orderOutput: OrderOutput = {
   }]
 }
 
-describe('GetOrderByNumberUseCase', () => {
-  let sut: GetOrderByNumberUseCase
+describe('GetOrderStatusUseCase', () => {
+  let sut: GetOrderStatusUseCase
 
   beforeEach(() => {
-    sut = new GetOrderByNumberUseCase(gateway)
-    gateway.getByOrderNumber.mockResolvedValue(orderOutput)
+    sut = new GetOrderStatusUseCase(gateway)
+    gateway.getByOrderNumber.mockResolvedValue(order)
   })
 
-  test('should throw if orderNumber does not provided', async () => {
-    const output = sut.execute(null as any)
-
-    await expect(output).rejects.toThrowError(new MissingParamError('orderNumber'))
-  })
-
-  test('should call gateway.getByOrderNumbergetByNumber once and with correct orderNumber', async () => {
+  test('should call gateway.getOrderByNumber once and with correct orderNumber', async () => {
     await sut.execute('anyOrderNumber')
 
     expect(gateway.getByOrderNumber).toHaveBeenCalledTimes(1)
     expect(gateway.getByOrderNumber).toHaveBeenCalledWith('anyOrderNumber')
   })
 
-  test('should return a order', async () => {
-    const output = await sut.execute('anyOrderNumber')
-
-    expect(output).toEqual(orderOutput)
-  })
-
-  test('should throws if orderNumber is invalid', async () => {
+  test('should throw if gateway.getOrderByNumber returns null', async () => {
     gateway.getByOrderNumber.mockResolvedValueOnce(null)
 
     const output = sut.execute('anyOrderNumber')
 
     await expect(output).rejects.toThrowError(new InvalidParamError('Order not found'))
+  })
+
+  test('should return only order status on succes', async () => {
+    const output = await sut.execute('anyOrderNumber')
+
+    expect(output).toEqual({ status: order.status })
   })
 })
