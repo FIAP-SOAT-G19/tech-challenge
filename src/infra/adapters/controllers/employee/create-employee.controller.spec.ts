@@ -1,5 +1,4 @@
-import { ISchemaValidator, IUUIDGenerator } from '@/application/interfaces'
-import { IEmployeeRepository } from '@/application/interfaces/repositories/employee.interface'
+import { ICreateEmployeeGateway, ISchemaValidator, IUUIDGenerator } from '@/application/interfaces'
 import { IEncrypt } from '@/application/interfaces/usecases/encrypt/encrypt.interface'
 import { CreateEmployeeUseCase } from '@/application/usecases/employee/create-employee.usecase'
 import { ServerError } from '@/infra/shared'
@@ -7,7 +6,7 @@ import { CreateEmployeeController } from './create-employee.controller'
 import { mock } from 'jest-mock-extended'
 import MockDate from 'mockdate'
 
-const employeeRepository = mock<IEmployeeRepository>()
+const gateway = mock<ICreateEmployeeGateway>()
 const schemaValidator = mock<ISchemaValidator>()
 const uuidGenerator = mock<IUUIDGenerator>()
 const encryptoPassword = mock<IEncrypt>()
@@ -18,7 +17,7 @@ describe('CreateEmployeeController', () => {
   let input: any
 
   beforeEach(() => {
-    createEmployeeUseCase = new CreateEmployeeUseCase(employeeRepository, schemaValidator, uuidGenerator, encryptoPassword)
+    createEmployeeUseCase = new CreateEmployeeUseCase(gateway, schemaValidator, uuidGenerator, encryptoPassword)
     sut = new CreateEmployeeController(createEmployeeUseCase)
     input = {
       name: 'John Doe',
@@ -28,8 +27,8 @@ describe('CreateEmployeeController', () => {
     }
     uuidGenerator.generate.mockReturnValue('generatedUUID')
     schemaValidator.validate.mockReturnValue({ value: input })
-    employeeRepository.findByCpf.mockResolvedValue(null)
-    employeeRepository.findByEmail.mockResolvedValue(null)
+    gateway.findByCpf.mockResolvedValue(null)
+    gateway.findByEmail.mockResolvedValue(null)
   })
 
   beforeAll(() => {
@@ -41,7 +40,7 @@ describe('CreateEmployeeController', () => {
   })
 
   test('should create an employee with valid input', async () => {
-    employeeRepository.create.mockResolvedValue('generatedUUID')
+    gateway.create.mockResolvedValue('generatedUUID')
 
     const result = await sut.execute({ body: input })
 
@@ -50,7 +49,7 @@ describe('CreateEmployeeController', () => {
   })
 
   test('should throw InvalidParamError for duplicate email', async () => {
-    employeeRepository.findByEmail.mockResolvedValue({
+    gateway.findByEmail.mockResolvedValue({
       id: 'anyId',
       name: 'John Doe',
       email: 'anyEmail',
@@ -70,7 +69,7 @@ describe('CreateEmployeeController', () => {
   })
 
   test('should throw InvalidParamError for duplicate cpf', async () => {
-    employeeRepository.findByCpf.mockResolvedValue({
+    gateway.findByCpf.mockResolvedValue({
       id: 'anyId',
       name: 'John Doe',
       email: 'anyEmail',
@@ -114,7 +113,7 @@ describe('CreateEmployeeController', () => {
   test('should throw ServerError', async () => {
     const error = new ServerError()
 
-    employeeRepository.create.mockRejectedValue(error)
+    gateway.create.mockRejectedValue(error)
     const result = await sut.execute({ body: input })
 
     expect(result.statusCode).toBe(500)

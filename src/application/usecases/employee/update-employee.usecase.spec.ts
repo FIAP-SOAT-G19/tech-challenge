@@ -1,10 +1,9 @@
-import { IEmployeeRepository } from '@/application/interfaces/repositories/employee.interface'
 import { UpdateEmployeeUseCase } from './update-employee.usecase'
-import { ISchemaValidator } from '@/application/interfaces'
+import { ISchemaValidator, IUpdateEmployeeGateway } from '@/application/interfaces'
 import { IEncrypt } from '@/application/interfaces/usecases/encrypt/encrypt.interface'
 import { mock } from 'jest-mock-extended'
 
-const employeeRepository = mock<IEmployeeRepository>()
+const gateway = mock<IUpdateEmployeeGateway>()
 const schemaValidator = mock<ISchemaValidator>()
 const encryptoPassword = mock<IEncrypt>()
 
@@ -13,7 +12,7 @@ describe('UpdateEmployeeUseCase', () => {
   let input: any
 
   beforeEach(() => {
-    sut = new UpdateEmployeeUseCase(employeeRepository, schemaValidator, encryptoPassword)
+    sut = new UpdateEmployeeUseCase(gateway, schemaValidator, encryptoPassword)
     input = {
       name: 'John Doe',
       email: 'john@email.com',
@@ -21,7 +20,7 @@ describe('UpdateEmployeeUseCase', () => {
       password: 'password123'
     }
     schemaValidator.validate.mockReturnValue({ value: input })
-    employeeRepository.findById.mockResolvedValue(null)
+    gateway.findById.mockResolvedValue(null)
   })
 
   test('should update an employee with valid input', async () => {
@@ -35,8 +34,8 @@ describe('UpdateEmployeeUseCase', () => {
       updatedAt: new Date('2021-09-21T22:00:00.000Z'),
       deletedAt: new Date('9999-12-31T23:59:59.999Z')
     }
-    employeeRepository.findById.mockResolvedValue(existingEmployee)
-    employeeRepository.update.mockResolvedValue(existingEmployee.id)
+    gateway.findById.mockResolvedValue(existingEmployee)
+    gateway.update.mockResolvedValue(existingEmployee.id)
 
     schemaValidator.validate.mockReturnValue({ value: input })
 
@@ -60,8 +59,8 @@ describe('UpdateEmployeeUseCase', () => {
       updatedAt: new Date('2021-09-21T22:00:00.000Z'),
       deletedAt: new Date('9999-12-31T23:59:59.999Z')
     }
-    employeeRepository.findById.mockResolvedValue(existingEmployee)
-    employeeRepository.findByEmail.mockResolvedValue({
+    gateway.findById.mockResolvedValue(existingEmployee)
+    gateway.findByEmail.mockResolvedValue({
       id: 'anyId',
       name: 'John Doe',
       email: 'john@email.com',
@@ -85,9 +84,9 @@ describe('UpdateEmployeeUseCase', () => {
       updatedAt: new Date('2021-09-21T22:00:00.000Z'),
       deletedAt: new Date('9999-12-31T23:59:59.999Z')
     }
-    employeeRepository.findById.mockResolvedValue(existingEmployee)
-    employeeRepository.findByEmail.mockResolvedValue(null)
-    employeeRepository.findByCpf.mockResolvedValue({
+    gateway.findById.mockResolvedValue(existingEmployee)
+    gateway.findByEmail.mockResolvedValue(null)
+    gateway.findByCpf.mockResolvedValue({
       id: 'anyId',
       name: 'John Doe',
       email: 'john5522@email.com',
@@ -118,9 +117,9 @@ describe('UpdateEmployeeUseCase', () => {
       updatedAt: new Date('2021-09-21T22:00:00.000Z'),
       deletedAt: new Date('9999-12-31T23:59:59.999Z')
     }
-    employeeRepository.findById.mockResolvedValue(existingEmployee)
-    employeeRepository.findByEmail.mockResolvedValue(null)
-    employeeRepository.findByCpf.mockResolvedValue(null)
+    gateway.findById.mockResolvedValue(existingEmployee)
+    gateway.findByEmail.mockResolvedValue(null)
+    gateway.findByCpf.mockResolvedValue(null)
     schemaValidator.validate.mockReturnValue({
       value: {
         message: '"cpf" length must be 11 characters long'

@@ -1,20 +1,20 @@
 import { DeleteEmployeeUseCase } from './delete-employee.usecase'
-import { IEmployeeRepository } from '@/application/interfaces/repositories/employee.interface'
 import MockDate from 'mockdate'
 import { mock } from 'jest-mock-extended'
+import { IDeleteEmployeeGateway } from '@/application/interfaces'
 
-const employeeRepository = mock<IEmployeeRepository>()
+const gateway = mock<IDeleteEmployeeGateway>()
 
 describe('DeleteEmployeeUseCase', () => {
   let sut: DeleteEmployeeUseCase
   let input: any
 
   beforeEach(() => {
-    sut = new DeleteEmployeeUseCase(employeeRepository)
+    sut = new DeleteEmployeeUseCase(gateway)
     input = {
       id: 'anyId'
     }
-    employeeRepository.findById.mockResolvedValue({
+    gateway.findById.mockResolvedValue({
       id: 'anyId',
       name: 'John Doe',
       email: 'john@email.com',
@@ -35,11 +35,11 @@ describe('DeleteEmployeeUseCase', () => {
   })
 
   test('should delete employee', async () => {
-    employeeRepository.delete.mockResolvedValue(undefined)
+    gateway.delete.mockResolvedValue(undefined)
 
     await sut.execute(input)
 
-    expect(employeeRepository.delete).toHaveBeenCalledWith({
+    expect(gateway.delete).toHaveBeenCalledWith({
       id: 'anyId',
       name: 'John Doe',
       email: 'john@email.com',
