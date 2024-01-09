@@ -15,7 +15,7 @@ const encrypt = mock<IEncrypt>()
 describe('CreateClientUseCase', () => {
   let sut: ICreateClientUseCase
   let input: ICreateClientUseCase.Input
-  let clientRepositoryOutput: Client
+  let clientGatewayOutput: Client
 
   beforeEach(() => {
     sut = new CreateClientUseCase(schemaValidator, uuidGenerator, gateway, encrypt)
@@ -27,7 +27,7 @@ describe('CreateClientUseCase', () => {
       repeatPassword: 'anyClientRepeatPassword'
     }
 
-    clientRepositoryOutput = {
+    clientGatewayOutput = {
       id: 'anyClientId',
       name: 'anyClientName',
       email: 'anyClientEmail',
@@ -95,13 +95,13 @@ describe('CreateClientUseCase', () => {
   })
 
   test('should throws if email already exists', async () => {
-    gateway.getClientByEmail.mockResolvedValueOnce(clientRepositoryOutput)
+    gateway.getClientByEmail.mockResolvedValueOnce(clientGatewayOutput)
     const output = sut.execute(input)
     await expect(output).rejects.toThrow(new InvalidParamError('email'))
   })
 
   test('should throws if document already exists', async () => {
-    gateway.getClientByDocument.mockResolvedValueOnce(clientRepositoryOutput)
+    gateway.getClientByDocument.mockResolvedValueOnce(clientGatewayOutput)
     const output = sut.execute(input)
     await expect(output).rejects.toThrow(new InvalidParamError('document'))
   })
