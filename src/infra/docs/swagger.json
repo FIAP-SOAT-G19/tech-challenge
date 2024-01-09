@@ -3,7 +3,10 @@
   "info": {
     "title": "Tech-Challenge",
     "description": "API desenvolvida durante a pos tech da FIAP",
-    "version": "1.0.0"
+    "version": "1.0.0",
+    "contact": {
+       "email": "tech-challenge@gmail.com"
+    }
   },
   "servers": [
     {
@@ -25,6 +28,9 @@
     },
     {
       "name": "Clients"
+    }, 
+    {
+      "name": "Products"
     }
   ],
   "paths": {
@@ -33,6 +39,7 @@
         "tags": [
           "Healthcheck"
         ],
+        "operationId": "healthcheck",
         "description": "Rota de Healthcheck da API",
         "summary": "Retorna status da API",
         "responses": {
@@ -76,6 +83,7 @@
         "tags": [
           "Orders"
         ],
+        "operationId": "post-order",
         "description": "Rota de manutenção de pedidos",
         "summary": "Cadastra um pedido",
         "requestBody": {
@@ -108,12 +116,12 @@
                             },
                             "price": {
                               "type": "number",
-                              "example": "5000",
+                              "example": 5000,
                               "description": "Indica o valor do produto muttiplicado por 100. No exemplo acima o valor do produto é R$50,00"
                             },
                             "amount": {
                               "type": "number",
-                              "example": "2",
+                              "example": 2,
                               "description": "Indica a quantidade de produtos selecionados para o pedido"
                             }
                           }
@@ -165,6 +173,9 @@
         "tags": [
           "Orders"
         ],
+        "operationId": "get-order",
+        "description": "Rota que retorna pedidos cadastrados",
+        "summary": "Retorna os pedidos cadastrados",
         "parameters": [
           {
             "in": "query",
@@ -230,7 +241,6 @@
             }
           }
         ],
-        "summary": "Retorna os pedidos cadastrados",
         "responses": {
           "200": {
             "description": "Sucesso",
@@ -396,7 +406,9 @@
         "tags": [
           "Orders"
         ],
+        "operationId": "get-order-number",
         "summary": "Retorna informações de um pedido através de seu número.",
+        "description": "Rota que retorna informações de um pedido através de seu número.",
         "parameters": [
           {
             "in": "path",
@@ -564,6 +576,8 @@
         "tags": [
           "Orders"
         ],
+        "operationId": "delete-order",
+        "description": "Deleta um pedido através de seu número.",
         "summary": "Deleta um pedido através de seu número.",
         "parameters": [
           {
@@ -610,6 +624,8 @@
         "tags": [
           "Orders"
         ],
+        "operationId": "patch-order",
+        "description": "Atualiza o status do pedido através de seu número.",
         "summary": "Atualiza o status do pedido através de seu número.",
         "parameters": [
           {
@@ -673,8 +689,9 @@
         "tags": [
           "Webhooks"
         ],
+        "operationId": "webhook-payment",
         "description": "Rota de processamento de webhooks do mercado pago",
-        "summary": "Atualiza status de um pedido",
+        "summary": "Rota de processamento de webhooks do mercado pago",
         "requestBody": {
           "content": {
             "application/json": {
@@ -732,6 +749,7 @@
         "tags": [
           "Employees"
         ],
+        "operationId": "post-employee",
         "description": "Rota de criação de funcionário",
         "summary": "Cria um funcionário",
         "requestBody": {
@@ -792,6 +810,7 @@
         "tags": [
           "Employees"
         ],
+        "operationId": "get-all-employees",
         "description": "Rota de listagem de funcionários",
         "summary": "Retorna lista de funcionários",
         "responses": {
@@ -800,7 +819,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
+                  "type": "object",
                   "example": {
                     "employees": [
                       {
@@ -843,6 +862,7 @@
         "tags": [
           "Employees"
         ],
+        "operationId": "get-employee",
         "description": "Rota de busca de funcionário",
         "summary": "Retorna um funcionário",
         "parameters": [
@@ -904,6 +924,7 @@
         "tags": [
           "Employees"
         ],
+        "operationId": "patch-employee",
         "description": "Rota de atualização de funcionário, todos os campos são opcionais",
         "summary": "Atualiza um funcionário",
         "requestBody": {
@@ -973,6 +994,7 @@
         "tags": [
           "Employees"
         ],
+        "operationId": "delete-employee",
         "description": "Rota de remoção de funcionário",
         "summary": "Remove um funcionário",
         "parameters": [
@@ -1027,6 +1049,8 @@
         "tags": [
           "Clients"
         ],
+        "operationId": "get-client",
+        "description": "Rota que retorna informações do cliente a partir de parâmetros de entrada",
         "summary": "Retorna informações do cliente a partir de parâmetros de entrada",
         "parameters": [
           {
@@ -1099,7 +1123,7 @@
                       },
                       "deletedAt": {
                         "type": "string",
-                        "example": null
+                        "example": "2023-10-22T14:44:42.086Z"
                       }
                     }
                   }
@@ -1174,6 +1198,7 @@
         "tags": [
           "Clients"
         ],
+        "operationId": "post-client",
         "description": "Rota de manutenção de Clientes",
         "summary": "Cadastra um cliente",
         "requestBody": {
@@ -1272,12 +1297,14 @@
         }
       }
     },
-    "/client/:id": {
+    "/client/{id}": {
       "patch": {
         "tags": [
           "Clients"
         ],
+        "operationId": "patch-client",
         "summary": "Atualiza um cliente a partir de seu Id",
+        "description": "Rota que atualiza um cliente a partir de seu Id",
         "parameters": [
           {
             "in": "path",
@@ -1379,7 +1406,9 @@
         "tags": [
           "Clients"
         ],
+        "operationId": "delete-client",
         "summary": "Deleta um cliente a partir de seu Id",
+        "description": "Rota que deleta um cliente a partir de seu Id",
         "parameters": [
           {
             "in": "path",
@@ -1443,6 +1472,7 @@
         "tags": [
           "Clients"
         ],
+        "operationId": "post-auth",
         "description": "Rota de autenticação de Clientes",
         "summary": "Autentica um cliente",
         "requestBody": {
@@ -1541,6 +1571,7 @@
         "tags": [
           "Products"
         ],
+        "operationId": "post-product",
         "description": "Rota de Products da API",
         "summary": "Criar os Produtos da API",
         "requestBody": {
@@ -1559,7 +1590,7 @@
                   },
                   "price": {
                     "type": "number",
-                    "example": "499",
+                    "example": 499,
                     "description": "Preço em centavos"
                   },
                   "description": {
@@ -1637,6 +1668,7 @@
         "tags": [
           "Products"
         ],
+        "operationId": "get-all-products",
         "description": "Rota de Products da API",
         "summary": "Retorna os Produtos da API",
         "parameters": [
@@ -1708,6 +1740,7 @@
         "tags": [
           "Products"
         ],
+        "operationId": "get-product",
         "description": "Rota de Products da API",
         "summary": "Retorna as informações de um Produto da API",
         "parameters": [
@@ -1743,7 +1776,7 @@
                     },
                     "price": {
                       "type": "number",
-                      "example": "699",
+                      "example": 699,
                       "description": "Preço em centavos"
                     },
                     "description": {
@@ -1797,6 +1830,7 @@
         "tags": [
           "Products"
         ],
+        "operationId": "patch-product",
         "description": "Rota de Products da API",
         "summary": "Atualiza as informações de um Produto da API",
         "parameters": [
@@ -1851,7 +1885,7 @@
                     },
                     "price": {
                       "type": "number",
-                      "example": "699",
+                      "example": 699,
                       "description": "Preço em centavos"
                     },
                     "description": {
@@ -1905,6 +1939,7 @@
         "tags": [
           "Products"
         ],
+        "operationId": "delete-auth",
         "description": "Rota de Products da API",
         "summary": "Deleta um Produto da API",
         "parameters": [

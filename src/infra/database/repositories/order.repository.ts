@@ -131,6 +131,10 @@ export class OrderRepository implements IOrderRepository {
 
     if (input.status) {
       where.status = input.status
+    } else {
+      where.status = {
+        notIn: ['waitingPayment', 'finalized', 'canceled']
+      }
     }
 
     if (input.paidAtInitialDate) {
