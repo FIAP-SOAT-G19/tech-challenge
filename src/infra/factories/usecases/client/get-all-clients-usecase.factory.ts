@@ -1,9 +1,9 @@
 import { IGetAllClientsUseCase } from '@/application/interfaces/usecases/client/get-all-clients.interface'
 import { GetAllClientsUseCase } from '@/application/usecases/client/get-all-clients.usecase'
+import { GetAllClientsByParamsGateway } from '@/infra/adapters/gateways/client/get-all-clientes-gateway'
 import { ClientRepository } from '@/infra/database/repositories/client.repository'
 
-const clientRepository = new ClientRepository()
-
 export const makeGetAllClientsUseCase = (): IGetAllClientsUseCase => {
-  return new GetAllClientsUseCase(clientRepository)
+  const gateway = new GetAllClientsByParamsGateway(new ClientRepository())
+  return new GetAllClientsUseCase(gateway)
 }
