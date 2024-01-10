@@ -1272,7 +1272,7 @@
         }
       }
     },
-    "/client/:id": {
+    "/client/{id}": {
       "patch": {
         "tags": [
           "Clients"
