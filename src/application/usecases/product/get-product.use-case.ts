@@ -1,13 +1,13 @@
 import { ISchemaValidator } from '../../interfaces/validators/schema-validator.interface'
-import { IProductRepository } from '../../interfaces/repositories/product.interface'
 import { IGetProductUseCase } from '../../interfaces/usecases/product/get-product.interface'
 import { ProductNotFoundError, InvalidParamError, MissingParamError } from '@/infra/shared'
 import constants from '@/infra/shared/constants'
+import { IGetProductByIdGateway } from '@/application/interfaces/gateways/product/get-product-by-id-gateway.interface'
 
 export class GetProductUseCase implements IGetProductUseCase {
   constructor(
     private readonly schemaValidator: ISchemaValidator,
-    private readonly productRepository: IProductRepository
+    private readonly gateway: IGetProductByIdGateway
   ) {}
 
   async execute(
@@ -15,7 +15,7 @@ export class GetProductUseCase implements IGetProductUseCase {
   ): Promise<IGetProductUseCase.Output> {
     await this.validateSchema(input)
     await this.validateProductId(input)
-    const product = await this.productRepository.getById(input)
+    const product = await this.gateway.getProductById(input)
     if (!product) {
       throw new ProductNotFoundError()
     }
