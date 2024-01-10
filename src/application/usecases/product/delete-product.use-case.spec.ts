@@ -1,6 +1,6 @@
+import { IDeleteProductGateway } from '@/application/interfaces/gateways/product/delete-product-gateway.interface'
 import { ISchemaValidator } from '../../interfaces'
 import { DeleteProductUseCase } from './delete-product.use-case'
-import { ProductRepository } from '@/infra/database/repositories/product.repository'
 import { InvalidParamError, MissingParamError, ServerError } from '@/infra/shared'
 import { mock } from 'jest-mock-extended'
 
@@ -8,13 +8,13 @@ describe('DeleteProductUseCase', () => {
   let deleteProductUseCase: DeleteProductUseCase
 
   const schemaValidator = mock<ISchemaValidator>()
-  const productRepository = mock<ProductRepository>()
+  const gateway = mock<IDeleteProductGateway>()
 
   beforeEach(() => {
     jest.resetAllMocks()
     deleteProductUseCase = new DeleteProductUseCase(
       schemaValidator,
-      productRepository
+      gateway
     )
   })
 
@@ -27,7 +27,7 @@ describe('DeleteProductUseCase', () => {
       schemaValidator.validate.mockReturnValue({
         value: { productIdMock }
       })
-      productRepository.delete.mockResolvedValue(true)
+      gateway.deleteProduct.mockResolvedValue(true)
       await deleteProductUseCase.execute(productIdMock)
 
       expect(schemaValidator.validate).toHaveBeenCalledTimes(1)
@@ -37,15 +37,15 @@ describe('DeleteProductUseCase', () => {
       })
     })
 
-    test('should call productRepository.delete once with correct productId', async () => {
+    test('should call gateway.deleteProduct once with correct productId', async () => {
       schemaValidator.validate.mockReturnValue({
         value: { productIdMock }
       })
-      productRepository.delete.mockResolvedValue(true)
+      gateway.deleteProduct.mockResolvedValue(true)
       await deleteProductUseCase.execute(productIdMock)
 
-      expect(productRepository.delete).toHaveBeenCalledTimes(1)
-      expect(productRepository.delete).toHaveBeenCalledWith(productIdMock)
+      expect(gateway.deleteProduct).toHaveBeenCalledTimes(1)
+      expect(gateway.deleteProduct).toHaveBeenCalledWith(productIdMock)
     })
 
     test('should throw error if validateSchema returns error', async () => {
@@ -71,11 +71,11 @@ describe('DeleteProductUseCase', () => {
       )
     })
 
-    test('should throw error if productRepository.delete returns error', async () => {
+    test('should throw error if gateway.deleteProduct returns error', async () => {
       schemaValidator.validate.mockReturnValue({
         value: { productIdMock }
       })
-      productRepository.delete.mockResolvedValue(false)
+      gateway.deleteProduct.mockResolvedValue(false)
 
       const output = deleteProductUseCase.execute(productIdMock)
 
@@ -86,7 +86,7 @@ describe('DeleteProductUseCase', () => {
       schemaValidator.validate.mockReturnValue({
         value: { productIdMock }
       })
-      productRepository.delete.mockResolvedValue(true)
+      gateway.deleteProduct.mockResolvedValue(true)
 
       const output = await deleteProductUseCase.execute(productIdMock)
 
