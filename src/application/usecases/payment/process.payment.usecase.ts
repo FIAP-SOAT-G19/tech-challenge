@@ -1,33 +1,64 @@
-import { IUUIDGenerator } from '@/application/interfaces'
+import { ISchemaValidator } from '@/application/interfaces'
 import { IPaymentGateway } from '@/application/interfaces/gateways/payment/process-payment-gateway.interface'
 import { IProcessPaymentUseCase } from '@/application/interfaces/usecases/payment/process-payment.interface'
+import { ICardValidator } from '@/application/interfaces/validators/card-validator.interface'
+import { InvalidParamError, SchemaValidationError } from '@/infra/shared'
+import constants from '@/infra/shared/constants'
 
 export class ProcessPaymentUseCase implements IProcessPaymentUseCase {
   constructor(
-    private readonly uuidGenerator: IUUIDGenerator,
+    private readonly schemaValidator: ISchemaValidator,
+    private readonly cardValidator: ICardValidator,
     private readonly gateway: IPaymentGateway
   ) {}
 
-  async execute (input: IProcessPaymentUseCase.Input): Promise<IProcessPaymentUseCase.Output> {
-    const { status, reason } = await this.gateway.processPayment(input)
+  async execute (input: IProcessPaymentUseCase.Input): Promise<void> {
+    await this.validate(input)
+    await this.gateway.updateStatus({ orderNumber: input.orderNumber, status: constants.PAYMENT_STATUS.PROCESSING, reason: null })
+    await this.gateway.processPayment(input)
+  }
 
-    await this.gateway.createPaymentStatus({
-      id: this.uuidGenerator.generate(),
-      orderNumber: input.orderNumber,
-      status,
-      reason: reason ?? null,
-      createdAt: new Date(),
-      updatedAt: new Date()
+  async validate (input: IProcessPaymentUseCase.Input): Promise<void> {
+    this.schemaValidation(input)
+    this.cardValidation(input.creditCard)
+    await this.orderValidation(input.orderNumber)
+    await this.paymentValidation(input.orderNumber)
+  }
+
+  schemaValidation (input: IProcessPaymentUseCase.Input): void {
+    const validation = this.schemaValidator.validate({
+      schema: constants.SCHEMAS.PAYMENT,
+      data: input
     })
 
-    await this.gateway.updateOrderStatus({
-      orderNumber: input.orderNumber,
-      status: status === 'approved' ? 'received' : 'canceled'
-    })
+    if (validation.error) {
+      throw new SchemaValidationError(validation.error)
+    }
+  }
 
-    return {
-      status,
-      reason: reason ?? null
+  cardValidation(creditCard: ICardValidator.Input): void {
+    const cardError = this.cardValidator.validate(creditCard)
+    if (cardError) {
+      throw new InvalidParamError(`CreditCard: ${cardError.field}`)
+    }
+  }
+
+  async orderValidation(orderNumber: string): Promise<void> {
+    const order = await this.gateway.getByOrderNumber(orderNumber)
+
+    if (!order) {
+      throw new InvalidParamError('orderNumber')
+    }
+
+    if (order.status !== constants.ORDER_STATUS.WAITING_PAYMENT) {
+      throw new InvalidParamError('This payment cannot be processed')
+    }
+  }
+
+  async paymentValidation(orderNumber: string): Promise<void> {
+    const paymentsInProcessing = await this.gateway.countPaymentByStatusAndOrderNumber(constants.PAYMENT_STATUS.PROCESSING, orderNumber)
+    if (paymentsInProcessing > 0) {
+      throw new InvalidParamError('This payment cannot be processed')
     }
   }
 }

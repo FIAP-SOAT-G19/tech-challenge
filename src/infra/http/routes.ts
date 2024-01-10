@@ -21,6 +21,7 @@ import { makeLoginClientController } from '../factories/controllers/login-client
 import { selectProductsRoute } from '../middleware/select-products-route'
 import { expressAdapter } from '../adapters/tools/http/express.adapter'
 import { makeGetOrderStatusController } from '../factories/controllers/get-order-controller.factory'
+import { makeProcessPaymentController } from '../factories/controllers/process-payment-controller.factory'
 
 const router = Router()
 
@@ -36,6 +37,7 @@ router.delete('/employee/:id', expressAdapter(makeDeleteEmployeeController()))
 router.delete('/orders/:orderNumber', expressAdapter(makeDeleteOrderController()))
 router.patch('/orders/:orderNumber', expressAdapter(makeUpdateOrderStatusUseCaseController()))
 router.get('/orders/:orderNumber', expressAdapter(makeGetOrderByNumberController()))
+router.post('/orders/:orderNumber/pay', expressAdapter(makeProcessPaymentController()))
 router.get('/orders/:orderNumber/status', expressAdapter(makeGetOrderStatusController()))
 router.get('/orders', expressAdapter(makeGetAllOrdersController()))
 router.post('/orders', expressAdapter(makeCreateOrderController()))

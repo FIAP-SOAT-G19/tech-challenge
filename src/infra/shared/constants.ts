@@ -15,25 +15,20 @@ export default {
     PRODUCT: 'productSchema',
     GET_PRODUCT: 'getProductSchema',
     UPDATE_PRODUCT: 'updateProductSchema',
-    DELETE_PRODUCT: 'deleteProductSchema'
+    DELETE_PRODUCT: 'deleteProductSchema',
+    PAYMENT: 'paymentSchema'
   },
-  PAYMENT: {
-    DEFAULT_TITLE: 'Tech-Challenge Payment'
-  },
-  PAID_MARKET: {
-    STATUS_APPROVED: 'approved',
-    STATUS_REFUSED: 'refused',
-    PRODUCT_CATEGORY: {
-      SNACK: 'snack',
-      ACCOMPANIMENT: 'accompaniment',
-      DRINK: 'drink',
-      DESSERT: 'dessert'
-    }
+  PAYMENT_STATUS: {
+    APPROVED: 'approved',
+    PROCESSING: 'processing',
+    REFUSED: 'refused',
+    WAITING: 'waiting'
   },
   PRODUCT_CATEGORY: {
     SNACK: 'snack',
     ACCOMPANIMENT: 'accompaniment',
     DRINK: 'drink',
     DESSERT: 'dessert'
-  }
+  },
+  WEBHOOK_URI: 'http://localhost:3000/api/v1/webhooks/paid_market/qrcodepayment'
 }

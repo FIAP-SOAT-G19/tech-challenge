@@ -1,5 +1,5 @@
 export interface IProcessPaymentUseCase {
-  execute: (input: IProcessPaymentUseCase.Input) => Promise<IProcessPaymentUseCase.Output>
+  execute: (input: IProcessPaymentUseCase.Input) => Promise<void>
 }
 
 export namespace IProcessPaymentUseCase {
@@ -12,13 +12,9 @@ export namespace IProcessPaymentUseCase {
       brand: string
       number: string
       cvv: string
-      expiration: string
+      expiryMonth: string
+      expiryYear: string
     }
     orderNumber: string
-  }
-
-  export type Output = {
-    status: string
-    reason: string | null
   }
 }

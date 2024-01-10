@@ -99,7 +99,7 @@ model OrderProduct {
 model Payment {
   id          String        @id
   order       Order         @relation(fields: [orderNumber], references: [orderNumber])
-  orderNumber String
+  orderNumber String        @unique()
   status      PaymentStatus @default(waiting)
   reason      String?
   createdAt   DateTime
@@ -112,6 +112,7 @@ enum PaymentStatus {
   waiting
   approved
   refused
+  processing
 }
 
 model SeedersHistory {
