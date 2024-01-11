@@ -1,10 +1,12 @@
-import { IGetAllOrdersUseCase, IGetAllOrdersGateway } from '@/application/interfaces'
+import { IGetAllOrdersUseCase, IGetAllOrdersGateway, IGetAllOrdersPresenter } from '@/application/interfaces'
 import { InvalidParamError } from '@/infra/shared'
 import { GetAllOrdersUseCase } from './get-all-orders.usecase'
 import { OrderOutput } from './orders.types'
 import { mock } from 'jest-mock-extended'
 
 const gateway = mock<IGetAllOrdersGateway>()
+const presenter = mock<IGetAllOrdersPresenter>()
+
 const orders: OrderOutput [] = [{
   id: 'anyOrderId',
   orderNumber: 'anyOrderNumber',
@@ -59,9 +61,10 @@ describe('GetAllOrdersUseCase', () => {
   let input: IGetAllOrdersUseCase.Input
 
   beforeEach(() => {
-    sut = new GetAllOrdersUseCase(gateway)
+    sut = new GetAllOrdersUseCase(gateway, presenter)
     input = {}
     gateway.getAllOrders.mockResolvedValue(orders)
+    presenter.createOrdenation.mockResolvedValue(orders)
   })
 
   test('should call gateway.getAllOrders once and with correct values', async () => {
@@ -73,7 +76,7 @@ describe('GetAllOrdersUseCase', () => {
     expect(gateway.getAllOrders).toHaveBeenCalledWith({ clientId: 'anyClientId' })
   })
 
-  test('should call gateway.getAllOrders once and with correct values', async () => {
+  test('should call gateway.getAllOrders once and with correct values if status is passed in query', async () => {
     input.clientId = 'anyClientId'
     input.status = 'waitingPayment'
 
@@ -81,6 +84,15 @@ describe('GetAllOrdersUseCase', () => {
 
     expect(gateway.getAllOrders).toHaveBeenCalledTimes(1)
     expect(gateway.getAllOrders).toHaveBeenCalledWith({ clientId: 'anyClientId', status: 'waitingPayment' })
+  })
+
+  test('should call presenter.createOrdenation once with all orders returned', async () => {
+    input.clientId = 'anyClientId'
+
+    await sut.execute(input)
+
+    expect(presenter.createOrdenation).toHaveBeenCalledTimes(1)
+    expect(presenter.createOrdenation).toHaveBeenCalledWith(orders)
   })
 
   test('should throws if invalid status is provided', async () => {
@@ -186,8 +198,17 @@ describe('GetAllOrdersUseCase', () => {
     })
   })
 
-  test('should return null if gateway.getAllOrders returns null', async () => {
+  test('should return null if gateway.getAllOrders and presenter.createOrdenation returns null', async () => {
     gateway.getAllOrders.mockResolvedValueOnce(null)
+    presenter.createOrdenation.mockResolvedValueOnce(null)
+
+    const output = await sut.execute(input)
+
+    expect(output).toBeNull()
+  })
+
+  test('should return null if presenter.createOrdenation returns null', async () => {
+    presenter.createOrdenation.mockResolvedValueOnce(null)
 
     const output = await sut.execute(input)
 
