@@ -7,5 +7,8 @@ export interface IGetAllOrdersPresenter {
 export enum OrderStatus {
   PREPARED = 'prepared',
   IN_PREPARATION = 'InPreparation',
-  RECEIVED = 'received'
+  RECEIVED = 'received',
+  WAITING_PAYMENT = 'waitingPayment',
+  FINALIZED = 'finalized',
+  CANCELED = 'canceled'
 }
