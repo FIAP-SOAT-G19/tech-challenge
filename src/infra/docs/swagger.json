@@ -668,6 +668,146 @@
         }
       }
     },
+    "/orders/{orderNumber}/status": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Retorna o status de um pedido através de seu número.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "orderNumber",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "U0YA6T-1697468838547"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "received"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação da solicitação",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "InvalidParamError",
+                  "message": "Invalid param: Order not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{orderNumber}/pay": {
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "description": "Cartões terminados em números pares terão pagamento aprovado, caso contrário serão reprovados. Após realizar a solicitação do pagamento aguarde 1 minuto para que o sistema receba um webhook com resultado do processamento.",
+        "summary": "Processa o pagamento de um pedido através de seu número.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "orderNumber",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "U0YA6T-1697468838547"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "payer": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "example": "Zé das Couves",
+                        "description": "Este é o nome impresso no cartão de crédito"
+                      },
+                      "document": {
+                        "type": "string",
+                        "example": "78965412556",
+                        "description": "Este é o CPF do titular do cartão de crédito"
+                      }
+                    }
+                  },
+                  "creditCard": {
+                    "type": "object",
+                    "properties": {
+                      "brand": {
+                        "type": "string",
+                        "example": "visa",
+                        "description": "Esta é a bandeira do cartão de crédito"
+                      },
+                      "number": {
+                        "type": "string",
+                        "example": "5147313041392382",
+                        "description": "Este é o número do cartão de crédito. OBS: Somente cartões cujo o último número for par terão o 'pagamento' aprovado"
+                      },
+                      "cvv": {
+                        "type": "string",
+                        "example": "123",
+                        "description": "Este é o código de segurança do cartão de crédito."
+                      },
+                      "expiryMonth": {
+                        "type": "string",
+                        "example": "12",
+                        "description": "Este é o mês de vencimento do cartão de crédito."
+                      },
+                      "expiryYear": {
+                        "type": "string",
+                        "example": "2024",
+                        "description": "Este é o ano de vencimento do cartão de crédito."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/webhooks/paid_market/qrcodepayment": {
       "post": {
         "tags": [

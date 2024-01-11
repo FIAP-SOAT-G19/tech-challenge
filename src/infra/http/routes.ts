@@ -4,6 +4,10 @@ import { makeUpdateClientController } from '@/infra/factories/controllers/client
 import { makeDeleteClientController } from '@/infra/factories/controllers/client/delete-client-controller.factory'
 import { makeGetAllClientsController } from '@/infra/factories/controllers/client/get-all-clients-controller.factory'
 import { makeCreateEmployeeController, makeDeleteEmployeeController, makeReadAllEmployeesController, makeReadEmployeeController, makeUpdateEmployeeController } from '../factories/controllers/employee/employee-controller.factory'
+import { makeCreateClientController } from '@/infra/factories/controllers/create-client-controller.factory'
+import { makeUpdateClientController } from '@/infra/factories/controllers/update-client-controller.factory'
+import { makeDeleteClientController } from '../factories/controllers/delete-client-controller.factory'
+import { makeGetAllClientsController } from '../factories/controllers/get-all-clients-controller.factory'
 import { makeQrCodePaymentController } from '../factories/controllers/qrcode-payment-controller.factory'
 import { makeGetOrderByNumberController } from '../factories/controllers/get-order-by-number-controller.factory'
 import { makeDeleteOrderController } from '../factories/controllers/delete-order-controller.factory'
@@ -20,6 +24,12 @@ import { makeGetProductByCategoryController } from '../factories/controllers/get
 import { makeLoginClientController } from '@/infra/factories/controllers/client/login-client-controller.factory'
 import { selectProductsRoute } from '../middleware/select-products-route'
 import { expressAdapter } from '../adapters/tools/http/express.adapter'
+import { makeGetOrderStatusController } from '../factories/controllers/get-order-controller.factory'
+import { makeCreateEmployeeController } from '../factories/controllers/create-employee-controller.factory'
+import { makeGetAllEmployeesController, makeGetEmployeeController } from '../factories/controllers/get-employee-controller.factory'
+import { makeUpdateEmployeeController } from '../factories/controllers/update-employee-controller.factory'
+import { makeDeleteEmployeeController } from '../factories/controllers/delete-employee-controller.factory'
+import { makeProcessPaymentController } from '../factories/controllers/process-payment-controller.factory'
 
 const router = Router()
 
@@ -27,14 +37,16 @@ router.get('/healthcheck', expressAdapter(makeHealthcheckController()))
 
 // employee
 router.post('/employee', expressAdapter(makeCreateEmployeeController()))
-router.get('/employee/:id', expressAdapter(makeReadEmployeeController()))
-router.get('/employees', expressAdapter(makeReadAllEmployeesController()))
+router.get('/employee/:id', expressAdapter(makeGetEmployeeController()))
+router.get('/employees', expressAdapter(makeGetAllEmployeesController()))
 router.patch('/employee/:id', expressAdapter(makeUpdateEmployeeController()))
 router.delete('/employee/:id', expressAdapter(makeDeleteEmployeeController()))
 // Orders
 router.delete('/orders/:orderNumber', expressAdapter(makeDeleteOrderController()))
 router.patch('/orders/:orderNumber', expressAdapter(makeUpdateOrderStatusUseCaseController()))
 router.get('/orders/:orderNumber', expressAdapter(makeGetOrderByNumberController()))
+router.post('/orders/:orderNumber/pay', expressAdapter(makeProcessPaymentController()))
+router.get('/orders/:orderNumber/status', expressAdapter(makeGetOrderStatusController()))
 router.get('/orders', expressAdapter(makeGetAllOrdersController()))
 router.post('/orders', expressAdapter(makeCreateOrderController()))
 // Clients

@@ -1,16 +1,16 @@
 import { mock } from 'jest-mock-extended'
 import { DeleteEmployeeController } from './delete-employee.controller'
-import { IEmployeeRepository } from '@/application/interfaces/repositories/employee.interface'
 import { DeleteEmployeeUseCase } from '@/application/usecases/employee/delete-employee.usecase'
+import { IDeleteEmployeeGateway } from '@/application/interfaces'
 
-const employeeRepository = mock<IEmployeeRepository>()
+const gateway = mock<IDeleteEmployeeGateway>()
 
 describe('DeleteEmployeeController', () => {
   let sut: DeleteEmployeeController
   let deleteEmployeeUseCase: DeleteEmployeeUseCase
 
   beforeEach(() => {
-    deleteEmployeeUseCase = new DeleteEmployeeUseCase(employeeRepository)
+    deleteEmployeeUseCase = new DeleteEmployeeUseCase(gateway)
     sut = new DeleteEmployeeController(deleteEmployeeUseCase)
   })
 
@@ -21,7 +21,7 @@ describe('DeleteEmployeeController', () => {
       },
       body: 'anyBody'
     }
-    employeeRepository.findById.mockResolvedValue({
+    gateway.findById.mockResolvedValue({
       id: 'anyId',
       name: 'John Doe',
       email: 'anyEmail',
@@ -31,7 +31,7 @@ describe('DeleteEmployeeController', () => {
       updatedAt: new Date('2021-09-21T22:00:00.000Z'),
       deletedAt: new Date('9999-12-31T23:59:59.999Z')
     })
-    employeeRepository.delete.mockResolvedValue()
+    gateway.delete.mockResolvedValue()
 
     const result = await sut.execute(httpRequest)
 
@@ -45,7 +45,7 @@ describe('DeleteEmployeeController', () => {
         id: 'anyId'
       }
     }
-    employeeRepository.findById.mockResolvedValue(null)
+    gateway.findById.mockResolvedValue(null)
 
     const result = await sut.execute(input)
 
@@ -62,7 +62,7 @@ describe('DeleteEmployeeController', () => {
         id: 'anyId'
       }
     }
-    employeeRepository.findById.mockRejectedValue(new Error('Any error'))
+    gateway.findById.mockRejectedValue(new Error('Any error'))
 
     const result = await sut.execute(input)
 
