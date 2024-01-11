@@ -1,12 +1,11 @@
 import { mock } from 'jest-mock-extended'
 import { UpdateEmployeeController } from './update-employee.controller'
-import { ISchemaValidator } from '@/application/interfaces'
-import { IEmployeeRepository } from '@/application/interfaces/repositories/employee.interface'
+import { ISchemaValidator, IUpdateEmployeeGateway } from '@/application/interfaces'
 import { IEncrypt } from '@/application/interfaces/usecases/encrypt/encrypt.interface'
 import { UpdateEmployeeUseCase } from '@/application/usecases/employee/update-employee.usecase'
 import { ServerError } from '@/infra/shared'
 
-const employeeRepository = mock<IEmployeeRepository>()
+const gateway = mock<IUpdateEmployeeGateway>()
 const schemaValidator = mock<ISchemaValidator>()
 const encryptoPassword = mock<IEncrypt>()
 
@@ -16,7 +15,7 @@ describe('UpdateEmployeeController', () => {
   let input: any
 
   beforeEach(() => {
-    updateEmployeeUseCase = new UpdateEmployeeUseCase(employeeRepository, schemaValidator, encryptoPassword)
+    updateEmployeeUseCase = new UpdateEmployeeUseCase(gateway, schemaValidator, encryptoPassword)
     sut = new UpdateEmployeeController(updateEmployeeUseCase)
     input = {
       params: {
@@ -31,13 +30,13 @@ describe('UpdateEmployeeController', () => {
     }
     schemaValidator.validate.mockReturnValue({ value: input.body })
     encryptoPassword.encrypt.mockReturnValue('encryptedPassword')
-    employeeRepository.findById.mockResolvedValue(null)
-    employeeRepository.findByEmail.mockResolvedValue(null)
-    employeeRepository.findByCpf.mockResolvedValue(null)
+    gateway.findById.mockResolvedValue(null)
+    gateway.findByEmail.mockResolvedValue(null)
+    gateway.findByCpf.mockResolvedValue(null)
   })
 
   test('should update an employee with valid input', async () => {
-    employeeRepository.findById.mockResolvedValue({
+    gateway.findById.mockResolvedValue({
       id: 'anyId',
       name: 'John Doe',
       email: 'anyEmail',
@@ -47,7 +46,7 @@ describe('UpdateEmployeeController', () => {
       updatedAt: new Date('2021-09-21T22:00:00.000Z'),
       deletedAt: new Date('9999-12-31T23:59:59.999Z')
     })
-    employeeRepository.update.mockResolvedValue('anyId')
+    gateway.update.mockResolvedValue('anyId')
 
     const result = await sut.execute(input)
 
@@ -66,7 +65,7 @@ describe('UpdateEmployeeController', () => {
   })
 
   test('should throw InvalidParamError for duplicate email', async () => {
-    employeeRepository.findById.mockResolvedValue({
+    gateway.findById.mockResolvedValue({
       id: 'anyId',
       name: 'John Doe',
       email: 'anyEmail',
@@ -76,7 +75,7 @@ describe('UpdateEmployeeController', () => {
       updatedAt: null,
       deletedAt: null
     })
-    employeeRepository.findByEmail.mockResolvedValue({
+    gateway.findByEmail.mockResolvedValue({
       id: 'anyId2',
       name: 'John Doe',
       email: 'anyEmail',
@@ -96,7 +95,7 @@ describe('UpdateEmployeeController', () => {
   })
 
   test('should throw InvalidParamError for duplicate cpf', async () => {
-    employeeRepository.findById.mockResolvedValue({
+    gateway.findById.mockResolvedValue({
       id: 'anyId',
       name: 'John Doe',
       email: 'anyEmail',
@@ -106,7 +105,7 @@ describe('UpdateEmployeeController', () => {
       updatedAt: null,
       deletedAt: null
     })
-    employeeRepository.findByCpf.mockResolvedValue({
+    gateway.findByCpf.mockResolvedValue({
       id: 'anyId2',
       name: 'John Doe',
       email: 'anyEmaill',
@@ -128,7 +127,7 @@ describe('UpdateEmployeeController', () => {
   test('should throw ServerError', async () => {
     const error = new ServerError()
 
-    employeeRepository.findById.mockRejectedValue(error)
+    gateway.findById.mockRejectedValue(error)
 
     const result = await sut.execute(input)
 

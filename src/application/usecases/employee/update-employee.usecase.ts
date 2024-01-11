@@ -1,20 +1,19 @@
-import { ISchemaValidator } from '@/application/interfaces'
+import { ISchemaValidator, IUpdateEmployeeGateway } from '@/application/interfaces'
 import { IUpdateEmployeeUseCase } from '@/application/interfaces/usecases/employee/update-employee.interface'
 import { IEncrypt } from '@/application/interfaces/usecases/encrypt/encrypt.interface'
-import { EmployeeRepository } from '@/infra/database/repositories/employee.repository'
 import { InvalidParamError, SchemaValidationError } from '@/infra/shared'
 import constants from '@/infra/shared/constants'
 
 export class UpdateEmployeeUseCase implements IUpdateEmployeeUseCase {
   constructor(
-    private readonly employeeRepository: EmployeeRepository,
+    private readonly gateway: IUpdateEmployeeGateway,
     private readonly schemaValidator: ISchemaValidator,
     private readonly encryptoPassword: IEncrypt
   ) {
   }
 
   async execute(input: IUpdateEmployeeUseCase.Input): Promise<IUpdateEmployeeUseCase.Output> {
-    const employee = await this.employeeRepository.findById(input.id)
+    const employee = await this.gateway.findById(input.id)
     if (!employee) { throw new InvalidParamError('Employee not found') }
 
     await this.validateInput(input)
@@ -33,17 +32,17 @@ export class UpdateEmployeeUseCase implements IUpdateEmployeeUseCase {
       updatedAt: new Date(),
       deletedAt: employee.deletedAt
     }
-    return await this.employeeRepository.update(updatedEmployee)
+    return await this.gateway.update(updatedEmployee)
   }
 
   private async validateInput(input: IUpdateEmployeeUseCase.Input): Promise<void> {
     if (input.email) {
-      const emailAlreadyInUse = await this.employeeRepository.findByEmail(input.email)
+      const emailAlreadyInUse = await this.gateway.findByEmail(input.email)
       if (emailAlreadyInUse && input.id !== emailAlreadyInUse.id) throw new InvalidParamError('Email already in use')
     }
 
     if (input.cpf) {
-      const cpfAlreadyInUse = await this.employeeRepository.findByCpf(input.cpf)
+      const cpfAlreadyInUse = await this.gateway.findByCpf(input.cpf)
       if (cpfAlreadyInUse && input.id !== cpfAlreadyInUse.id) throw new InvalidParamError('CPF already in use')
     }
 

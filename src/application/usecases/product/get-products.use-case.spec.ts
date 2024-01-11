@@ -1,16 +1,16 @@
 import { mock } from 'jest-mock-extended'
 import { GetProductsUseCase } from './get-products.use-case'
-import { ProductRepository } from '@/infra/database/repositories/product.repository'
 import { ServerError } from '@/infra/shared'
+import { IGetProductsGateway } from '@/application/interfaces/gateways/product/get-products-gateway.interface'
 
 describe('GetProductsUseCase', () => {
   let getProductsUseCase: GetProductsUseCase
 
-  const productRepository = mock<ProductRepository>()
+  const gateway = mock<IGetProductsGateway>()
 
   beforeEach(() => {
     jest.resetAllMocks()
-    getProductsUseCase = new GetProductsUseCase(productRepository)
+    getProductsUseCase = new GetProductsUseCase(gateway)
   })
 
   describe('execute', () => {
@@ -27,15 +27,15 @@ describe('GetProductsUseCase', () => {
       }
     ]
 
-    test('should call productRepository.getAll once', async () => {
-      productRepository.getAll.mockResolvedValue(productsMock)
+    test('should call gateway.getProducts once', async () => {
+      gateway.getProducts.mockResolvedValue(productsMock)
       await getProductsUseCase.execute()
 
-      expect(productRepository.getAll).toHaveBeenCalledTimes(1)
+      expect(gateway.getProducts).toHaveBeenCalledTimes(1)
     })
 
-    test('should throw error if productRepository.getAll returns null', async () => {
-      productRepository.getAll.mockResolvedValue(null as any)
+    test('should throw error if gateway.getProducts returns null', async () => {
+      gateway.getProducts.mockResolvedValue(null as any)
 
       const output = getProductsUseCase.execute()
 
@@ -43,7 +43,7 @@ describe('GetProductsUseCase', () => {
     })
 
     test('should get products', async () => {
-      productRepository.getAll.mockResolvedValue(productsMock)
+      gateway.getProducts.mockResolvedValue(productsMock)
 
       const output = await getProductsUseCase.execute()
 
@@ -62,7 +62,7 @@ describe('GetProductsUseCase', () => {
     })
 
     test('should get products and return empty array', async () => {
-      productRepository.getAll.mockResolvedValue([])
+      gateway.getProducts.mockResolvedValue([])
 
       const output = await getProductsUseCase.execute()
 

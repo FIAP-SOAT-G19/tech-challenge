@@ -1,16 +1,16 @@
-import { IClientRepository } from '@/application/interfaces'
+import { ILoginClientGateway } from '@/application/interfaces/gateways/client/login-client-gateway.interface'
 import { ILoginClientUseCase } from '@/application/interfaces/usecases/client/login-client.interface'
 import { IEncrypt } from '@/application/interfaces/usecases/encrypt/encrypt.interface'
 import { InvalidParamError } from '@/infra/shared'
 
 export class LoginClientUseCase implements ILoginClientUseCase {
   constructor(
-    private readonly clientRepository: IClientRepository,
+    private readonly gateway: ILoginClientGateway,
     private readonly encrypt: IEncrypt
   ) { }
 
   async execute(input: ILoginClientUseCase.Input): Promise<ILoginClientUseCase.Output> {
-    const client = await this.clientRepository.getByEmail(input.email)
+    const client = await this.gateway.getClientByEmail(input.email)
     if (!client) {
       throw new InvalidParamError('email or password is incorrect')
     }

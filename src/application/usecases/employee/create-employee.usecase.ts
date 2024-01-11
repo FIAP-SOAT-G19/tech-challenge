@@ -1,13 +1,12 @@
-import { ISchemaValidator, IUUIDGenerator } from '@/application/interfaces'
+import { ICreateEmployeeGateway, ISchemaValidator, IUUIDGenerator } from '@/application/interfaces'
 import { ICreateEmployeeUseCase } from '@/application/interfaces/usecases/employee/create-employee.interface'
 import { IEncrypt } from '@/application/interfaces/usecases/encrypt/encrypt.interface'
-import { EmployeeRepository } from '@/infra/database/repositories/employee.repository'
 import { InvalidParamError, SchemaValidationError } from '@/infra/shared'
 import constants from '@/infra/shared/constants'
 
 export class CreateEmployeeUseCase implements ICreateEmployeeUseCase {
   constructor(
-    private readonly employeeRepository: EmployeeRepository,
+    private readonly createEmployeeGateway: ICreateEmployeeGateway,
     private readonly schemaValidator: ISchemaValidator,
     private readonly uuidGenerator: IUUIDGenerator,
     private readonly encryptoPassword: IEncrypt
@@ -16,7 +15,7 @@ export class CreateEmployeeUseCase implements ICreateEmployeeUseCase {
   async execute(input: ICreateEmployeeUseCase.Input): Promise<ICreateEmployeeUseCase.Output> {
     await this.validateInput(input)
 
-    return await this.employeeRepository.create({
+    return await this.createEmployeeGateway.create({
       id: this.uuidGenerator.generate(),
       name: input.name,
       email: input.email,
@@ -32,10 +31,10 @@ export class CreateEmployeeUseCase implements ICreateEmployeeUseCase {
     const requiredError = this.validateRequired(input)
     if (requiredError) throw new InvalidParamError(requiredError)
 
-    const emailAlreadyInUse = await this.employeeRepository.findByEmail(input.email)
+    const emailAlreadyInUse = await this.createEmployeeGateway.findByEmail(input.email)
     if (emailAlreadyInUse) throw new InvalidParamError('Email already in use')
 
-    const cpfAlreadyInUse = await this.employeeRepository.findByCpf(input.cpf)
+    const cpfAlreadyInUse = await this.createEmployeeGateway.findByCpf(input.cpf)
     if (cpfAlreadyInUse) throw new InvalidParamError('CPF already in use')
 
     const validation = this.schemaValidator.validate({

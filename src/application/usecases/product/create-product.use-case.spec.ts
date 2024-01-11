@@ -2,22 +2,22 @@ import { ISchemaValidator, IUUIDGenerator } from '../../interfaces'
 import { mock } from 'jest-mock-extended'
 import { CreateProductUseCase } from './create-product.use-case'
 import MockDate from 'mockdate'
-import { ProductRepository } from '@/infra/database/repositories/product.repository'
 import { MissingParamError, InvalidParamError, ServerError } from '@/infra/shared'
+import { ICreateProductGateway } from '@/application/interfaces/gateways/product/create-product-gateway.interface'
 
 describe('CreateProductUseCase', () => {
   let createProductUseCase: CreateProductUseCase
 
   const schemaValidator = mock<ISchemaValidator>()
   const uuidGenerator = mock<IUUIDGenerator>()
-  const productRepository = mock<ProductRepository>()
+  const gateway = mock<ICreateProductGateway>()
 
   beforeEach(() => {
     jest.resetAllMocks()
     createProductUseCase = new CreateProductUseCase(
       schemaValidator,
       uuidGenerator,
-      productRepository
+      gateway
     )
     uuidGenerator.generate.mockReturnValue('anyUUID')
   })
@@ -82,7 +82,7 @@ describe('CreateProductUseCase', () => {
       schemaValidator.validate.mockReturnValue({
         value: productValidInputMock
       })
-      productRepository.save.mockResolvedValue('productId')
+      gateway.saveProduct.mockResolvedValue('productId')
       await createProductUseCase.execute(productValidInputMock)
 
       expect(schemaValidator.validate).toHaveBeenCalledTimes(1)
@@ -92,15 +92,15 @@ describe('CreateProductUseCase', () => {
       })
     })
 
-    test('should call productRepository.save once with correct product input', async () => {
+    test('should call gateway.saveProduct once with correct product input', async () => {
       schemaValidator.validate.mockReturnValue({
         value: productValidInputMock
       })
-      productRepository.save.mockResolvedValue('productId')
+      gateway.saveProduct.mockResolvedValue('productId')
       await createProductUseCase.execute(productValidInputMock)
 
-      expect(productRepository.save).toHaveBeenCalledTimes(1)
-      expect(productRepository.save).toHaveBeenCalledWith({
+      expect(gateway.saveProduct).toHaveBeenCalledTimes(1)
+      expect(gateway.saveProduct).toHaveBeenCalledWith({
         ...productValidInputMock,
         id: 'anyUUID',
         createdAt: new Date('2023-10-14T21:13:42.281Z')
@@ -111,7 +111,7 @@ describe('CreateProductUseCase', () => {
       schemaValidator.validate.mockReturnValue({
         value: productValidInputMock
       })
-      productRepository.save.mockResolvedValue('productId')
+      gateway.saveProduct.mockResolvedValue('productId')
       await createProductUseCase.execute(productValidInputMock)
 
       expect(uuidGenerator.generate).toHaveBeenCalledTimes(1)
@@ -182,11 +182,11 @@ describe('CreateProductUseCase', () => {
       )
     })
 
-    test('should throw error if productRepository.save returns null', async () => {
+    test('should throw error if gateway.saveProduct returns null', async () => {
       schemaValidator.validate.mockReturnValue({
         value: productValidInputMock
       })
-      productRepository.save.mockResolvedValue('')
+      gateway.saveProduct.mockResolvedValue('')
 
       const output = createProductUseCase.execute(productValidInputMock)
 
@@ -197,7 +197,7 @@ describe('CreateProductUseCase', () => {
       schemaValidator.validate.mockReturnValue({
         value: productValidInputMock
       })
-      productRepository.save.mockResolvedValue('productId')
+      gateway.saveProduct.mockResolvedValue('productId')
 
       const output = await createProductUseCase.execute(productValidInputMock)
 
