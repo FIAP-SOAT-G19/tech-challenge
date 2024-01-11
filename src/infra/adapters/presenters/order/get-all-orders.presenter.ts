@@ -15,9 +15,9 @@ export class GetAllOrdersPresenter implements IGetAllOrdersPresenter {
             
             const hasOtherStatusOrders = !preparedOrders.length && !inPreparationOrders.length && !receivedOrders.length
             if (hasOtherStatusOrders) {
-                const ordenatedOrders = hasOtherStatusOrders ? this.sortByDate(input) : []
-
+                const ordenatedOrders = this.sortByDate(input)
                 result.push(...ordenatedOrders)
+                
             } else {
                 const ordenatedPreparedOrders = preparedOrders.length ? this.sortByDate(preparedOrders) : []
                 const ordenatedInPreparationOrders = inPreparationOrders.length ? this.sortByDate(inPreparationOrders) : []
