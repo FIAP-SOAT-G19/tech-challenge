@@ -1,21 +1,19 @@
-import { ReadEmployeeUseCase } from './read-employee.usecase'
-import { IEmployeeRepository } from '@/application/interfaces/repositories/employee.interface'
+import { IGetEmployeeGateway } from '@/application/interfaces'
+import { GetEmployeeUseCase } from './get-employee.usecase'
 import { mock } from 'jest-mock-extended'
 
-const employeeRepository = mock<IEmployeeRepository>()
+const gateway = mock<IGetEmployeeGateway>()
 
-describe('ReadEmployeeUseCase', () => {
-  let sut: ReadEmployeeUseCase
+describe('GetEmployeeUseCase', () => {
+  let sut: GetEmployeeUseCase
 
   beforeEach(() => {
-    sut = new ReadEmployeeUseCase(employeeRepository)
+    sut = new GetEmployeeUseCase(gateway)
   })
 
   describe('findOne', () => {
     test('should return an employee when found by ID', async () => {
-      const input = {
-        id: 'employeeId'
-      }
+      const id = 'employeeId'
 
       const foundEmployee = {
         id: 'employeeId',
@@ -28,9 +26,9 @@ describe('ReadEmployeeUseCase', () => {
         deletedAt: new Date()
       }
 
-      employeeRepository.findById.mockResolvedValue(foundEmployee)
+      gateway.findById.mockResolvedValue(foundEmployee)
 
-      const result = await sut.findOne(input)
+      const result = await sut.findById(id)
 
       expect(result).toEqual({
         id: 'employeeId',
@@ -68,7 +66,7 @@ describe('ReadEmployeeUseCase', () => {
         }
       ]
 
-      employeeRepository.findAll.mockResolvedValue(foundEmployees)
+      gateway.findAll.mockResolvedValue(foundEmployees)
 
       const result = await sut.findAll()
 
@@ -93,7 +91,7 @@ describe('ReadEmployeeUseCase', () => {
     })
 
     test('should return an empty list when no employees are found', async () => {
-      employeeRepository.findAll.mockResolvedValue([])
+      gateway.findAll.mockResolvedValue([])
 
       const result = await sut.findAll()
 

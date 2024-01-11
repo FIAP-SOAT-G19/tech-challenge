@@ -1,21 +1,21 @@
 import { mock } from 'jest-mock-extended'
-import { ReadAllEmployeesController } from './read-all-employees.controller'
-import { IEmployeeRepository } from '@/application/interfaces/repositories/employee.interface'
-import { ReadEmployeeUseCase } from '@/application/usecases/employee/read-employee.usecase'
+import { GetAllEmployeesController } from './get-all-employees.controller'
+import { GetEmployeeUseCase } from '@/application/usecases/employee/get-employee.usecase'
+import { IGetEmployeeGateway } from '@/application/interfaces'
 
-const employeeRepository = mock<IEmployeeRepository>()
+const gateway = mock<IGetEmployeeGateway>()
 
 describe('ReadAllEmployeesController', () => {
-  let sut: ReadAllEmployeesController
-  let readEmployeeUseCase: ReadEmployeeUseCase
+  let sut: GetAllEmployeesController
+  let getEmployeeUseCase: GetEmployeeUseCase
 
   beforeEach(() => {
-    readEmployeeUseCase = new ReadEmployeeUseCase(employeeRepository)
-    sut = new ReadAllEmployeesController(readEmployeeUseCase)
+    getEmployeeUseCase = new GetEmployeeUseCase(gateway)
+    sut = new GetAllEmployeesController(getEmployeeUseCase)
   })
 
   test('should return all employees', async () => {
-    employeeRepository.findAll.mockResolvedValue([
+    gateway.findAll.mockResolvedValue([
       {
         id: 'anyId',
         name: 'John Doe',
@@ -44,7 +44,7 @@ describe('ReadAllEmployeesController', () => {
   })
 
   test('should throw ServerError if findAll throws', async () => {
-    employeeRepository.findAll.mockRejectedValue(new Error('Any error'))
+    gateway.findAll.mockRejectedValue(new Error('Any error'))
 
     const result = await sut.execute()
 
