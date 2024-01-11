@@ -1,6 +1,7 @@
 #DbData
 db-data
 pgadmin-data
+
 # Logs
 logs
 *.log

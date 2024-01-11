@@ -8,7 +8,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node -r dotenv/config dist/infra/http/index.js",
-    "dev": "ts-node-dev --respawn --transpile-only --clear --ignore-watch node_modules -r dotenv/config src/index.ts dotenv_config_path=.env.dev",
+    "dev": "ts-node-dev --respawn --transpile-only --clear --ignore-watch node_modules -r dotenv/config src/infra/http/index.ts dotenv_config_path=.env.dev",
     "clean": "rimraf dist",
     "build": "npm run clean && tsc -p tsconfig.build.json",
     "check": "npx npm-check -s -u",
