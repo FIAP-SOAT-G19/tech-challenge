@@ -1,11 +1,12 @@
-import { Client, SaveOrderInput, SaveOrderProductInput, GetProductByIdOutput, IClientRepository, IOrderRepository, IOrderProductRepository, IProductRepository, ICreateOrderGateway } from '@/application/interfaces'
+import { Client, SaveOrderInput, SaveOrderProductInput, GetProductByIdOutput, IClientRepository, IOrderRepository, IOrderProductRepository, IProductRepository, ICreateOrderGateway, CreatePaymentInput, IPaymentRepository } from '@/application/interfaces'
 
 export class CreateOrderGateway implements ICreateOrderGateway {
   constructor(
     private readonly clientRepository: IClientRepository,
     private readonly orderRepository: IOrderRepository,
     private readonly orderProductRepository: IOrderProductRepository,
-    private readonly productRepository: IProductRepository
+    private readonly productRepository: IProductRepository,
+    private readonly paymentRepository: IPaymentRepository
   ) {}
 
   async getClientById (clientId: string): Promise<Client | null> {
@@ -22,5 +23,9 @@ export class CreateOrderGateway implements ICreateOrderGateway {
 
   async getProductById (productId: string): Promise<GetProductByIdOutput | null> {
     return await this.productRepository.getById(productId)
+  }
+
+  async createPayment (input: CreatePaymentInput): Promise<void> {
+    await this.paymentRepository.save(input)
   }
 }
