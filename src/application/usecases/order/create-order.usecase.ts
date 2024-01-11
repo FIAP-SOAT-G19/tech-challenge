@@ -17,6 +17,15 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
 
     await this.saveOrderProducts(orderId, input.products)
 
+    await this.gateway.createPayment({
+      id: this.uuidGenerator.generate(),
+      orderNumber,
+      status: constants.PAYMENT_STATUS.WAITING,
+      reason: null,
+      createdAt: new Date(),
+      updatedAt: null
+    })
+
     return {
       orderNumber
     }

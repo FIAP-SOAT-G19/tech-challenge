@@ -1,6 +1,6 @@
+import { IGetProductByIdGateway } from '@/application/interfaces/gateways/product/get-product-by-id-gateway.interface'
 import { ISchemaValidator } from '../../interfaces'
 import { GetProductUseCase } from './get-product.use-case'
-import { ProductRepository } from '@/infra/database/repositories/product.repository'
 import { InvalidParamError, MissingParamError, ProductNotFoundError } from '@/infra/shared'
 import { mock } from 'jest-mock-extended'
 
@@ -8,13 +8,13 @@ describe('GetProductUseCase', () => {
   let getProductUseCase: GetProductUseCase
 
   const schemaValidator = mock<ISchemaValidator>()
-  const productRepository = mock<ProductRepository>()
+  const gateway = mock<IGetProductByIdGateway>()
 
   beforeEach(() => {
     jest.resetAllMocks()
     getProductUseCase = new GetProductUseCase(
       schemaValidator,
-      productRepository
+      gateway
     )
   })
 
@@ -36,7 +36,7 @@ describe('GetProductUseCase', () => {
       schemaValidator.validate.mockReturnValue({
         value: { productIdMock }
       })
-      productRepository.getById.mockResolvedValue(productMock)
+      gateway.getProductById.mockResolvedValue(productMock)
       await getProductUseCase.execute(productIdMock)
 
       expect(schemaValidator.validate).toHaveBeenCalledTimes(1)
@@ -46,15 +46,15 @@ describe('GetProductUseCase', () => {
       })
     })
 
-    test('should call productRepository.getById once with correct productId', async () => {
+    test('should call gateway.getProductById once with correct productId', async () => {
       schemaValidator.validate.mockReturnValue({
         value: { productIdMock }
       })
-      productRepository.getById.mockResolvedValue(productMock)
+      gateway.getProductById.mockResolvedValue(productMock)
       await getProductUseCase.execute(productIdMock)
 
-      expect(productRepository.getById).toHaveBeenCalledTimes(1)
-      expect(productRepository.getById).toHaveBeenCalledWith(productIdMock)
+      expect(gateway.getProductById).toHaveBeenCalledTimes(1)
+      expect(gateway.getProductById).toHaveBeenCalledWith(productIdMock)
     })
 
     test('should throw error if validateSchema returns error', async () => {
@@ -78,11 +78,11 @@ describe('GetProductUseCase', () => {
       await expect(output).rejects.toThrowError(new MissingParamError('product id'))
     })
 
-    test('should throw error if productRepository.getById returns null', async () => {
+    test('should throw error if gateway.getProductById returns null', async () => {
       schemaValidator.validate.mockReturnValue({
         value: { productIdMock }
       })
-      productRepository.getById.mockResolvedValue(null)
+      gateway.getProductById.mockResolvedValue(null)
 
       const output = getProductUseCase.execute(productIdMock)
 
@@ -93,7 +93,7 @@ describe('GetProductUseCase', () => {
       schemaValidator.validate.mockReturnValue({
         value: { productIdMock }
       })
-      productRepository.getById.mockResolvedValue(productMock)
+      gateway.getProductById.mockResolvedValue(productMock)
 
       const output = await getProductUseCase.execute(productIdMock)
 

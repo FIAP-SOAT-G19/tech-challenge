@@ -730,58 +730,15 @@
             }
           }
         }
-      },
-      "delete": {
+      }
+    },
+    "/orders/{orderNumber}/pay": {
+      "post": {
         "tags": [
           "Orders"
         ],
-        "summary": "Deleta um pedido através de seu número.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "orderNumber",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "U0YA6T-1697468838547"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Sem conteúdo",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {}
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "error"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "Orders"
-        ],
-        "summary": "Atualiza o status do pedido através de seu número.",
+        "description": "Cartões terminados em números pares terão pagamento aprovado, caso contrário serão reprovados. Após realizar a solicitação do pagamento aguarde 1 minuto para que o sistema receba um webhook com resultado do processamento.",
+        "summary": "Processa o pagamento de um pedido através de seu número.",
         "parameters": [
           {
             "in": "path",
@@ -799,37 +756,49 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "status": {
-                    "type": "string",
-                    "example": "received"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "204": {
-            "description": "Sem conteúdo",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {}
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "error"
+                  "payer": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "example": "Zé das Couves",
+                        "description": "Este é o nome impresso no cartão de crédito"
+                      },
+                      "document": {
+                        "type": "string",
+                        "example": "78965412556",
+                        "description": "Este é o CPF do titular do cartão de crédito"
+                      }
+                    }
+                  },
+                  "creditCard": {
+                    "type": "object",
+                    "properties": {
+                      "brand": {
+                        "type": "string",
+                        "example": "visa",
+                        "description": "Esta é a bandeira do cartão de crédito"
+                      },
+                      "number": {
+                        "type": "string",
+                        "example": "5147313041392382",
+                        "description": "Este é o número do cartão de crédito. OBS: Somente cartões cujo o último número for par terão o 'pagamento' aprovado"
+                      },
+                      "cvv": {
+                        "type": "string",
+                        "example": "123",
+                        "description": "Este é o código de segurança do cartão de crédito."
+                      },
+                      "expiryMonth": {
+                        "type": "string",
+                        "example": "12",
+                        "description": "Este é o mês de vencimento do cartão de crédito."
+                      },
+                      "expiryYear": {
+                        "type": "string",
+                        "example": "2024",
+                        "description": "Este é o ano de vencimento do cartão de crédito."
+                      }
                     }
                   }
                 }

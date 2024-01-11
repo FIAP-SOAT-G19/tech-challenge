@@ -24,6 +24,7 @@ import { makeCreateEmployeeController } from '../factories/controllers/create-em
 import { makeGetAllEmployeesController, makeGetEmployeeController } from '../factories/controllers/get-employee-controller.factory'
 import { makeUpdateEmployeeController } from '../factories/controllers/update-employee-controller.factory'
 import { makeDeleteEmployeeController } from '../factories/controllers/delete-employee-controller.factory'
+import { makeProcessPaymentController } from '../factories/controllers/process-payment-controller.factory'
 
 const router = Router()
 
@@ -39,6 +40,7 @@ router.delete('/employee/:id', expressAdapter(makeDeleteEmployeeController()))
 router.delete('/orders/:orderNumber', expressAdapter(makeDeleteOrderController()))
 router.patch('/orders/:orderNumber', expressAdapter(makeUpdateOrderStatusUseCaseController()))
 router.get('/orders/:orderNumber', expressAdapter(makeGetOrderByNumberController()))
+router.post('/orders/:orderNumber/pay', expressAdapter(makeProcessPaymentController()))
 router.get('/orders/:orderNumber/status', expressAdapter(makeGetOrderStatusController()))
 router.get('/orders', expressAdapter(makeGetAllOrdersController()))
 router.post('/orders', expressAdapter(makeCreateOrderController()))

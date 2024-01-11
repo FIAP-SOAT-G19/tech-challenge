@@ -110,7 +110,7 @@ describe('CreateOrderUseCase', () => {
   test('should call UUIDGenerator', async () => {
     await sut.execute(input)
 
-    expect(uuidGenerator.generate).toHaveBeenCalledTimes(2)
+    expect(uuidGenerator.generate).toHaveBeenCalledTimes(3)
   })
 
   test('should call gateway.saveOrder once and with correct values', async () => {
@@ -179,6 +179,20 @@ describe('CreateOrderUseCase', () => {
       amount: 2,
       productPrice: 2500,
       createdAt: new Date()
+    })
+  })
+
+  test('should call gateway.createPayment once and with correct values', async () => {
+    await sut.execute(input)
+
+    expect(gateway.createPayment).toHaveBeenCalledTimes(1)
+    expect(gateway.createPayment).toHaveBeenCalledWith({
+      id: 'anyUUID',
+      orderNumber: 'anyOrderNumber',
+      status: 'waiting',
+      reason: null,
+      createdAt: new Date(),
+      updatedAt: null
     })
   })
 })
