@@ -1,12 +1,9 @@
 export interface IGetEmployeeUseCase {
-  findById: (input: IGetEmployeeUseCase.Input) => Promise<IGetEmployeeUseCase.Output>
+  findById: (id: string) => Promise<IGetEmployeeUseCase.Output>
   findAll: () => Promise<IGetEmployeeUseCase.Output[] | []>
 }
 
 export namespace IGetEmployeeUseCase {
-  export type Input = {
-    id: string
-  }
   export type Output = {
     id: string
     name: string

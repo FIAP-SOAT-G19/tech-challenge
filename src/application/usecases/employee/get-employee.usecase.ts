@@ -6,8 +6,8 @@ export class GetEmployeeUseCase implements IGetEmployeeUseCase {
   constructor(private readonly getEmployeeGateway: IGetEmployeeGateway) {
   }
 
-  async findById(input: IGetEmployeeUseCase.Input): Promise<IGetEmployeeUseCase.Output> {
-    const employee = await this.getEmployeeGateway.findById(input.id)
+  async findById(id: string): Promise<IGetEmployeeUseCase.Output> {
+    const employee = await this.getEmployeeGateway.findById(id)
     if (!employee) throw new InvalidParamError('Employee not found')
     return {
       id: employee.id,
@@ -21,7 +21,6 @@ export class GetEmployeeUseCase implements IGetEmployeeUseCase {
 
   async findAll(): Promise<IGetEmployeeUseCase.Output[] | []> {
     const employees = await this.getEmployeeGateway.findAll()
-    if (!employees) return []
     return employees.map(employee => ({
       id: employee.id,
       name: employee.name,

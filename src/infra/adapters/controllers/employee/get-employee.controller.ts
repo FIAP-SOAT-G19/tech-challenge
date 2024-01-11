@@ -8,7 +8,7 @@ export class GetEmployeeController implements IController {
   async execute (input: HttpRequest): Promise<HttpResponse> {
     try {
       const id = input.params.id
-      const employee = await this.getEmployeeUseCase.findById({ id })
+      const employee = await this.getEmployeeUseCase.findById(id)
       return success(200, { employee })
     } catch (error: any) {
       return handleError(error)

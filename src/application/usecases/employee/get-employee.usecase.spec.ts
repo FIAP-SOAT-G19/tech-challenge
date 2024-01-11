@@ -13,9 +13,7 @@ describe('GetEmployeeUseCase', () => {
 
   describe('findOne', () => {
     test('should return an employee when found by ID', async () => {
-      const input = {
-        id: 'employeeId'
-      }
+      const id = 'employeeId'
 
       const foundEmployee = {
         id: 'employeeId',
@@ -30,7 +28,7 @@ describe('GetEmployeeUseCase', () => {
 
       gateway.findById.mockResolvedValue(foundEmployee)
 
-      const result = await sut.findById(input)
+      const result = await sut.findById(id)
 
       expect(result).toEqual({
         id: 'employeeId',
