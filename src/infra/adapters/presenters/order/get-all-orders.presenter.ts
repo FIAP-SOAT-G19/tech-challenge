@@ -3,7 +3,7 @@ import { OrderOutput } from '@/application/usecases/order/orders.types'
 
 export class GetAllOrdersPresenter implements IGetAllOrdersPresenter {
   
-    async createOrdenation(input: GetAllOrdersOutput): Promise<GetAllOrdersOutput> {
+    createOrdenation(input: GetAllOrdersOutput): GetAllOrdersOutput {
         
         if (input?.length) {
 

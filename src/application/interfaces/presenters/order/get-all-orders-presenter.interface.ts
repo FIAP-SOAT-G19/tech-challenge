@@ -1,7 +1,7 @@
 import { GetAllOrdersOutput } from '../..'
 
 export interface IGetAllOrdersPresenter {
-  createOrdenation: (input: GetAllOrdersOutput) => Promise<GetAllOrdersOutput>
+  createOrdenation: (input: GetAllOrdersOutput) => GetAllOrdersOutput
 }
 
 export enum OrderStatus {

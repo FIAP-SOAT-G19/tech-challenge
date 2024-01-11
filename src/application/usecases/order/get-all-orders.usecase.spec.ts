@@ -64,7 +64,7 @@ describe('GetAllOrdersUseCase', () => {
     sut = new GetAllOrdersUseCase(gateway, presenter)
     input = {}
     gateway.getAllOrders.mockResolvedValue(orders)
-    presenter.createOrdenation.mockResolvedValue(orders)
+    presenter.createOrdenation.mockReturnValue(orders)
   })
 
   test('should call gateway.getAllOrders once and with correct values', async () => {
@@ -200,7 +200,7 @@ describe('GetAllOrdersUseCase', () => {
 
   test('should return null if gateway.getAllOrders and presenter.createOrdenation returns null', async () => {
     gateway.getAllOrders.mockResolvedValueOnce(null)
-    presenter.createOrdenation.mockResolvedValueOnce(null)
+    presenter.createOrdenation.mockReturnValue(null)
 
     const output = await sut.execute(input)
 
@@ -208,7 +208,7 @@ describe('GetAllOrdersUseCase', () => {
   })
 
   test('should return null if presenter.createOrdenation returns null', async () => {
-    presenter.createOrdenation.mockResolvedValueOnce(null)
+    presenter.createOrdenation.mockReturnValue(null)
 
     const output = await sut.execute(input)
 
