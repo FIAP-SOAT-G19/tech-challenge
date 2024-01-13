@@ -25,14 +25,13 @@ export class ExternalProcessPayment implements IExternalPayment {
       reason
     }
 
-    const oneMinute = 60 * 1000
     setTimeout(async () => {
       try {
         await axios.post(webHookUri, data)
       } catch (error: any) {
         throw new Error(error)
       }
-    }, oneMinute)
+    }, 30 * 1000)
   }
 
   getRandomMessage(): string {
