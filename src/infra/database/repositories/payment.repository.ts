@@ -1,6 +1,5 @@
-import { IPaymentRepository, SavePaymentInput, UpdatePaymentStatusInput } from '@/application/interfaces/repositories/payment.interface'
+import { IPaymentRepository, PaymentStatus, SavePaymentInput, UpdatePaymentStatusInput } from '@/application/interfaces/repositories/payment.interface'
 import { prismaClient } from '../prisma-client'
-import { PaymentStatus } from '@prisma/client'
 
 export class PaymentRepository implements IPaymentRepository {
   async save (input: SavePaymentInput): Promise<void> {

@@ -97,22 +97,15 @@ model OrderProduct {
 }
 
 model Payment {
-  id          String        @id
-  order       Order         @relation(fields: [orderNumber], references: [orderNumber])
-  orderNumber String        @unique()
-  status      PaymentStatus @default(waiting)
+  id          String    @id
+  order       Order     @relation(fields: [orderNumber], references: [orderNumber])
+  orderNumber String    @unique()
+  status      String
   reason      String?
   createdAt   DateTime
-  updatedAt   DateTime?     @updatedAt
+  updatedAt   DateTime? @updatedAt
 
   @@map("payments")
-}
-
-enum PaymentStatus {
-  waiting
-  approved
-  refused
-  processing
 }
 
 model SeedersHistory {

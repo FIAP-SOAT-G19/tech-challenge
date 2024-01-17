@@ -18,3 +18,5 @@ export type UpdatePaymentStatusInput = {
   status: string
   reason: string | null
 }
+
+export type PaymentStatus = 'waiting' | 'approved' | 'refused' | 'processing'

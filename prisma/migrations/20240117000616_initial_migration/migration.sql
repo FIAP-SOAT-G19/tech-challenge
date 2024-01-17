@@ -4,9 +4,6 @@ CREATE TYPE "OrderStatus" AS ENUM ('waitingPayment', 'received', 'InPreparation'
 -- CreateEnum
 CREATE TYPE "ProductCategory" AS ENUM ('snack', 'accompaniment', 'drink', 'dessert');
 
--- CreateEnum
-CREATE TYPE "PaymentStatus" AS ENUM ('waiting', 'approved', 'refused', 'processing');
-
 -- CreateTable
 CREATE TABLE "clients" (
     "id" TEXT NOT NULL,
@@ -79,7 +76,7 @@ CREATE TABLE "order_products" (
 CREATE TABLE "payments" (
     "id" TEXT NOT NULL,
     "orderNumber" TEXT NOT NULL,
-    "status" "PaymentStatus" NOT NULL DEFAULT 'waiting',
+    "status" TEXT NOT NULL,
     "reason" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL,
     "updatedAt" TIMESTAMP(3),
