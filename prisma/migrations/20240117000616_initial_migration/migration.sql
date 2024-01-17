@@ -1,4 +1,3 @@
-DROP DATABASE tech_challenge;
 -- CreateEnum
 CREATE TYPE "OrderStatus" AS ENUM ('waitingPayment', 'received', 'InPreparation', 'prepared', 'finalized', 'canceled');
 
