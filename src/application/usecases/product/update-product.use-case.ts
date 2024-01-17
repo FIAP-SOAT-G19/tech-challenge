@@ -1,13 +1,13 @@
 import { ISchemaValidator } from '../../interfaces/validators/schema-validator.interface'
-import { IProductRepository } from '../../interfaces/repositories/product.interface'
 import { IUpdateProductUseCase } from '../../interfaces/usecases/product/update-product.interface'
 import { ServerError, MissingParamError, InvalidParamError } from '@/infra/shared'
 import constants from '@/infra/shared/constants'
+import { IUpdateProductGateway } from '@/application/interfaces/gateways/product/update-product-gateway.interface'
 
 export class UpdateProductUseCase implements IUpdateProductUseCase {
   constructor(
     private readonly schemaValidator: ISchemaValidator,
-    private readonly productRepository: IProductRepository
+    private readonly gateway: IUpdateProductGateway
   ) {}
 
   async execute(
@@ -22,7 +22,7 @@ export class UpdateProductUseCase implements IUpdateProductUseCase {
       await this.validatePrice(input.price)
     }
 
-    const updatedProduct = await this.productRepository.update(input)
+    const updatedProduct = await this.gateway.updateProduct(input)
     if (!updatedProduct) {
       throw new ServerError()
     }

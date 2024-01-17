@@ -1,22 +1,23 @@
 import { mock } from 'jest-mock-extended'
 import { DeleteClientUseCase } from './delete-client.usecase'
-import { Client, IClientRepository } from '@/application/interfaces'
+import { Client } from '@/application/interfaces'
 import { IDeleteClientUseCase } from '@/application/interfaces/usecases/client/delete-client.interface'
 import { ClientNotFoundError } from '@/infra/shared'
+import { IDeleteClientGateway } from '@/application/interfaces/gateways/client/delete-client-gateway.interface'
 
-const clientRepository = mock<IClientRepository>()
+const gateway = mock<IDeleteClientGateway>()
 
 describe('DeleteClientUseCase', () => {
   let sut: IDeleteClientUseCase
   let input: IDeleteClientUseCase.Input
-  let clientRepositoryOutput: Client
+  let clientGatewayOutput: Client
 
   beforeEach(() => {
-    sut = new DeleteClientUseCase(clientRepository)
+    sut = new DeleteClientUseCase(gateway)
     input = {
       id: 'anyClientId'
     }
-    clientRepositoryOutput = {
+    clientGatewayOutput = {
       id: 'anyClientId',
       name: 'anyClientName',
       email: 'anyClientEmail',
@@ -35,15 +36,15 @@ describe('DeleteClientUseCase', () => {
   })
 
   test('should call clientRepository.delete with correct values', async () => {
-    clientRepository.getById.mockResolvedValueOnce(clientRepositoryOutput)
+    gateway.getClientById.mockResolvedValueOnce(clientGatewayOutput)
     await sut.execute(input)
-    expect(clientRepository.delete).toHaveBeenCalledWith(input.id)
-    expect(clientRepository.delete).toHaveBeenCalledTimes(1)
+    expect(gateway.deleteClient).toHaveBeenCalledWith(input.id)
+    expect(gateway.deleteClient).toHaveBeenCalledTimes(1)
   })
 
   test('should rethrows if throws', async () => {
-    clientRepository.getById.mockResolvedValueOnce(clientRepositoryOutput)
-    clientRepository.delete.mockRejectedValueOnce(new Error())
+    gateway.getClientById.mockResolvedValueOnce(clientGatewayOutput)
+    gateway.deleteClient.mockRejectedValueOnce(new Error())
     const output = sut.execute(input)
     await expect(output).rejects.toThrow(new Error())
   })

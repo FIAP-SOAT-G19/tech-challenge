@@ -97,20 +97,15 @@ model OrderProduct {
 }
 
 model Payment {
-  id        String        @id
-  order     Order         @relation(fields: [orderId], references: [id])
-  orderId   String
-  status    PaymentStatus @default(waiting)
-  createdAt DateTime
-  updatedAt DateTime?     @updatedAt
+  id          String    @id
+  order       Order     @relation(fields: [orderNumber], references: [orderNumber])
+  orderNumber String    @unique()
+  status      String
+  reason      String?
+  createdAt   DateTime
+  updatedAt   DateTime? @updatedAt
 
   @@map("payments")
-}
-
-enum PaymentStatus {
-  waiting
-  approved
-  refused
 }
 
 model SeedersHistory {
@@ -119,4 +114,17 @@ model SeedersHistory {
   executedAt DateTime
 
   @@map("seeders_histories")
+}
+
+model Request {
+  id        String    @id
+  method    String
+  route     String
+  input     String    @db.Text
+  output    String?   @db.Text
+  status    Int?
+  createdAt DateTime
+  updatedAt DateTime?
+
+  @@map("requests")
 }
