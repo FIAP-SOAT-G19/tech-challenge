@@ -20,6 +20,7 @@ spec:
               cpu: "500m"
           ports:
             - containerPort: 3000
+              protocol: TCP
           env:
             - name: DATABASE_URL
               valueFrom:
