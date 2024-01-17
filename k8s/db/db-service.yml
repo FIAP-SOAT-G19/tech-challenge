@@ -3,8 +3,10 @@ kind: Service
 metadata:
   name: database-svc
 spec:
-  type: ClusterIP
   selector:
     app: postgres
   ports:
-    - port: 5432
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+  type: NodePort

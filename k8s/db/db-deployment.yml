@@ -38,7 +38,7 @@ spec:
             - name: PGUSER
               valueFrom:
                 secretKeyRef:
-                  name: api-secrets
+                  name: database-secrets
                   key: pg-user
             - name: POSTGRES_PASSWORD
               valueFrom:
