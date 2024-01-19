@@ -26,10 +26,19 @@ O **Tech Challenge** é um projeto de um sistema de autoatendimento de fast food
 Existe o arquivo `.env.example` com todas as variáveis utilizadas para rodar o sistema. Faça uma cópia desse arquivo e renomeie a cópia para `.env` antes de executar o comando para iniciar a aplicação.
 ---
 
+## Arquitetura do projeto
+![Arquitetura do Projeto](./assets/images/Tech-challenge.jpg)
+
 ## ▶️ Executando o projeto
-- inicie a aplicação com o comando
+- Execute o script que se encontra dentro da pasta k8s
   ```bash
-  docker compose up --build
+  ./start-application.sh
+  ```
+
+- Utilize os comandos abaixo para encaminhar as conexões das portas locais para a portas dos pod's Kubernetes.
+  ```bash
+  kubectl port-forward service/api-svc 3000:3000 &
+  kubectl port-forward service/database-svc 5432:5432 &
   ```
 
 - O Backend iniciará em [http://localhost:3000](http://localhost:3000)
@@ -38,6 +47,10 @@ Existe o arquivo `.env.example` com todas as variáveis utilizadas para rodar o 
 
 ## 🧩 Swagger
 É possível acessar a documentação da API pelo [Swagger da API](http://localhost:3000/api-docs) e simular os endpoints
+
+---
+
+## Vídeo do Projeto
 
 ---
 
