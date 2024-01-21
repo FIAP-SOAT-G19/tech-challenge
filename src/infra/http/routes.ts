@@ -1,4 +1,4 @@
-import { Router } from 'express'
+import { Request, Response, Router } from 'express'
 import { expressAdapter } from '../adapters/tools/http/express.adapter'
 import { makeCreateClientController } from '../factories/controllers/client/create-client-controller.factory'
 import { makeDeleteClientController } from '../factories/controllers/client/delete-client-controller.factory'
