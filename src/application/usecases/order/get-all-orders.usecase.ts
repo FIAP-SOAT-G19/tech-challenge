@@ -7,12 +7,12 @@ export class GetAllOrdersUseCase implements IGetAllOrdersUseCase {
     private readonly gateway: IGetAllOrdersGateway,
     private readonly presenter: IGetAllOrdersPresenter
   ) {}
-  
+
   async execute (input: IGetAllOrdersUseCase.Input): Promise<IGetAllOrdersUseCase.Output> {
     const queryOptions = this.makeQueryOptions(input)
     const orders = await this.gateway.getAllOrders(queryOptions)
-    const ordenatedOrders = await this.presenter.createOrdenation(orders)
-    
+    const ordenatedOrders = this.presenter.createOrdenation(orders)
+
     return ordenatedOrders
   }
 
@@ -54,5 +54,4 @@ export class GetAllOrdersUseCase implements IGetAllOrdersUseCase {
 
     return options
   }
-
 }
