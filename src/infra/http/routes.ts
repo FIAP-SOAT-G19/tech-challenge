@@ -1,4 +1,4 @@
-import { Request, Response, Router } from 'express'
+import { Router } from 'express'
 import { expressAdapter } from '../adapters/tools/http/express.adapter'
 import { makeCreateClientController } from '../factories/controllers/client/create-client-controller.factory'
 import { makeDeleteClientController } from '../factories/controllers/client/delete-client-controller.factory'
@@ -25,10 +25,14 @@ import { makeUpdateEmployeeController } from '../factories/controllers/update-em
 import { makeUpdateOrderStatusUseCaseController } from '../factories/controllers/update-order-status-controller.factory'
 import { makeUpdateProductController } from '../factories/controllers/update-product-controller.factory'
 import { selectProductsRoute } from '../middleware/select-products-route'
+import { makeLivenessProbeController } from '../factories/controllers/liveness-controller.factory'
+import { makeReadinessProbeController } from '../factories/controllers/readiness-controller.factory'
 
 const router = Router()
 
 router.get('/healthcheck', expressAdapter(makeHealthcheckController()))
+router.get('/livenessProbe', expressAdapter(makeLivenessProbeController()))
+router.get('/readinessProbe', expressAdapter(makeReadinessProbeController()))
 
 // employee
 router.post('/employee', expressAdapter(makeCreateEmployeeController()))
