@@ -17,25 +17,26 @@ export const expressAdapter = (controller: IController) => {
       query: req?.query
     }
 
-    const requestId = await requestRepository.create({
-      id: uuidGenerator.generate(),
-      method: req.method,
-      input: JSON.stringify(obfuscateValue({ ...input.body })),
-      route: req.url,
-      createdAt: new Date()
-    })
-
     const { statusCode, body }: HttpResponse = await controller.execute(input)
 
     const output = (statusCode >= 200 && statusCode < 500) ? body : { error: body.message }
 
-    await requestRepository.update({
-      requestId,
-      status: statusCode,
-      output: JSON.stringify(output),
-      updatedAt: new Date()
-    })
+    if (canLog(req.url)) {
+      await requestRepository.create({
+        id: uuidGenerator.generate(),
+        method: req.method,
+        input: JSON.stringify(obfuscateValue({ ...input.body })),
+        route: req.url,
+        createdAt: new Date(),
+        status: statusCode,
+        output: JSON.stringify(output)
+      })
+    }
 
     res.status(statusCode).json(output)
   }
+}
+
+const canLog = (url: string): boolean => {
+  return !['/readinessProbe', '/livenessProbe'].includes(url)
 }
