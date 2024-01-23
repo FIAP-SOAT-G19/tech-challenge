@@ -1,6 +1,5 @@
 export interface RequestRepositoryInterface {
-  create: (input: CreateRequestRepositoryInput) => Promise<string>
-  update: (input: UpdateRequestRepositotyInput) => Promise<void>
+  create: (input: CreateRequestRepositoryInput) => Promise<void>
 }
 
 export type CreateRequestRepositoryInput = {
@@ -8,12 +7,7 @@ export type CreateRequestRepositoryInput = {
   method: string
   route: string
   input: string
-  createdAt: Date
-}
-
-export type UpdateRequestRepositotyInput = {
-  requestId: string
   status: number
   output: string
-  updatedAt: Date
+  createdAt: Date
 }
