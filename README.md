@@ -11,6 +11,7 @@ O **Tech Challenge** é um projeto de um sistema de autoatendimento de fast food
 - [PostgreSQL](https://www.postgresql.org/)
 - [Prisma](https://www.prisma.io/)
 - [Jest](https://jestjs.io)
+- [k8s](https://kubernetes.io/pt-br/)
 ---
 
 ## 💻 Clonando o repositório
@@ -30,15 +31,17 @@ Existe o arquivo `.env.example` com todas as variáveis utilizadas para rodar o 
 ![Arquitetura do Projeto](./assets/images/Tech-challenge.jpg)
 
 ## ▶️ Executando o projeto
-- Execute o script que se encontra dentro da pasta k8s
+- Execute os seguintes comandos:
   ```bash
-  ./start-application.sh
+    kubectl apply -f k8s/db-deployment.yaml
+    kubectl apply -f k8s/api-deployment.yaml
+    kubectl apply -f k8s/metrics.yaml
   ```
 
-- Utilize os comandos abaixo para encaminhar as conexões das portas locais para a portas dos pod's Kubernetes.
+- Utilize os comandos abaixo para encaminhar as conexões das portas locais para a portas dos pod's Kubernetes (o segundo comando é opcional)
   ```bash
-  kubectl port-forward service/api-svc 3000:3000 &
-  kubectl port-forward service/database-svc 5432:5432 &
+    kubectl port-forward service/api-svc 3000:3000 &
+    kubectl port-forward service/database-svc 5432:5432 &
   ```
 
 - O Backend iniciará em [http://localhost:3000](http://localhost:3000)
