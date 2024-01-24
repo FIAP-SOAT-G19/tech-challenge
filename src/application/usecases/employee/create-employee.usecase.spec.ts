@@ -1,12 +1,11 @@
 import { CreateEmployeeUseCase } from './create-employee.usecase'
 import { mock } from 'jest-mock-extended'
-import { ISchemaValidator, IUUIDGenerator } from '@/application/interfaces'
-import { IEmployeeRepository } from '@/application/interfaces/repositories/employee.interface'
+import { ICreateEmployeeGateway, ISchemaValidator, IUUIDGenerator } from '@/application/interfaces'
 import { IEncrypt } from '@/application/interfaces/usecases/encrypt/encrypt.interface'
 import { InvalidParamError } from '@/infra/shared'
 import MockDate from 'mockdate'
 
-const employeeRepository = mock<IEmployeeRepository>()
+const gateway = mock<ICreateEmployeeGateway>()
 const schemaValidator = mock<ISchemaValidator>()
 const uuidGenerator = mock<IUUIDGenerator>()
 const encryptoPassword = mock<IEncrypt>()
@@ -16,7 +15,7 @@ describe('CreateEmployeeUseCase', () => {
   let input: any
 
   beforeEach(() => {
-    sut = new CreateEmployeeUseCase(employeeRepository, schemaValidator, uuidGenerator, encryptoPassword)
+    sut = new CreateEmployeeUseCase(gateway, schemaValidator, uuidGenerator, encryptoPassword)
     input = {
       name: 'John Doe',
       email: 'john@email.com',
@@ -25,8 +24,8 @@ describe('CreateEmployeeUseCase', () => {
     }
     uuidGenerator.generate.mockReturnValue('generatedUUID')
     schemaValidator.validate.mockReturnValue({ value: input })
-    employeeRepository.findByCpf.mockResolvedValue(null)
-    employeeRepository.findByEmail.mockResolvedValue(null)
+    gateway.findByCpf.mockResolvedValue(null)
+    gateway.findByEmail.mockResolvedValue(null)
   })
 
   beforeAll(() => {
@@ -38,7 +37,7 @@ describe('CreateEmployeeUseCase', () => {
   })
 
   test('should create an employee with valid input', async () => {
-    employeeRepository.create.mockResolvedValue('generatedUUID')
+    gateway.create.mockResolvedValue('generatedUUID')
 
     const result = await sut.execute(input)
 
@@ -46,7 +45,7 @@ describe('CreateEmployeeUseCase', () => {
   })
 
   test('should throw InvalidParamError for duplicate email', async () => {
-    employeeRepository.findByEmail.mockResolvedValue({
+    gateway.findByEmail.mockResolvedValue({
       id: 'anyId',
       name: 'John Doe',
       email: 'john@email.com',
@@ -60,7 +59,7 @@ describe('CreateEmployeeUseCase', () => {
   })
 
   test('should throw InvalidParamError for duplicate cpf', async () => {
-    employeeRepository.findByCpf.mockResolvedValue({
+    gateway.findByCpf.mockResolvedValue({
       id: 'anyId',
       name: 'John Doe',
       email: 'john@email.com',

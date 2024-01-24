@@ -1,15 +1,15 @@
 import { ICreateProductUseCase } from '../../interfaces/usecases/product/create-product.interface'
 import { IUUIDGenerator } from '../../interfaces/usecases/uuid/uuid-generator.interface'
 import { ISchemaValidator } from '../../interfaces/validators/schema-validator.interface'
-import { IProductRepository } from '../../interfaces/repositories/product.interface'
 import { ServerError, MissingParamError, InvalidParamError } from '@/infra/shared'
 import constants from '@/infra/shared/constants'
+import { ICreateProductGateway } from '@/application/interfaces/gateways/product/create-product-gateway.interface'
 
 export class CreateProductUseCase implements ICreateProductUseCase {
   constructor(
     private readonly schemaValidator: ISchemaValidator,
     private readonly uuidGenerator: IUUIDGenerator,
-    private readonly productRepository: IProductRepository
+    private readonly gateway: ICreateProductGateway
   ) {}
 
   async execute(
@@ -19,7 +19,7 @@ export class CreateProductUseCase implements ICreateProductUseCase {
     await this.validateSchema(input)
     await this.validateCategory(input.category)
     await this.validatePrice(input.price)
-    const productId = await this.productRepository.save({
+    const productId = await this.gateway.saveProduct({
       ...input,
       id: this.uuidGenerator.generate(),
       createdAt: new Date()

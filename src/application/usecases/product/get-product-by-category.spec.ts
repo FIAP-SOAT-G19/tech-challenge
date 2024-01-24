@@ -1,20 +1,20 @@
 import { ISchemaValidator } from '../../interfaces'
 import { mock } from 'jest-mock-extended'
 import { GetProductByCategoryUseCase } from './get-product-by-category'
-import { ProductRepository } from '@/infra/database/repositories/product.repository'
 import { InvalidParamError, ProductNotFoundError } from '@/infra/shared'
+import { IGetProductByCategoryGateway } from '@/application/interfaces/gateways/product/get-product-by-category.gateway.interface'
 
 describe('GetProductByCategoryUseCase', () => {
   let getProductByCategoryUseCase: GetProductByCategoryUseCase
 
   const schemaValidator = mock<ISchemaValidator>()
-  const productRepository = mock<ProductRepository>()
+  const gateway = mock<IGetProductByCategoryGateway>()
 
   beforeEach(() => {
     jest.resetAllMocks()
     getProductByCategoryUseCase = new GetProductByCategoryUseCase(
       schemaValidator,
-      productRepository
+      gateway
     )
   })
 
@@ -35,7 +35,7 @@ describe('GetProductByCategoryUseCase', () => {
       schemaValidator.validate.mockReturnValue({
         value: { productCategoryMock }
       })
-      productRepository.getByCategory.mockResolvedValue(productMock)
+      gateway.getProductByCategory.mockResolvedValue(productMock)
       await getProductByCategoryUseCase.execute(productCategoryMock)
 
       expect(schemaValidator.validate).toHaveBeenCalledTimes(1)
@@ -45,15 +45,15 @@ describe('GetProductByCategoryUseCase', () => {
       })
     })
 
-    test('should call productRepository.getByCategory once with correct category', async () => {
+    test('should call gateway.getProductByCategory once with correct category', async () => {
       schemaValidator.validate.mockReturnValue({
         value: { productCategoryMock }
       })
-      productRepository.getByCategory.mockResolvedValue(productMock)
+      gateway.getProductByCategory.mockResolvedValue(productMock)
       await getProductByCategoryUseCase.execute(productCategoryMock)
 
-      expect(productRepository.getByCategory).toHaveBeenCalledTimes(1)
-      expect(productRepository.getByCategory).toHaveBeenCalledWith(
+      expect(gateway.getProductByCategory).toHaveBeenCalledTimes(1)
+      expect(gateway.getProductByCategory).toHaveBeenCalledWith(
         productCategoryMock
       )
     })
@@ -83,11 +83,11 @@ describe('GetProductByCategoryUseCase', () => {
       )
     })
 
-    test('should throw error if productRepository.getByCategory returns null', async () => {
+    test('should throw error if gateway.getProductByCategory returns null', async () => {
       schemaValidator.validate.mockReturnValue({
         value: { productCategoryMock }
       })
-      productRepository.getByCategory.mockResolvedValue(null)
+      gateway.getProductByCategory.mockResolvedValue(null)
 
       const output = getProductByCategoryUseCase.execute(productCategoryMock)
 
@@ -98,7 +98,7 @@ describe('GetProductByCategoryUseCase', () => {
       schemaValidator.validate.mockReturnValue({
         value: { productCategoryMock }
       })
-      productRepository.getByCategory.mockResolvedValue(productMock)
+      gateway.getProductByCategory.mockResolvedValue(productMock)
 
       const output = await getProductByCategoryUseCase.execute(
         productCategoryMock

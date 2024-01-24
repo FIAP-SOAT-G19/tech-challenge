@@ -1,25 +1,26 @@
-import { Client, IClientRepository } from '@/application/interfaces'
+import { Client } from '@/application/interfaces'
 import { ILoginClientUseCase } from '@/application/interfaces/usecases/client/login-client.interface'
 import { IEncrypt } from '@/application/interfaces/usecases/encrypt/encrypt.interface'
 import { InvalidParamError } from '@/infra/shared'
 import { LoginClientUseCase } from './login-client.usecase'
 import { mock } from 'jest-mock-extended'
+import { ILoginClientGateway } from '@/application/interfaces/gateways/client/login-client-gateway.interface'
 
-const clientRepository = mock<IClientRepository>()
+const gateway = mock<ILoginClientGateway>()
 const encrypt = mock<IEncrypt>()
 
 describe('LoginClientUseCase', () => {
   let sut: ILoginClientUseCase
   let input: ILoginClientUseCase.Input
-  let clientRepositoryOutput: Client
+  let loginClientGatewayOutput: Client
 
   beforeEach(() => {
-    sut = new LoginClientUseCase(clientRepository, encrypt)
+    sut = new LoginClientUseCase(gateway, encrypt)
     input = {
       email: 'anyClientEmail',
       password: 'anyClientPassword'
     }
-    clientRepositoryOutput = {
+    loginClientGatewayOutput = {
       id: 'anyClientId',
       name: 'anyClientName',
       email: 'anyClientEmail',
@@ -33,10 +34,10 @@ describe('LoginClientUseCase', () => {
 
   test('should call clientRepository onde with correct values', async () => {
     encrypt.compare.mockResolvedValueOnce(true)
-    clientRepository.getByEmail.mockResolvedValueOnce(clientRepositoryOutput)
+    gateway.getClientByEmail.mockResolvedValueOnce(loginClientGatewayOutput)
     await sut.execute(input)
-    expect(clientRepository.getByEmail).toHaveBeenCalledWith(input.email)
-    expect(clientRepository.getByEmail).toHaveBeenCalledTimes(1)
+    expect(gateway.getClientByEmail).toHaveBeenCalledWith(input.email)
+    expect(gateway.getClientByEmail).toHaveBeenCalledTimes(1)
   })
 
   test('should throws if email is invalid', async () => {
@@ -45,15 +46,15 @@ describe('LoginClientUseCase', () => {
   })
 
   test('should throws if password is invalid', async () => {
-    clientRepository.getByEmail.mockResolvedValueOnce(clientRepositoryOutput)
+    gateway.getClientByEmail.mockResolvedValueOnce(loginClientGatewayOutput)
     const output = sut.execute(input)
     await expect(output).rejects.toThrow(new InvalidParamError('email or password is incorrect'))
   })
 
   test('should return Client with correct values', async () => {
     encrypt.compare.mockResolvedValueOnce(true)
-    clientRepository.getByEmail.mockResolvedValueOnce(clientRepositoryOutput)
+    gateway.getClientByEmail.mockResolvedValueOnce(loginClientGatewayOutput)
     const client = await sut.execute(input)
-    expect(client).toEqual({ name: clientRepositoryOutput.name, email: clientRepositoryOutput.email, cpf: clientRepositoryOutput.cpf })
+    expect(client).toEqual({ name: loginClientGatewayOutput.name, email: loginClientGatewayOutput.email, cpf: loginClientGatewayOutput.cpf })
   })
 })

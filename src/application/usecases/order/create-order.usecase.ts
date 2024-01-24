@@ -1,16 +1,13 @@
-import { ICreateOrderUseCase, ISchemaValidator, IUUIDGenerator, IClientRepository, IOrderRepository, IOrderProductRepository, IProductRepository } from '@/application/interfaces'
+import { ICreateOrderUseCase, ISchemaValidator, IUUIDGenerator, ICreateOrderGateway } from '@/application/interfaces'
 import { SchemaValidationError, InvalidParamError, ramdonStringGenerator } from '@/infra/shared'
 import constants from '@/infra/shared/constants'
-import { OrderProduct } from './order-products.types'
+import { OrderProduct } from './orders.types'
 
 export class CreateOrderUseCase implements ICreateOrderUseCase {
   constructor(
     private readonly schemaValidator: ISchemaValidator,
     private readonly uuidGenerator: IUUIDGenerator,
-    private readonly clientRepository: IClientRepository,
-    private readonly orderRepository: IOrderRepository,
-    private readonly orderProductRepository: IOrderProductRepository,
-    private readonly productRepository: IProductRepository
+    private readonly gateway: ICreateOrderGateway
   ) {}
 
   async execute (input: ICreateOrderUseCase.Input): Promise<ICreateOrderUseCase.Output> {
@@ -19,6 +16,15 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
     const { orderId, orderNumber } = await this.saveOrder(input)
 
     await this.saveOrderProducts(orderId, input.products)
+
+    await this.gateway.createPayment({
+      id: this.uuidGenerator.generate(),
+      orderNumber,
+      status: constants.PAYMENT_STATUS.WAITING,
+      reason: null,
+      createdAt: new Date(),
+      updatedAt: null
+    })
 
     return {
       orderNumber
@@ -36,14 +42,14 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
     }
 
     for (const product of input.products) {
-      const productExists = await this.productRepository.getById(product.id)
+      const productExists = await this.gateway.getProductById(product.id)
       if (!productExists) {
         throw new InvalidParamError('productId')
       }
     }
 
     if (input.clientId) {
-      const client = await this.clientRepository.getById(input.clientId)
+      const client = await this.gateway.getClientById(input.clientId)
       if (!client) {
         throw new InvalidParamError('clientId')
       }
@@ -54,7 +60,7 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
     const orderId = this.uuidGenerator.generate()
     const orderNumber = ramdonStringGenerator()
 
-    await this.orderRepository.save({
+    await this.gateway.saveOrder({
       id: orderId,
       orderNumber,
       clientId: input.clientId ?? null,
@@ -69,7 +75,7 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
 
   private async saveOrderProducts (orderId: string, products: OrderProduct []): Promise<void> {
     for (const product of products) {
-      await this.orderProductRepository.save({
+      await this.gateway.saveOrderProduct({
         id: this.uuidGenerator.generate(),
         orderId,
         productId: product.id,

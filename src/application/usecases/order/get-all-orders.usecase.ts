@@ -1,12 +1,19 @@
-import { IGetAllOrdersUseCase, IOrderRepository } from '@/application/interfaces'
+import { IGetAllOrdersUseCase, IGetAllOrdersGateway, IGetAllOrdersPresenter } from '@/application/interfaces'
 import { InvalidParamError } from '@/infra/shared'
 import constants from '@/infra/shared/constants'
 
 export class GetAllOrdersUseCase implements IGetAllOrdersUseCase {
-  constructor(private readonly orderRepository: IOrderRepository) {}
+  constructor(
+    private readonly gateway: IGetAllOrdersGateway,
+    private readonly presenter: IGetAllOrdersPresenter
+  ) {}
+
   async execute (input: IGetAllOrdersUseCase.Input): Promise<IGetAllOrdersUseCase.Output> {
     const queryOptions = this.makeQueryOptions(input)
-    return this.orderRepository.getAll(queryOptions)
+    const orders = await this.gateway.getAllOrders(queryOptions)
+    const ordenatedOrders = this.presenter.createOrdenation(orders)
+
+    return ordenatedOrders
   }
 
   private makeQueryOptions (input: IGetAllOrdersUseCase.Input): IGetAllOrdersUseCase.Input {

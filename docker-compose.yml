@@ -13,7 +13,7 @@ services:
       - .env
     volumes:
       - ./:/app
-    command: bash -c "npm install && npm run build && npx prisma generate && npx prisma migrate dev && npx prisma db seed && npm start"
+    command: bash -c "npm install && npm run build && npx prisma generate && npx prisma migrate deploy && npx prisma db seed && npm start"
     user: "1000:1000"
     depends_on:
       - postgresql

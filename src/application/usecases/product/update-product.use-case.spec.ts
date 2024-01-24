@@ -1,20 +1,20 @@
 import { ISchemaValidator } from '../../interfaces'
 import { mock } from 'jest-mock-extended'
 import { UpdateProductUseCase } from './update-product.use-case'
-import { ProductRepository } from '@/infra/database/repositories/product.repository'
 import { MissingParamError, InvalidParamError, ServerError } from '@/infra/shared'
+import { IUpdateProductGateway } from '@/application/interfaces/gateways/product/update-product-gateway.interface'
 
 describe('UpdateProductUseCase', () => {
   let updateProductUseCase: UpdateProductUseCase
 
   const schemaValidator = mock<ISchemaValidator>()
-  const productRepository = mock<ProductRepository>()
+  const gateway = mock<IUpdateProductGateway>()
 
   beforeEach(() => {
     jest.resetAllMocks()
     updateProductUseCase = new UpdateProductUseCase(
       schemaValidator,
-      productRepository
+      gateway
     )
   })
 
@@ -79,7 +79,7 @@ describe('UpdateProductUseCase', () => {
       schemaValidator.validate.mockReturnValue({
         value: updateNameMock
       })
-      productRepository.update.mockResolvedValue(productUpdatedMock)
+      gateway.updateProduct.mockResolvedValue(productUpdatedMock)
       await updateProductUseCase.execute(updateNameMock)
 
       expect(schemaValidator.validate).toHaveBeenCalledTimes(1)
@@ -89,15 +89,15 @@ describe('UpdateProductUseCase', () => {
       })
     })
 
-    test('should call productRepository.update once with correct product input', async () => {
+    test('should call gateway.updateProduct once with correct product input', async () => {
       schemaValidator.validate.mockReturnValue({
         value: updateNameMock
       })
-      productRepository.update.mockResolvedValue(productUpdatedMock)
+      gateway.updateProduct.mockResolvedValue(productUpdatedMock)
       await updateProductUseCase.execute(updateNameMock)
 
-      expect(productRepository.update).toHaveBeenCalledTimes(1)
-      expect(productRepository.update).toHaveBeenCalledWith({
+      expect(gateway.updateProduct).toHaveBeenCalledTimes(1)
+      expect(gateway.updateProduct).toHaveBeenCalledWith({
         ...updateNameMock
       })
     })
@@ -165,11 +165,11 @@ describe('UpdateProductUseCase', () => {
       )
     })
 
-    test('should throw error if productRepository.update returns null', async () => {
+    test('should throw error if gateway.updateProduct returns null', async () => {
       schemaValidator.validate.mockReturnValue({
         value: updateNameMock
       })
-      productRepository.update.mockResolvedValue(null)
+      gateway.updateProduct.mockResolvedValue(null)
 
       const output = updateProductUseCase.execute(updateNameMock)
 
@@ -180,7 +180,7 @@ describe('UpdateProductUseCase', () => {
       schemaValidator.validate.mockReturnValue({
         value: updateNameMock
       })
-      productRepository.update.mockResolvedValue(productUpdatedMock)
+      gateway.updateProduct.mockResolvedValue(productUpdatedMock)
 
       const output = await updateProductUseCase.execute(updateNameMock)
 

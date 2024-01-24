@@ -2,15 +2,18 @@ import { CreateProductUseCase } from '@/application/usecases/product/create-prod
 import { UUIDGeneratorAdapter } from '@/infra/adapters/tools/uuid/uuid-generator'
 import { JoiValidatorSchemaAdapter } from '@/infra/adapters/tools/validation/joi-validator.adapter'
 import { ProductRepository } from '../../../infra/database/repositories/product.repository'
+import { CreateProductGateway } from '../../../infra/adapters/gateways/product/create-product.gateway'
 
 export const makeCreateProductUseCase = (): CreateProductUseCase => {
   const schemaValidator = new JoiValidatorSchemaAdapter()
   const uuidGenerator = new UUIDGeneratorAdapter()
-  const productRepository = new ProductRepository()
+  const gateway = new CreateProductGateway(
+    new ProductRepository()
+  )
 
   return new CreateProductUseCase(
     schemaValidator,
     uuidGenerator,
-    productRepository
+    gateway
   )
 }
