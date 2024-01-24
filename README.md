@@ -28,7 +28,7 @@ Existe o arquivo `.env.example` com todas as variáveis utilizadas para rodar o 
 ---
 
 ## Arquitetura do projeto
-![Arquitetura do Projeto](./assets/images/Tech-challenge.jpg)
+![Arquitetura do Projeto](./assets/images/architecture.jpg)
 
 ## ▶️ Executando o projeto
 - Execute os seguintes comandos:
