@@ -53,8 +53,9 @@ Existe o arquivo `.env.example` com todas as variáveis utilizadas para rodar o 
 
 ---
 
-## Vídeo do Projeto
-[Youtube](https://youtu.be/TDvxi906vco?si=yY3aulSxq2tg5fiC){:target="_blank"}
+## ▶️ Vídeo do Projeto
+Link do vídeo no [Youtube](https://youtu.be/TDvxi906vco?si=yY3aulSxq2tg5fiC)
+
 ---
 
 ## 🧪 Testes:
