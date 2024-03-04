@@ -3,13 +3,26 @@ name: Docker Build and Push
 on:
   push:
     branches:
+      - main
       - feat/add-ci
-
+  pull_request:
+    branches:
+      - main
+      - feat/add-ci
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: npm i
+
+      - name: Test
+        run: npm run test
+
       - name: Checkout Repository
         uses: actions/checkout@v2
 
