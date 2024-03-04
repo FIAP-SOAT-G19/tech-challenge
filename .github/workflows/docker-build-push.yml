@@ -27,5 +27,5 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}:latest . --no-cache
-          docker push ${{secrets.DOCKER_USERNAME}}/${{ secrets.DOCKERHUB_REPO }}:latest
+          docker build -t devrsilva/tech-challenge:latest . --no-cache
+          docker push devrsilva/tech-challenge:latest
