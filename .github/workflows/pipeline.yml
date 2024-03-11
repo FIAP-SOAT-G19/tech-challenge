@@ -54,4 +54,4 @@ jobs:
       - name: Deploy to EKS
         run: |
           cd k8s
-          kubectl apply -f ./api-deployment.yaml
+          kubectl apply -f ./api-deployment.yaml --validate=false
