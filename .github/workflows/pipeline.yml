@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+      - feat/add-ci
   pull_request:
     branches:
       - main
+      - feat/add-ci
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -34,3 +36,21 @@ jobs:
         run: |
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}:latest . --no-cache
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}:latest
+
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Set KUBECONFIG
+        run: |
+          aws eks --region us-east-1 update-kubeconfig --name eks_cluster_tech_challenge
+
+      - name: Deploy to EKS
+        run: |
+          kubectl apply -f ./k8s/api-deployment.yaml
