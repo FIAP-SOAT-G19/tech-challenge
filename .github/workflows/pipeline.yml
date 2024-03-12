@@ -1,14 +1,14 @@
-name: Docker Build and Push
+name: Pipeline
 
 on:
   push:
     branches:
       - main
       - feat/add-ci
-  pull_request:
-    branches:
-      - main
-      - feat/add-ci
+  #pull_request:
+  #branches:
+  #- main
+  #- feat/add-ci
 
 jobs:
   build-and-push:
@@ -17,6 +17,23 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: npm i
+
+      - name: Test
+        run: npm run test
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}:latest . --no-cache
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}:latest
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -31,3 +48,7 @@ jobs:
 
       - name: Display Kubeconfig
         run: cat $HOME/.kube/config
+
+      - name: Deploy to EKS
+        run: ""
+        #run: kubectl apply -f k8s/api-deployment.yaml --validate=false
