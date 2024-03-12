@@ -50,5 +50,4 @@ jobs:
         run: cat $HOME/.kube/config
 
       - name: Deploy to EKS
-        run: ""
-        #run: kubectl apply -f k8s/api-deployment.yaml --validate=false
+        run: kubectl apply -f k8s/api-deployment.yaml --validate=false
