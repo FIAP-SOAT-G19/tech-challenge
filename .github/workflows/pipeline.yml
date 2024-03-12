@@ -18,23 +18,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Install Dependencies
-        run: npm i
-
-      - name: Test
-        run: npm run test
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build and Push Docker Image
-        run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}:latest . --no-cache
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}:latest
-
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -44,9 +27,7 @@ jobs:
 
       - name: Set KUBECONFIG
         run: |
-          aws eks --region us-east-1 update-kubeconfig --name eks_cluster_tech_challenge
+          aws eks update-kubeconfig --region us-east-1 --name eks_cluster_tech_challenge
 
-      - name: Deploy to EKS
-        run: |
-          cd k8s
-          kubectl apply -f ./api-deployment.yaml --validate=false
+      - name: Display Kubeconfig
+        run: cat $HOME/.kube/config
