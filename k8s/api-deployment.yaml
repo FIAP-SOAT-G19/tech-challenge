@@ -94,8 +94,8 @@ stringData:
   postgres-db: tech_challenge
   postgres-user: postgres
   postgres-password: postgres
-  postgres-host: tech-challenge-db.c32kogqu0ihz.us-east-1.rds.amazonaws.com
-  database-url: postgresql://postgres:postgres@tech-challenge-db.c32kogqu0ihz.us-east-1.rds.amazonaws.com:5432/tech_challenge?schema=public
+  postgres-host: dbpostgres.czg2ea2yu0rz.us-east-1.rds.amazonaws.com
+  database-url: postgresql://postgres:postgres@dbpostgres.czg2ea2yu0rz.us-east-1.rds.amazonaws.com:5432/dbpostgres?schema=public
 ---
 apiVersion: v1
 kind: Service
