@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: filsiqueira/tech-challenge-app:1.0.5
+          image: devrsilva/tech-challenge:latest
           resources:
             limits:
               memory: "512Mi"
@@ -94,8 +94,8 @@ stringData:
   postgres-db: tech_challenge
   postgres-user: postgres
   postgres-password: postgres
-  postgres-host: database-svc
-  database-url: postgresql://postgres:postgres@database-svc/tech_challenge?schema=public
+  postgres-host: tech-challenge-db.c32kogqu0ihz.us-east-1.rds.amazonaws.com
+  database-url: postgresql://postgres:postgres@tech-challenge-db.c32kogqu0ihz.us-east-1.rds.amazonaws.com:5432/tech_challenge?schema=public
 ---
 apiVersion: v1
 kind: Service
@@ -109,4 +109,4 @@ spec:
       port: 3000
       targetPort: 3000
       nodePort: 30000
-  type: NodePort
+  type: LoadBalancer
